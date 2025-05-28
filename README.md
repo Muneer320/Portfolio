@@ -157,73 +157,21 @@ clear        # Clear terminal screen
 - **npm** - Package manager
 - **Modern web browser** - Chrome, Firefox, Safari, Edge
 
-### Platform-Specific Installation
-
-#### Windows Users
-
-```powershell
-# Install Node.js and npm from official website
-# Download from: https://nodejs.org/
-# Or using Chocolatey package manager
-choco install nodejs
-# Or using winget
-winget install nodejs
-
-# Using PowerShell (Recommended)
-.\start.ps1
-
-# Or using Batch file
-.\start.bat
-```
-
-#### macOS Users
-
-```bash
-# Install Node.js and npm using Homebrew
-brew install node
-
-# Or download from official website: https://nodejs.org/
-
-# Run the startup script
-./start.sh
-```
-
-#### Linux Users (Ubuntu/Debian)
-
-```bash
-# Install Node.js and npm
-sudo apt update
-sudo apt install nodejs npm
-
-# Make the script executable (if needed)
-chmod +x start.sh
-
-# Run the startup script
-./start.sh
-```
-
-#### Arch Linux Users
-
-```bash
-# Install Node.js and npm if not already installed
-sudo pacman -S nodejs npm
-
-# Run the startup script
-./start.sh
-
-# Or use yarn if preferred
-sudo pacman -S yarn
-cd frontend
-yarn install
-yarn start
-```
-
-### Manual Setup (All Platforms)
+### Installation
 
 ```bash
 # Clone the repository
 git clone https://www.github.com/muneer320/Portfolio.git
 cd Portfolio
+
+# Install npm and Node.js using your preferred method
+# 1. Download from official website: "https://nodejs.org/" 
+# 2. Package managers
+sudo pacman -S nodejs npm       # For Arch Linux
+sudo apt install nodejs npm     # For (Ubuntu/Debian) based Linux
+brew install node npm           # For macOS
+choco install nodejs npm        # For Windows
+
 
 # Install dependencies
 cd frontend
