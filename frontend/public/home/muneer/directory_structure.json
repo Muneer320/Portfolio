@@ -1,0 +1,91 @@
+{
+    "Desktop": {
+        "type": "directory",
+        "children": {}
+    },
+    "Documents": {
+        "type": "directory",
+        "children": {
+            "Certificates": {
+                "type": "directory",
+                "children": {
+                    "AWS-certificate.pdf": {
+                        "type": "file"
+                    },
+                    "python_basic certificate.pdf": {
+                        "type": "file"
+                    },
+                    "Tata - Data Visualization Certificate.pdf": {
+                        "type": "file"
+                    }
+                }
+            },
+            "Cover_Letter.txt": {
+                "type": "file"
+            },
+            "CV.txt": {
+                "type": "file"
+            }
+        }
+    },
+    "Downloads": {
+        "type": "directory",
+        "children": {}
+    },
+    "Music": {
+        "type": "directory",
+        "children": {
+            "Suzume [Main Theme].mp3": {
+                "type": "file"
+            }
+        }
+    },
+    "Pictures": {
+        "type": "directory",
+        "children": {
+            "avatar.png": {
+                "type": "file"
+            }
+        }
+    },
+    "Projects": {
+        "type": "directory",
+        "children": {
+            "ai-chat-bot": {
+                "type": "directory",
+                "children": {
+                    "README.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "ecommerce-app": {
+                "type": "directory",
+                "children": {
+                    "README.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "portfolio-website": {
+                "type": "directory",
+                "children": {
+                    "package.json": {
+                        "type": "file"
+                    },
+                    "README.md": {
+                        "type": "file"
+                    }
+                }
+            }
+        }
+    },
+    "test": {
+        "type": "directory",
+        "children": {
+            "test_file.txt": {
+                "type": "file"
+            }
+        }
+    }
+}
