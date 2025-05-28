@@ -1,58 +1,5 @@
 import os
 import json
-# You need to make a json file according to the already existing structure of the directory
-''' Example structure:
-{
-  "Desktop": {
-    "type": "directory",
-    "children": {}
-  },
-  "Documents": {
-    "type": "directory",
-    "children": {
-      "Certificates": {
-        "type": "directory",
-        "children": {}
-      }
-    }
-  },
-  "Downloads": {
-    "type": "directory",
-    "children": {}
-  },
-  "Music": {
-    "type": "directory",
-    "children": {}
-  },
-  "Pictures": {
-    "type": "directory",
-    "children": {}
-  },
-  "Projects": {
-    "type": "directory",
-    "children": {
-      "ai-chat-bot": {
-        "type": "directory",
-        "children": {}
-      },
-      "ecommerce-app": {
-        "type": "directory",
-        "children": {}
-      },
-      "portfolio-website": {
-        "type": "directory",
-        "children": {}
-      }
-    }
-  },
-  "test": {
-    "type": "directory",
-    "children": {}
-  }
-}
-
-
-'''
 
 
 def create_json_from_structure(structure, base_path):
@@ -66,7 +13,7 @@ def create_json_from_structure(structure, base_path):
                 "children": create_json_from_structure(structure, item_path)
             }
         else:
-            if item not in ["structureMaker.py", "directory_structure.json"]:
+            if item not in ["structureMaker.py", "directory_structure.json", ".gitkeep"]:
                 result[item] = {
                     "type": "file"
                 }

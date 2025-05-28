@@ -30,12 +30,61 @@
     },
     "Downloads": {
         "type": "directory",
-        "children": {}
+        "children": {
+            "catThreat.jpg": {
+                "type": "file"
+            },
+            "New_Ironland_Emblem.png": {
+                "type": "file"
+            }
+        }
     },
     "Music": {
         "type": "directory",
         "children": {
+            "Afreen_Afreen.mp3": {
+                "type": "file"
+            },
+            "AJR World's Smallest Violin.m4a": {
+                "type": "file"
+            },
+            "Bahara.webm": {
+                "type": "file"
+            },
+            "Deewani Mastani.webm": {
+                "type": "file"
+            },
+            "Ek Lamha.mp3": {
+                "type": "file"
+            },
+            "Ignite.mp3": {
+                "type": "file"
+            },
+            "Imagine_Dragons_-_Thunder.mp3": {
+                "type": "file"
+            },
+            "Khwabo ki duniya mukammal kahan hai.webm": {
+                "type": "file"
+            },
+            "Maheroo Maheroo.webm": {
+                "type": "file"
+            },
+            "O Bekhabar.webm": {
+                "type": "file"
+            },
+            "Pal (Female).webm": {
+                "type": "file"
+            },
+            "Sea Shanty.mp3": {
+                "type": "file"
+            },
+            "Suna Hai (Female Version).webm": {
+                "type": "file"
+            },
             "Suzume [Main Theme].mp3": {
+                "type": "file"
+            },
+            "Yeh Aaina.webm": {
                 "type": "file"
             }
         }
@@ -44,6 +93,12 @@
         "type": "directory",
         "children": {
             "avatar.png": {
+                "type": "file"
+            },
+            "End_of_Horizon.png": {
+                "type": "file"
+            },
+            "Painting.png": {
                 "type": "file"
             }
         }
@@ -77,14 +132,6 @@
                         "type": "file"
                     }
                 }
-            }
-        }
-    },
-    "test": {
-        "type": "directory",
-        "children": {
-            "test_file.txt": {
-                "type": "file"
             }
         }
     }
