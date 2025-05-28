@@ -1,0 +1,135 @@
+/* Image Viewer */
+.image-viewer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-header {
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.image-header h3 {
+  color: #61dafb;
+  font-size: 1rem;
+}
+
+.image-info {
+  display: flex;
+  gap: 15px;
+  font-size: 0.8rem;
+  color: #a0a0a0;
+}
+
+.image-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.image-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-placeholder {
+  text-align: center;
+  color: #a0a0a0;
+  max-width: 80%;
+}
+
+.placeholder-icon {
+  font-size: 4rem;
+  margin-bottom: 15px;
+  color: #61dafb;
+}
+
+.image-details h4 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+.image-details p {
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.image-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.image-controls {
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.control-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.image-controls button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.2s;
+}
+
+.image-controls button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.image-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.zoom-slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.slider {
+  flex: 1;
+  max-width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #61dafb;
+  border-radius: 50%;
+  cursor: pointer;
+}

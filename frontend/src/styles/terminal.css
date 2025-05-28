@@ -1,0 +1,66 @@
+/* Terminal */
+.terminal {
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 15px;
+  font-family: "JetBrains Mono", "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  color: white;
+  font-size: 0.85rem;
+  overflow: hidden;
+}
+
+.terminal-output {
+  height: calc(100% - 30px);
+  overflow-y: auto;
+  padding-bottom: 10px;
+}
+
+.terminal-output::-webkit-scrollbar {
+  display: none;
+}
+
+.terminal-output {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.terminal-line {
+  margin-bottom: 2px;
+  white-space: pre-wrap;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.neofetch-output {
+  font-family: "JetBrains Mono", "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  white-space: pre;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: #61dafb;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.terminal-input-form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.terminal-prompt {
+  color: #61dafb;
+  margin-right: 5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.terminal-input {
+  background: transparent;
+  border: none;
+  color: white;
+  font-family: inherit;
+  font-size: inherit;
+  flex: 1;
+  outline: none;
+  min-width: 0;
+}

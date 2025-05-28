@@ -1,0 +1,60 @@
+/* Global Styles and Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1e1e2e, #2d3748);
+}
+
+/* Responsive adjustments for larger screens */
+@media (min-width: 1440px) {
+  .dock {
+    min-width: 900px;
+  }
+
+  .window {
+    max-width: 80vw;
+    max-height: 80vh;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Ensure no text selection except for editable areas */
+.desktop * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.terminal-input,
+.editor-content,
+.url-bar {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}

@@ -1,0 +1,51 @@
+/* Desktop */
+.desktop {
+  height: 100vh;
+  background: linear-gradient(135deg, #1e1e2e, #2d3748);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Desktop Area */
+.desktop-area {
+  padding-top: 80px;
+  height: 100vh;
+  position: relative;
+}
+
+/* Desktop Icons */
+.desktop-icons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 10px;
+  border-radius: 8px;
+  min-width: 80px;
+}
+
+.desktop-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.desktop-icon .icon {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.desktop-icon span {
+  color: white;
+  font-size: 0.8rem;
+  text-align: center;
+}

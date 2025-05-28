@@ -11,6 +11,9 @@ import Browser from "./components/Browser";
 import MusicPlayer from "./components/MusicPlayer";
 import ImageViewer from "./components/ImageViewer";
 
+// Music Manager
+import musicManager from "./utils/musicManager";
+
 function App() {
   const [currentScreen, setCurrentScreen] = useState("login");
   const [currentPath, setCurrentPath] = useState("/home/muneer");
@@ -21,12 +24,14 @@ function App() {
   const [resizing, setResizing] = useState(null);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [terminalAutoStarted, setTerminalAutoStarted] = useState(false);
+  const [musicAutoStarted, setMusicAutoStarted] = useState(false);
   const [systemStatus, setSystemStatus] = useState({
     battery: 85,
-    volume: 75,
+    volume: 30, // Start with lower volume
     wifi: true,
     musicPlaying: false,
-    currentSong: "coding-beats.mp3",
+    currentSong: null,
+    hasMusic: false,
   });
 
   // Minimum window sizes
@@ -36,9 +41,8 @@ function App() {
     texteditor: { width: 500, height: 350 },
     browser: { width: 1000, height: 600 },
     musicplayer: { width: 450, height: 600 },
-    imageviewer: { width: 500, height: 400 },
+    imageviewer: { width: 250, height: 650 },
   };
-
   useEffect(() => {
     const timer = setInterval(() => {
       setTime(new Date());
@@ -49,6 +53,38 @@ function App() {
       }));
     }, 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  // Initialize music manager and load available music
+  useEffect(() => {
+    const initializeMusic = async () => {
+      await musicManager.loadAvailableMusic();
+
+      // Subscribe to music manager state changes
+      const unsubscribe = musicManager.onStateChange((musicState) => {
+        setSystemStatus((prev) => ({
+          ...prev,
+          musicPlaying: musicState.isPlaying,
+          currentSong: musicState.currentTrack?.name || null,
+          hasMusic: musicState.hasMusic,
+          volume: Math.round(musicState.volume * 100),
+        }));
+      });
+
+      // Set initial volume in music manager
+      musicManager.setVolume(0.3); // 30%
+
+      return unsubscribe;
+    };
+
+    let unsubscribe;
+    initializeMusic().then((unsub) => {
+      unsubscribe = unsub;
+    });
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -70,12 +106,17 @@ function App() {
     document.addEventListener("contextmenu", handleContextMenu);
     return () => document.removeEventListener("contextmenu", handleContextMenu);
   }, []);
-
   useEffect(() => {
-    // Auto-start music when user logs in
-    if (currentScreen === "desktop" && !systemStatus.musicPlaying) {
+    // Auto-start music when user logs in (only if music is available and not already auto-started)
+    if (
+      currentScreen === "desktop" &&
+      systemStatus.hasMusic &&
+      !systemStatus.musicPlaying &&
+      !musicAutoStarted
+    ) {
       setTimeout(() => {
-        setSystemStatus((prev) => ({ ...prev, musicPlaying: true }));
+        musicManager.toggle();
+        setMusicAutoStarted(true);
       }, 2000);
     }
 
@@ -86,7 +127,12 @@ function App() {
         setTerminalAutoStarted(true);
       }, 1000);
     }
-  }, [currentScreen, terminalAutoStarted]);
+  }, [
+    currentScreen,
+    terminalAutoStarted,
+    systemStatus.hasMusic,
+    musicAutoStarted,
+  ]);
 
   const getFileExtension = (filename) => {
     return filename.split(".").pop().toLowerCase();
@@ -240,20 +286,18 @@ function App() {
     setDragging(null);
     setResizing(null);
   };
-
   const toggleMusic = () => {
-    setSystemStatus((prev) => ({ ...prev, musicPlaying: !prev.musicPlaying }));
+    musicManager.toggle();
   };
 
   const adjustVolume = (delta) => {
-    setSystemStatus((prev) => ({
-      ...prev,
-      volume: Math.max(0, Math.min(100, prev.volume + delta)),
-    }));
+    const currentVolume = musicManager.getState().volume;
+    const newVolume = Math.max(0, Math.min(1, currentVolume + delta / 100));
+    musicManager.setVolume(newVolume);
   };
 
   const updateVolume = (newVolume) => {
-    setSystemStatus((prev) => ({ ...prev, volume: newVolume }));
+    musicManager.setVolume(newVolume / 100);
   };
 
   useEffect(() => {

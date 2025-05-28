@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import musicManager from "../utils/musicManager";
 
 const MusicPlayer = ({
   systemStatus,
@@ -11,116 +12,78 @@ const MusicPlayer = ({
   const [duration, setDuration] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const [musicState, setMusicState] = useState(musicManager.getState());
   const audioRef = useRef(null);
 
-  // If a specific file is passed, use it; otherwise use default tracks
-  const defaultTracks = [
-    {
-      name: "coding-beats.mp3",
-      title: "Coding Beats",
-      path: "/assets/music/coding-beats.mp3",
-    },
-    {
-      name: "focus-music.mp3",
-      title: "Focus Flow",
-      path: "/assets/music/focus-music.mp3",
-    },
-    {
-      name: "ambient-sounds.webm",
-      title: "Ambient Vibes",
-      path: "/assets/music/ambient-sounds.webm",
-    },
-  ];
+  // Subscribe to music manager state changes
+  useEffect(() => {
+    const unsubscribe = musicManager.onStateChange(setMusicState);
+    return unsubscribe;
+  }, []);
 
-  const currentTrackInfo = filePath
-    ? {
-        name: filePath.split("/").pop(),
-        title: filePath
-          .split("/")
-          .pop()
-          .replace(/\.[^/.]+$/, ""), // Remove extension
-        path: filePath,
+  // Handle specific file opening or use available music
+  useEffect(() => {
+    const handleTrackSelection = async () => {
+      if (filePath && musicState.hasMusic) {
+        // Play the specific file that was opened
+        const success = await musicManager.playTrack(filePath);
+        if (!success) {
+          setError("Could not play the selected file");
+        }
       }
-    : defaultTracks[0];
+    };
 
+    handleTrackSelection();
+  }, [filePath, musicState.hasMusic]);
+
+  // Update audio reference when track changes
   useEffect(() => {
-    if (audioRef.current && currentTrackInfo.path) {
-      audioRef.current.src = currentTrackInfo.path;
-      audioRef.current.load();
-    }
-  }, [currentTrackInfo.path]);
+    const audio = musicManager.getCurrentAudio();
+    audioRef.current = audio;
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const handleLoadedMetadata = () => {
-      setDuration(audio.duration);
-      setIsLoaded(true);
-      setError(null);
-    };
-
-    const handleTimeUpdate = () => {
-      setCurrentTime(audio.currentTime);
-    };
-
-    const handleError = (e) => {
-      setError(
-        `Error loading audio: ${e.target.error?.message || "Unknown error"}`
-      );
-      setIsLoaded(false);
-    };
-
-    const handleEnded = () => {
-      onToggleMusic(); // Stop playing when track ends
-      setCurrentTime(0);
-    };
-
-    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-    audio.addEventListener("timeupdate", handleTimeUpdate);
-    audio.addEventListener("error", handleError);
-    audio.addEventListener("ended", handleEnded);
-
-    return () => {
-      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      audio.removeEventListener("timeupdate", handleTimeUpdate);
-      audio.removeEventListener("error", handleError);
-      audio.removeEventListener("ended", handleEnded);
-    };
-  }, [onToggleMusic]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (systemStatus.musicPlaying && isLoaded) {
-      audio.play().catch((e) => {
-        console.error("Error playing audio:", e);
-        setError("Playback failed");
-      });
-    } else {
-      audio.pause();
-    }
-  }, [systemStatus.musicPlaying, isLoaded]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
     if (audio) {
-      audio.volume = systemStatus.volume / 100;
+      const handleLoadedMetadata = () => {
+        setDuration(audio.duration);
+        setIsLoaded(true);
+        setError(null);
+      };
+
+      const handleTimeUpdate = () => {
+        setCurrentTime(audio.currentTime);
+      };
+
+      const handleError = (e) => {
+        setError(
+          `Error loading audio: ${e.target.error?.message || "Unknown error"}`
+        );
+        setIsLoaded(false);
+      };
+
+      audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.addEventListener("timeupdate", handleTimeUpdate);
+      audio.addEventListener("error", handleError);
+
+      return () => {
+        audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+        audio.removeEventListener("timeupdate", handleTimeUpdate);
+        audio.removeEventListener("error", handleError);
+      };
+    } else {
+      setIsLoaded(false);
+      setCurrentTime(0);
+      setDuration(0);
     }
-  }, [systemStatus.volume]);
+  }, [musicState.currentTrack]);
 
   const handleSeek = (e) => {
-    const audio = audioRef.current;
-    if (!audio || !isLoaded) return;
+    if (!audioRef.current || !isLoaded) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const percentage = x / rect.width;
     const newTime = percentage * duration;
 
-    audio.currentTime = newTime;
-    setCurrentTime(newTime);
+    musicManager.seekTo(newTime);
   };
 
   const formatTime = (time) => {
@@ -135,10 +98,35 @@ const MusicPlayer = ({
     onVolumeChange(newVolume);
   };
 
+  const handleTrackSelect = async (trackPath) => {
+    const success = await musicManager.playTrack(trackPath);
+    if (!success) {
+      setError("Could not play the selected track");
+    }
+  };
+
+  // If no music is available, show appropriate message
+  if (!musicState.hasMusic) {
+    return (
+      <div className="music-player">
+        <div className="player-header">
+          <h3>🎵 Music Player</h3>
+        </div>
+
+        <div className="no-music-message">
+          <div className="no-music-icon">🎵</div>
+          <h4>No Music Available</h4>
+          <p>No music files were found in the system.</p>
+          <p>Music files should be located in:</p>
+          <code>/home/muneer/Music/</code>
+        </div>
+      </div>
+    );
+  }
+
+  const currentTrack = musicState.currentTrack || musicState.availableMusic[0];
   return (
     <div className="music-player">
-      <audio ref={audioRef} />
-
       <div className="player-header">
         <h3>🎵 Music Player</h3>
       </div>
@@ -146,25 +134,44 @@ const MusicPlayer = ({
       {error && (
         <div className="error-message">
           <p>⚠️ {error}</p>
-          <p>File: {currentTrackInfo.path}</p>
+          {currentTrack && <p>File: {currentTrack.path}</p>}
         </div>
       )}
 
       <div className="album-art">
         <div
-          className={`vinyl-record ${
-            systemStatus.musicPlaying ? "spinning" : ""
-          }`}
+          className={`vinyl-record ${musicState.isPlaying ? "spinning" : ""}`}
         >
           🎵
         </div>
       </div>
 
       <div className="track-info">
-        <h4>{currentTrackInfo.title}</h4>
-        <p>{currentTrackInfo.name}</p>
-        {!isLoaded && !error && <p>Loading...</p>}
+        <h4>{currentTrack?.title || "No Track Selected"}</h4>
+        <p>{currentTrack?.name || "Select a track to play"}</p>
+        {musicState.isPlaying && !isLoaded && !error && <p>Loading...</p>}
       </div>
+
+      {/* Available tracks list */}
+      {musicState.availableMusic.length > 0 && (
+        <div className="track-list">
+          <h5>Available Tracks:</h5>
+          <div className="tracks">
+            {musicState.availableMusic.map((track, index) => (
+              <div
+                key={index}
+                className={`track-item ${
+                  currentTrack?.path === track.path ? "active" : ""
+                }`}
+                onClick={() => handleTrackSelect(track.path)}
+              >
+                <span className="track-icon">🎵</span>
+                <span className="track-name">{track.title}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="progress-section">
         <div className="time-display">
@@ -184,7 +191,7 @@ const MusicPlayer = ({
 
       <div className="player-controls">
         <button className="play-pause" onClick={onToggleMusic}>
-          {systemStatus.musicPlaying ? "⏸️" : "▶️"}
+          {musicState.isPlaying ? "⏸️" : "▶️"}
         </button>
       </div>
 

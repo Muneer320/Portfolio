@@ -1,0 +1,74 @@
+/* Windows */
+.window {
+  position: absolute;
+  background: rgba(30, 30, 46, 0.95);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  transition: transform 0.1s ease;
+}
+
+.window:hover {
+  transform: translateY(-1px);
+}
+
+.window-header {
+  height: 35px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  cursor: move;
+  user-select: none;
+}
+
+.window-title {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.window-controls button {
+  background: #ff5f57;
+  border: none;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.window-controls button:hover {
+  background: #ff3b30;
+}
+
+.window-content {
+  height: calc(100% - 35px);
+  color: white;
+  position: relative;
+}
+
+.resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 15px;
+  height: 15px;
+  cursor: nw-resize;
+  background: linear-gradient(
+    -45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.3) 30%,
+    rgba(255, 255, 255, 0.3) 40%,
+    transparent 40%
+  );
+}

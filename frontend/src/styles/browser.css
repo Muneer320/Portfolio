@@ -1,0 +1,238 @@
+/* Browser */
+.browser {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.browser-bar {
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.url-bar {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.browser-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.browser-content h2 {
+  margin-bottom: 15px;
+  color: #61dafb;
+}
+
+.browser-content p {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.quick-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.quick-links button {
+  background: linear-gradient(45deg, #61dafb, #21e065);
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: transform 0.2s;
+}
+
+.quick-links button:hover {
+  transform: translateY(-1px);
+}
+
+/* PDF Viewer */
+.pdf-viewer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-viewer h2 {
+  margin-bottom: 20px;
+  color: #61dafb;
+}
+
+.pdf-content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 20px;
+  overflow-y: auto;
+  font-family: "Georgia", serif;
+  line-height: 1.6;
+}
+
+.pdf-content pre {
+  white-space: pre-wrap;
+  color: #e0e0e0;
+}
+
+/* Browser Enhancements */
+.nav-btn,
+.refresh-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.github-page {
+  padding: 20px;
+}
+
+.github-header {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.github-avatar {
+  width: 80px;
+  height: 80px;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #61dafb, #21e065);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.github-info h1 {
+  margin-bottom: 5px;
+  color: white;
+}
+
+.github-username {
+  color: #61dafb;
+  margin-bottom: 10px;
+}
+
+.github-bio {
+  color: #a0a0a0;
+  margin-bottom: 10px;
+}
+
+.github-stats {
+  display: flex;
+  gap: 15px;
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
+.github-nav {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.github-tab {
+  background: none;
+  border: none;
+  color: #a0a0a0;
+  padding: 10px 0;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.github-tab.active {
+  color: white;
+  border-bottom-color: #61dafb;
+}
+
+.github-repos {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.repo-item {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.repo-item h3 {
+  color: #61dafb;
+  margin-bottom: 8px;
+}
+
+.repo-item p {
+  color: #a0a0a0;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.repo-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.loading-spinner {
+  font-size: 2rem;
+  animation: rotate 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+.default-page {
+  padding: 20px;
+}
+
+.browser-features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.browser-features li {
+  padding: 5px 0;
+  color: #a0a0a0;
+}

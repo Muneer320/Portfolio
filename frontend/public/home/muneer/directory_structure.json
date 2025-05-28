@@ -42,6 +42,9 @@
     "Music": {
         "type": "directory",
         "children": {
+            "_lofi.webm": {
+                "type": "file"
+            },
             "Afreen_Afreen.mp3": {
                 "type": "file"
             },
