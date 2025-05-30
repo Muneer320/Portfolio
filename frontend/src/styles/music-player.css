@@ -57,6 +57,12 @@
   font-size: 0.9rem;
 }
 
+.track-info p.track-count {
+  color: #61dafb;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
 .progress-section {
   width: 100%;
   margin-bottom: 20px;
@@ -79,11 +85,30 @@
   position: relative;
 }
 
+.progress-bar:hover .progress-thumb {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.2);
+}
+
 .progress-fill {
   height: 100%;
   background: linear-gradient(45deg, #61dafb, #21e065);
   border-radius: 3px;
   transition: width 0.1s ease;
+}
+
+.progress-thumb {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: #61dafb;
+  border-radius: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  opacity: 0;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .player-controls {
@@ -112,9 +137,26 @@
   font-size: 1.5rem;
 }
 
+.player-controls button.prev-btn,
+.player-controls button.next-btn {
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+}
+
 .player-controls button:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: scale(1.05);
+}
+
+.player-controls button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.player-controls button:disabled:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: none;
 }
 
 .volume-control {
@@ -131,10 +173,12 @@
   border-radius: 2px;
   outline: none;
   -webkit-appearance: none;
+  appearance: none;
 }
 
 .volume-control input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
+  appearance: none;
   width: 16px;
   height: 16px;
   background: #61dafb;
@@ -149,13 +193,68 @@
   border-radius: 2px;
   outline: none;
   -webkit-appearance: none;
+  appearance: none;
 }
 
 .volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
+  appearance: none;
   width: 16px;
   height: 16px;
   background: #61dafb;
   border-radius: 50%;
   cursor: pointer;
+}
+
+/* No music available message */
+.no-music-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #a0a0a0;
+}
+
+.no-music-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.no-music-message h4 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+.no-music-message p {
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.no-music-message code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #61dafb;
+}
+
+/* Error message */
+.error-message {
+  background: rgba(255, 59, 48, 0.2);
+  border: 1px solid rgba(255, 59, 48, 0.5);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 15px;
+  color: #ff3b30;
+  font-size: 0.9rem;
+}
+
+.error-message p {
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.error-message p:last-child {
+  margin-bottom: 0;
 }

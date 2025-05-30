@@ -36,9 +36,7 @@ class MusicManager {
   isAudioFile(filename) {
     const audioExtensions = ["mp3", "wav", "ogg", "flac", "m4a", "webm"];
     return audioExtensions.includes(filename.split(".").pop().toLowerCase());
-  }
-
-  // Play a specific track
+  } // Play a specific track
   async playTrack(trackPath) {
     // Stop current track if any
     this.stop();
@@ -48,29 +46,66 @@ class MusicManager {
       return false;
     }
 
-    // Find the track info
-    const track =
-      this.availableMusic.find((t) => t.path === trackPath) ||
-      this.availableMusic[0];
+    console.log("Attempting to play track:", trackPath);
+    console.log(
+      "Available music paths:",
+      this.availableMusic.map((t) => t.path)
+    );
+
+    // Find the track info with more flexible matching
+    let track = this.availableMusic.find((t) => t.path === trackPath);
+
+    // If exact match fails, try matching by filename only
+    if (!track) {
+      const requestedFilename = trackPath.split("/").pop();
+      track = this.availableMusic.find((t) => {
+        const trackFilename = t.path.split("/").pop();
+        return trackFilename === requestedFilename;
+      });
+      console.log(
+        "Fallback match by filename:",
+        requestedFilename,
+        "->",
+        track?.path
+      );
+    }
+
+    // Fallback to first track if no match found
+    if (!track) {
+      track = this.availableMusic[0];
+      console.warn(
+        "No matching track found, using first available:",
+        track?.path
+      );
+    }
 
     try {
-      this.currentAudio = new Audio(track.path);
+      this.currentAudio = new Audio();
       this.currentTrack = track;
       this.currentAudio.volume = this.volume;
+      this.currentAudio.preload = "auto";
 
-      // Set up event listeners
-      this.currentAudio.addEventListener("ended", () => {
-        this.stop();
-      });
+      // Set up event listeners with bound methods
+      this.handleTrackEnd = () => {
+        this.playNext();
+      };
 
-      this.currentAudio.addEventListener("error", (e) => {
-        console.error("Error playing audio:", e);
+      this.handleTrackError = (e) => {
+        console.error("Error playing audio:", e.target.error);
         this.stop();
-      });
+      };
+
+      this.currentAudio.addEventListener("ended", this.handleTrackEnd);
+      this.currentAudio.addEventListener("error", this.handleTrackError);
+
+      // Set the source after event listeners are set up
+      this.currentAudio.src = track.path;
+      console.log("Audio source set to:", track.path);
 
       await this.currentAudio.play();
       this.isPlaying = true;
       this.notifyStateChange();
+      console.log("Successfully started playing:", track.title);
       return true;
     } catch (error) {
       console.error("Error playing track:", error);
@@ -115,12 +150,12 @@ class MusicManager {
       this.notifyStateChange();
     }
   }
-
   // Stop and clear current track
   stop() {
     if (this.currentAudio) {
       this.currentAudio.pause();
-      this.currentAudio.src = "";
+      this.currentAudio.removeEventListener("ended", this.handleTrackEnd);
+      this.currentAudio.removeEventListener("error", this.handleTrackError);
       this.currentAudio = null;
     }
     this.isPlaying = false;
@@ -185,6 +220,33 @@ class MusicManager {
     if (this.currentAudio) {
       this.currentAudio.currentTime = time;
     }
+  }
+
+  // Get current track index
+  getCurrentTrackIndex() {
+    if (!this.currentTrack) return -1;
+    return this.availableMusic.findIndex(
+      (track) => track.path === this.currentTrack.path
+    );
+  }
+
+  // Play next track
+  async playNext() {
+    if (!this.hasAvailableMusic()) return false;
+
+    const currentIndex = this.getCurrentTrackIndex();
+    const nextIndex = (currentIndex + 1) % this.availableMusic.length;
+    return await this.playTrack(this.availableMusic[nextIndex].path);
+  }
+
+  // Play previous track
+  async playPrevious() {
+    if (!this.hasAvailableMusic()) return false;
+
+    const currentIndex = this.getCurrentTrackIndex();
+    const previousIndex =
+      currentIndex <= 0 ? this.availableMusic.length - 1 : currentIndex - 1;
+    return await this.playTrack(this.availableMusic[previousIndex].path);
   }
 }
 
