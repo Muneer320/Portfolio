@@ -9,26 +9,25 @@ const Dock = ({
   adjustVolume,
 }) => {
   const [volumeMenuVisible, setVolumeMenuVisible] = useState(false);
-
   const handleVolumeEnter = () => {
     setVolumeMenuVisible(true);
   };
 
-  const handleVolumeLeave = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX;
-    const y = e.clientY;
+  const handleVolumeLeave = () => {
+    setTimeout(() => {
+      const volumeControls = document.querySelector(".volume-controls");
+      const volumeIndicator = document.querySelector(
+        ".status-indicator.volume"
+      );
 
-    if (y > rect.bottom + 10) {
-      // Don't hide immediately, let volume controls handle it
-      setTimeout(() => {
-        if (!document.querySelector(".volume-controls:hover")) {
-          setVolumeMenuVisible(false);
-        }
-      }, 100);
-    } else {
-      setVolumeMenuVisible(false);
-    }
+      if (
+        !volumeControls ||
+        (!volumeControls.matches(":hover") &&
+          !volumeIndicator.matches(":hover"))
+      ) {
+        setVolumeMenuVisible(false);
+      }
+    }, 100);
   };
 
   return (
@@ -40,13 +39,10 @@ const Dock = ({
         </div>
         <div className="dock-separator"></div>
       </div>
-
       <div className="dock-center">
         <span className="time">{time.toLocaleTimeString()}</span>
-      </div>
-
+      </div>{" "}
       <div className="dock-right">
-        {" "}
         <div className="status-indicators">
           {systemStatus.hasMusic && (
             <div
@@ -66,8 +62,7 @@ const Dock = ({
               <span>🚫</span>
               <div className="tooltip">No Music Available</div>
             </div>
-          )}
-
+          )}{" "}
           <div
             className="status-indicator volume"
             onMouseEnter={handleVolumeEnter}
@@ -81,20 +76,28 @@ const Dock = ({
                 onMouseEnter={() => setVolumeMenuVisible(true)}
                 onMouseLeave={() => setVolumeMenuVisible(false)}
               >
-                <button onClick={() => adjustVolume(-10)}>-</button>
+                <button onClick={() => adjustVolume(-5)}>-</button>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={systemStatus.volume}
+                  onChange={(e) =>
+                    adjustVolume(Number(e.target.value) - systemStatus.volume)
+                  }
+                  className="dock-volume-slider"
+                />
                 <span>{systemStatus.volume}%</span>
-                <button onClick={() => adjustVolume(10)}>+</button>
+                <button onClick={() => adjustVolume(5)}>+</button>
               </div>
             )}
           </div>
-
           <div className="status-indicator wifi">
             <span>{systemStatus.wifi ? "📶" : "📵"}</span>
             <div className="tooltip">
               {systemStatus.wifi ? "Connected" : "Disconnected"}
             </div>
           </div>
-
           <div className="status-indicator battery">
             <span>🔋</span>
             <div className="tooltip">

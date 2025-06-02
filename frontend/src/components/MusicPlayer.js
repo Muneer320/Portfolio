@@ -1,280 +1,309 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import musicManager from "../utils/musicManager";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { loadFileSystem } from "../utils/fileSystemLoader";
+import "../styles/music-player.css";
+import {
+  registerPlayer,
+  unregisterPlayer,
+  playPlayer,
+  togglePlayer,
+  setCurrentMusicPath,
+  setVolume,
+} from "../utils/musicManager";
 
 const MusicPlayer = ({
-  systemStatus,
-  onToggleMusic,
-  onVolumeChange,
   filePath,
-  fileObj,
+  playerId,
+  onPlayerStatusChange,
+  systemVolume,
+  onVolumeChange,
 }) => {
+  const [tracks, setTracks] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(null);
-  const [musicState, setMusicState] = useState(musicManager.getState());
-  const [isDragging, setIsDragging] = useState(false);
-  const audioRef = useRef(null);
-  const progressBarRef = useRef(null);
-  // Subscribe to music manager state changes
-  useEffect(() => {
-    const unsubscribe = musicManager.onStateChange(setMusicState);
-    return unsubscribe;
-  }, []);
+  const [volume, setVolumeState] = useState(systemVolume || 75);
+  const [showVolumeControl, setShowVolumeControl] = useState(false);
+  const audioRef = useRef(new Audio());
+  const volumeControlRef = useRef(null);
 
-  // Debug logging for received props
+  const playTrack = useCallback(
+    (index) => {
+      const audio = audioRef.current;
+
+      if (
+        !tracks ||
+        tracks.length === 0 ||
+        index < 0 ||
+        index >= tracks.length ||
+        !tracks[index]
+      ) {
+        return;
+      }
+
+      audio.pause();
+
+      let basePath;
+      if (filePath) {
+        const currentFileName = filePath.split("/").pop();
+        basePath = filePath.replace(currentFileName, tracks[index]);
+      } else {
+        basePath = `/home/muneer/Music/${tracks[index]}`;
+      }
+
+      if (!basePath) return;
+
+      audio.src = basePath;
+      setCurrentMusicPath(basePath);
+      playPlayer(playerId);
+    },
+    [filePath, tracks, playerId]
+  );
   useEffect(() => {
-    if (filePath) {
-      console.log("MusicPlayer: Received filePath:", filePath);
-      console.log("MusicPlayer: fileObj:", fileObj);
-    }
-  }, [filePath, fileObj]);
-  // Handle specific file opening or use available music
-  useEffect(() => {
-    const handleTrackSelection = async () => {
-      if (filePath && musicState.hasMusic) {
-        console.log("MusicPlayer: Attempting to play file:", filePath);
-        // Play the specific file that was opened
-        const success = await musicManager.playTrack(filePath);
-        if (!success) {
-          setError(
-            `Could not play the selected file: ${filePath.split("/").pop()}`
-          );
-        } else {
-          setError(null); // Clear any previous errors
-        }
+    const audio = audioRef.current;
+    registerPlayer(playerId, audio);
+
+    const onPlay = () => {
+      setIsPlaying(true);
+      onPlayerStatusChange(playerId, true);
+    };
+    const onPause = () => {
+      setIsPlaying(false);
+      onPlayerStatusChange(playerId, false);
+    };
+    const onLoadedMetadata = () => setDuration(audio.duration);
+    const onTimeUpdate = () => setCurrentTime(audio.currentTime);
+
+    const onEnded = () => {
+      if (tracks.length === 0) return;
+      if (currentIndex < tracks.length - 1) {
+        setCurrentIndex((prevIndex) => prevIndex + 1);
+      } else {
+        playTrack(currentIndex);
       }
     };
 
-    handleTrackSelection();
-  }, [filePath, musicState.hasMusic]);
+    audio.addEventListener("play", onPlay);
+    audio.addEventListener("pause", onPause);
+    audio.addEventListener("loadedmetadata", onLoadedMetadata);
+    audio.addEventListener("timeupdate", onTimeUpdate);
+    audio.addEventListener("ended", onEnded);
 
-  // Update audio reference when track changes
+    return () => {
+      unregisterPlayer(playerId);
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onPause);
+      audio.removeEventListener("loadedmetadata", onLoadedMetadata);
+      audio.removeEventListener("timeupdate", onTimeUpdate);
+      audio.removeEventListener("ended", onEnded);
+    };
+  }, [playerId, onPlayerStatusChange, tracks, currentIndex, playTrack]);
   useEffect(() => {
-    const audio = musicManager.getCurrentAudio();
-    audioRef.current = audio;
-
-    if (audio) {
-      const handleLoadedMetadata = () => {
-        setDuration(audio.duration);
-        setIsLoaded(true);
-        setError(null);
-      };
-      const handleTimeUpdate = () => {
-        if (!isDragging) {
-          setCurrentTime(audio.currentTime);
+    if (!filePath) {
+      loadFileSystem().then((fs) => {
+        const musicDir =
+          fs["/"]?.children?.home?.children?.muneer?.children?.Music;
+        if (musicDir && musicDir.children) {
+          const audioExts = ["mp3", "wav", "ogg", "flac", "m4a", "webm"];
+          const files = Object.keys(musicDir.children).filter((name) => {
+            const ext = name.split(".").pop().toLowerCase();
+            return (
+              audioExts.includes(ext) && musicDir.children[name].type === "file"
+            );
+          });
+          setTracks(files);
+          const defaultIdx = files.indexOf("_lofi.webm");
+          setCurrentIndex(
+            defaultIdx >= 0 ? defaultIdx : files.length > 0 ? 0 : -1
+          );
         }
-      };
-
-      const handleError = (e) => {
-        setError(
-          `Error loading audio: ${e.target.error?.message || "Unknown error"}`
-        );
-        setIsLoaded(false);
-      };
-
-      audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-      audio.addEventListener("timeupdate", handleTimeUpdate);
-      audio.addEventListener("error", handleError);
-
-      return () => {
-        audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
-        audio.removeEventListener("timeupdate", handleTimeUpdate);
-        audio.removeEventListener("error", handleError);
-      };
-    } else {
-      setIsLoaded(false);
-      setCurrentTime(0);
-      setDuration(0);
+      });
+      return;
     }
-  }, [musicState.currentTrack, isDragging]);
 
-  const handleSeek = useCallback(
-    (e) => {
-      if (!audioRef.current || !isLoaded) return;
+    loadFileSystem().then((fs) => {
+      const pathParts = filePath.split("/").filter((p) => p);
+      const fileName = pathParts.pop();
+      let dir = fs["/"];
 
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const percentage = x / rect.width;
-      const newTime = percentage * duration;
+      for (const part of pathParts) {
+        if (dir && dir.children && dir.children[part]) {
+          dir = dir.children[part];
+        } else {
+          dir = null;
+          break;
+        }
+      }
 
-      musicManager.seekTo(newTime);
-      setCurrentTime(newTime);
-    },
-    [isLoaded, duration]
-  );
+      const audioExts = ["mp3", "wav", "ogg", "flac", "m4a", "webm"];
+      const files =
+        dir && dir.children
+          ? Object.keys(dir.children).filter((name) => {
+              const ext = name.split(".").pop().toLowerCase();
+              return (
+                audioExts.includes(ext) && dir.children[name].type === "file"
+              );
+            })
+          : [];
 
-  const handleMouseDown = useCallback(
-    (e) => {
-      if (!audioRef.current || !isLoaded) return;
-      setIsDragging(true);
-      handleSeek(e);
-    },
-    [isLoaded, handleSeek]
-  );
+      setTracks(files);
+      const idx = files.indexOf(fileName);
+      setCurrentIndex(idx >= 0 ? idx : files.length > 0 ? 0 : -1);
+    });
+  }, [filePath]);
 
-  const handleMouseMove = useCallback(
-    (e) => {
-      if (!isDragging || !audioRef.current || !isLoaded) return;
-      handleSeek(e);
-    },
-    [isDragging, isLoaded, handleSeek]
-  );
-
-  const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
-  }, []);
-
-  // Add global mouse event listeners for dragging
   useEffect(() => {
-    if (isDragging) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
+    if (
+      tracks.length === 0 ||
+      currentIndex < 0 ||
+      currentIndex >= tracks.length
+    ) {
+      return;
+    }
+    playTrack(currentIndex);
+  }, [tracks, currentIndex, playTrack]);
 
+  // Auto-start music when component mounts with a specific file path
+  useEffect(() => {
+    if (filePath && tracks.length > 0 && currentIndex >= 0) {
+      setTimeout(() => {
+        playPlayer(playerId);
+      }, 500);
+    }
+  }, [filePath, tracks, currentIndex, playerId]);
+
+  const handlePlayPause = () => {
+    togglePlayer(playerId);
+  };
+
+  const handleNext = () => {
+    if (tracks.length === 0) return;
+    setCurrentIndex((i) => (i + 1) % tracks.length);
+  };
+
+  const handlePrev = () => {
+    if (tracks.length === 0) return;
+    setCurrentIndex((i) => (i - 1 + tracks.length) % tracks.length);
+  };
+
+  const handleSeek = (e) => {
+    const time = Number(e.target.value);
+    audioRef.current.currentTime = time;
+    setCurrentTime(time);
+  };
+
+  // Sync with system volume
+  useEffect(() => {
+    if (systemVolume !== undefined && systemVolume !== volume) {
+      setVolumeState(systemVolume);
+      setVolume(systemVolume / 100);
+    }
+  }, [systemVolume]);
+
+  // Close volume control when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        volumeControlRef.current &&
+        !volumeControlRef.current.contains(event.target)
+      ) {
+        setShowVolumeControl(false);
+      }
+    };
+
+    if (showVolumeControl) {
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        document.removeEventListener("mousemove", handleMouseMove);
-        document.removeEventListener("mouseup", handleMouseUp);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }
-  }, [isDragging, handleMouseMove, handleMouseUp]);
+  }, [showVolumeControl]);
+
+  const handleVolumeChange = (e) => {
+    const newVolume = Number(e.target.value);
+    setVolumeState(newVolume);
+    setVolume(newVolume / 100);
+    if (onVolumeChange) {
+      onVolumeChange(newVolume);
+    }
+  };
+
+  const toggleVolumeControl = () => {
+    setShowVolumeControl(!showVolumeControl);
+  };
+
+  const getVolumeIcon = () => {
+    if (volume === 0) return "🔇";
+    if (volume < 30) return "🔈";
+    if (volume < 70) return "🔉";
+    return "🔊";
+  };
 
   const formatTime = (time) => {
-    if (isNaN(time)) return "0:00";
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+    if (isNaN(time) || time === Infinity) return "0:00";
+    const mins = Math.floor(time / 60);
+    const secs = Math.floor(time % 60);
+    return `${mins}:${secs < 10 ? "0" + secs : secs}`;
   };
-
-  const handleVolumeSliderChange = (e) => {
-    const newVolume = parseInt(e.target.value);
-    onVolumeChange(newVolume);
-  };
-  const handleNext = async () => {
-    const success = await musicManager.playNext();
-    if (!success) {
-      setError("Could not play next track");
-    }
-  };
-
-  const handlePrevious = async () => {
-    const success = await musicManager.playPrevious();
-    if (!success) {
-      setError("Could not play previous track");
-    }
-  };
-
-  // If no music is available, show appropriate message
-  if (!musicState.hasMusic) {
-    return (
-      <div className="music-player">
-        <div className="player-header">
-          <h3>🎵 Music Player</h3>
-        </div>
-
-        <div className="no-music-message">
-          <div className="no-music-icon">🎵</div>
-          <h4>No Music Available</h4>
-          <p>No music files were found in the system.</p>
-          <p>Music files should be located in:</p>
-          <code>/home/muneer/Music/</code>
-        </div>
-      </div>
-    );
-  }
-
-  const currentTrack = musicState.currentTrack || musicState.availableMusic[0];
   return (
     <div className="music-player">
-      <div className="player-header">
-        <h3>🎵 Music Player</h3>
+      <div className="music-header">
+        <h3>🎵 {tracks[currentIndex] || "No Track Selected"}</h3>
       </div>
-      {error && (
-        <div className="error-message">
-          <p>⚠️ {error}</p>
-          {currentTrack && <p>File: {currentTrack.path}</p>}
+
+      <div className="vinyl-container">
+        <div className={`vinyl ${isPlaying ? "spinning" : ""}`}>
+          <div className="vinyl-label vinyl-note-1">🎵</div>
+          <div className="vinyl-label vinyl-note-2">♪</div>
+          <div className="vinyl-label vinyl-note-3">♫</div>
+          <div className="vinyl-label vinyl-note-4">♩</div>
+          <div className="vinyl-label vinyl-note-5">♬</div>
+          <div className="vinyl-label vinyl-note-7">♭</div>
+          <div className="vinyl-marker"></div>
         </div>
-      )}
-      <div className="album-art">
-        <div
-          className={`vinyl-record ${musicState.isPlaying ? "spinning" : ""}`}
-        >
-          🎵
-        </div>
-      </div>{" "}
-      <div className="track-info">
-        <h4>{currentTrack?.title || "No Track Selected"}</h4>
-        {musicState.isPlaying && !isLoaded && !error && <p>Loading...</p>}
-        {musicState.availableMusic.length > 1 && (
-          <p className="track-count">
-            Track{" "}
-            {musicState.availableMusic.findIndex(
-              (t) => t.path === currentTrack?.path
-            ) + 1 || 1}{" "}
-            of {musicState.availableMusic.length}
-          </p>
-        )}
       </div>
-      <div className="progress-section">
-        <div className="time-display">
+      <div className="bottom-controls">
+        <div className="progress-container">
           <span>{formatTime(currentTime)}</span>
+          <input
+            type="range"
+            min="0"
+            max={duration}
+            value={currentTime}
+            onChange={handleSeek}
+          />
           <span>{formatTime(duration)}</span>
-        </div>{" "}
-        <div
-          className="progress-bar"
-          ref={progressBarRef}
-          onClick={handleSeek}
-          onMouseDown={handleMouseDown}
-        >
-          <div
-            className="progress-fill"
-            style={{
-              width: duration > 0 ? `${(currentTime / duration) * 100}%` : "0%",
-            }}
-          />
-          <div
-            className="progress-thumb"
-            style={{
-              left: duration > 0 ? `${(currentTime / duration) * 100}%` : "0%",
-            }}
-          />
         </div>
-      </div>{" "}
-      <div className="player-controls">
-        <button
-          className="prev-btn"
-          onClick={handlePrevious}
-          disabled={
-            !musicState.hasMusic || musicState.availableMusic.length <= 1
-          }
-          title="Previous Track"
-        >
-          ⏮️
-        </button>
-        <button className="play-pause" onClick={onToggleMusic}>
-          {musicState.isPlaying ? "⏸️" : "▶️"}
-        </button>
-        <button
-          className="next-btn"
-          onClick={handleNext}
-          disabled={
-            !musicState.hasMusic || musicState.availableMusic.length <= 1
-          }
-          title="Next Track"
-        >
-          ⏭️
-        </button>
-      </div>
-      <div className="volume-control">
-        <span>🔊</span>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={systemStatus.volume}
-          onChange={handleVolumeSliderChange}
-          className="volume-slider"
-        />
-        <span>{systemStatus.volume}%</span>
+
+        <div className="controls-row">
+          <div className="main-controls">
+            <button onClick={handlePrev}>⏮️</button>
+            <button onClick={handlePlayPause}>{isPlaying ? "⏸️" : "▶️"}</button>
+            <button onClick={handleNext}>⏭️</button>
+          </div>
+
+          <div className="volume-button-container" ref={volumeControlRef}>
+            <button onClick={toggleVolumeControl} className="volume-button">
+              {getVolumeIcon()}
+            </button>
+            {showVolumeControl && (
+              <div className="volume-popup">
+                <div className="vertical-volume-container">
+                  <span className="volume-percentage">{volume}%</span>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={volume}
+                    onChange={handleVolumeChange}
+                    className="vertical-volume-slider"
+                    orient="vertical"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

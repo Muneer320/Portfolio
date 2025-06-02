@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import { loadFileSystem } from "./utils/fileSystemLoader";
+import {
+  togglePlayer,
+  setVolume,
+  getActivePlayer,
+  getCurrentMusicPath,
+  registerPlayer,
+  playPlayer,
+} from "./utils/musicManager";
 
-// Components
 import Dock from "./components/Dock";
 import Desktop from "./components/Desktop";
 import Terminal from "./components/Terminal";
@@ -10,9 +18,6 @@ import TextEditor from "./components/TextEditor";
 import Browser from "./components/Browser";
 import MusicPlayer from "./components/MusicPlayer";
 import ImageViewer from "./components/ImageViewer";
-
-// Music Manager
-import musicManager from "./utils/musicManager";
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState("login");
@@ -24,67 +29,37 @@ function App() {
   const [resizing, setResizing] = useState(null);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [terminalAutoStarted, setTerminalAutoStarted] = useState(false);
-  const [musicAutoStarted, setMusicAutoStarted] = useState(false);
+  const [backgroundAudio, setBackgroundAudio] = useState(null);
   const [systemStatus, setSystemStatus] = useState({
     battery: 85,
-    volume: 30, // Start with lower volume
+    volume: 75,
     wifi: true,
     musicPlaying: false,
-    currentSong: null,
+    currentSong: "",
     hasMusic: false,
   });
 
-  // Minimum window sizes
+  const handlePlayerStatusChange = (playerId, isPlaying) => {
+    setSystemStatus((prev) => ({ ...prev, musicPlaying: isPlaying }));
+  };
+
   const minWindowSizes = {
     terminal: { width: 800, height: 450 },
     filemanager: { width: 500, height: 350 },
     texteditor: { width: 500, height: 350 },
     browser: { width: 1000, height: 600 },
-    musicplayer: { width: 450, height: 600 },
-    imageviewer: { width: 250, height: 650 },
+    musicplayer: { width: 450, height: 500 },
+    imageviewer: { width: 500, height: 400 },
   };
   useEffect(() => {
     const timer = setInterval(() => {
       setTime(new Date());
-      // Simulate battery drain
       setSystemStatus((prev) => ({
         ...prev,
         battery: Math.max(1, prev.battery - 0.001),
       }));
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
-
-  // Initialize music manager and load available music
-  useEffect(() => {
-    const initializeMusic = async () => {
-      await musicManager.loadAvailableMusic();
-
-      // Subscribe to music manager state changes
-      const unsubscribe = musicManager.onStateChange((musicState) => {
-        setSystemStatus((prev) => ({
-          ...prev,
-          musicPlaying: musicState.isPlaying,
-          currentSong: musicState.currentTrack?.name || null,
-          hasMusic: musicState.hasMusic,
-          volume: Math.round(musicState.volume * 100),
-        }));
-      });
-
-      // Set initial volume in music manager
-      musicManager.setVolume(0.3); // 30%
-
-      return unsubscribe;
-    };
-
-    let unsubscribe;
-    initializeMusic().then((unsub) => {
-      unsubscribe = unsub;
-    });
-
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
   }, []);
 
   useEffect(() => {
@@ -98,41 +73,66 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Disable right-click context menu
-    const handleContextMenu = (e) => {
-      e.preventDefault();
-    };
-
+    const handleContextMenu = (e) => e.preventDefault();
     document.addEventListener("contextmenu", handleContextMenu);
     return () => document.removeEventListener("contextmenu", handleContextMenu);
   }, []);
   useEffect(() => {
-    // Auto-start music when user logs in (only if music is available and not already auto-started)
-    if (
-      currentScreen === "desktop" &&
-      systemStatus.hasMusic &&
-      !systemStatus.musicPlaying &&
-      !musicAutoStarted
-    ) {
-      setTimeout(() => {
-        musicManager.toggle();
-        setMusicAutoStarted(true);
-      }, 2000);
-    }
-
-    // Auto-start terminal on first login
+    // Auto-start terminal and background music on first login
     if (currentScreen === "desktop" && !terminalAutoStarted) {
       setTimeout(() => {
         openWindow("terminal");
+
+        // Initialize background music without opening window
+        if (!backgroundAudio) {
+          const audio = new Audio("/home/muneer/Music/_lofi.webm");
+          audio.volume = systemStatus.volume / 100;
+          audio.loop = false;
+
+          registerPlayer("background-music", audio);
+
+          audio.addEventListener("play", () => {
+            setSystemStatus((prev) => ({ ...prev, musicPlaying: true }));
+          });
+
+          audio.addEventListener("pause", () => {
+            setSystemStatus((prev) => ({ ...prev, musicPlaying: false }));
+          });
+
+          audio.addEventListener("ended", () => {
+            setSystemStatus((prev) => ({ ...prev, musicPlaying: false }));
+          });
+
+          setBackgroundAudio(audio);
+
+          setTimeout(() => {
+            playPlayer("background-music");
+          }, 1500);
+        }
+
         setTerminalAutoStarted(true);
       }, 1000);
     }
   }, [
     currentScreen,
     terminalAutoStarted,
-    systemStatus.hasMusic,
-    musicAutoStarted,
+    backgroundAudio,
+    systemStatus.volume,
   ]);
+  // Sync audio volume when system volume changes
+  useEffect(() => {
+    setVolume(systemStatus.volume / 100);
+  }, [systemStatus.volume]);
+
+  // Check if music directory exists
+  useEffect(() => {
+    loadFileSystem().then((fs) => {
+      const musicDir =
+        fs["/"]?.children?.home?.children?.muneer?.children?.Music;
+      const has = musicDir && Object.keys(musicDir.children || {}).length > 0;
+      setSystemStatus((prev) => ({ ...prev, hasMusic: has }));
+    });
+  }, []);
 
   const getFileExtension = (filename) => {
     return filename.split(".").pop().toLowerCase();
@@ -151,20 +151,65 @@ function App() {
     const audioExtensions = ["mp3", "wav", "ogg", "flac", "m4a", "webm"];
     return audioExtensions.includes(getFileExtension(filename));
   };
-
   const openWindow = (appName, filePath = null, fileObj = null) => {
-    const existingWindow = openWindows.find(
-      (w) => w.id === appName + (filePath || "")
-    );
+    const musicPlayerId = "musicplayer";
+
+    if (appName === musicPlayerId) {
+      const existingPlayerWindow = openWindows.find(
+        (w) => w.id === musicPlayerId
+      );
+
+      if (existingPlayerWindow) {
+        if (filePath && filePath !== existingPlayerWindow.filePath) {
+          setOpenWindows((prevWindows) =>
+            prevWindows.map((win) =>
+              win.id === musicPlayerId
+                ? {
+                    ...win,
+                    filePath: filePath,
+                    fileObj: fileObj,
+                    zIndex: windowZIndex,
+                  }
+                : win
+            )
+          );
+        } else {
+          bringToFront(musicPlayerId);
+        }
+        setWindowZIndex((prev) => prev + 1);
+        return;
+      } else {
+        const minSize = minWindowSizes[appName] || { width: 500, height: 400 };
+        const newWindow = {
+          id: musicPlayerId,
+          title: "Music Player",
+          component: appName,
+          filePath: filePath || getCurrentMusicPath(),
+          fileObj: fileObj,
+          x: Math.random() * 200 + 100,
+          y: Math.random() * 100 + 100,
+          width: Math.max(minSize.width, 450),
+          height: Math.max(minSize.height, 400),
+          zIndex: windowZIndex,
+          minWidth: minSize.width,
+          minHeight: minSize.height,
+        };
+        setWindowZIndex((prev) => prev + 1);
+        setOpenWindows((prev) => [...prev, newWindow]);
+        return;
+      }
+    } // Handle other applications
+    const windowId = appName + (filePath || "");
+    const existingWindow = openWindows.find((w) => w.id === windowId);
+
     if (existingWindow) {
       bringToFront(existingWindow.id);
       return;
     }
 
     const minSize = minWindowSizes[appName] || { width: 500, height: 400 };
-
     const newWindow = {
-      id: appName + (filePath || ""),
+      id: windowId,
       title:
         appName === "terminal"
           ? "Terminal"
@@ -174,8 +219,6 @@ function App() {
           ? filePath
             ? filePath.split("/").pop()
             : "Text Editor"
-          : appName === "musicplayer"
-          ? "Music Player"
           : appName === "imageviewer"
           ? "Image Viewer"
           : appName === "browser"
@@ -186,8 +229,8 @@ function App() {
       fileObj: fileObj,
       x: Math.random() * 200 + 100,
       y: Math.random() * 100 + 100,
-      width: Math.max(minSize.width, appName === "musicplayer" ? 450 : 600),
-      height: Math.max(minSize.height, appName === "musicplayer" ? 400 : 400),
+      width: Math.max(minSize.width, 600),
+      height: Math.max(minSize.height, 400),
       zIndex: windowZIndex,
       minWidth: minSize.width,
       minHeight: minSize.height,
@@ -286,18 +329,18 @@ function App() {
     setDragging(null);
     setResizing(null);
   };
-  const toggleMusic = () => {
-    musicManager.toggle();
-  };
-
   const adjustVolume = (delta) => {
-    const currentVolume = musicManager.getState().volume;
-    const newVolume = Math.max(0, Math.min(1, currentVolume + delta / 100));
-    musicManager.setVolume(newVolume);
+    setSystemStatus((prev) => {
+      const vol = Math.min(100, Math.max(0, prev.volume + delta));
+      setVolume(vol / 100); // Update music manager volume (0-1 range)
+      return { ...prev, volume: vol };
+    });
   };
 
-  const updateVolume = (newVolume) => {
-    musicManager.setVolume(newVolume / 100);
+  // Toggle play/pause for the active music player
+  const toggleMusic = () => {
+    const active = getActivePlayer();
+    if (active) togglePlayer(active);
   };
 
   useEffect(() => {
@@ -411,11 +454,9 @@ function App() {
                   onClose={() => closeWindow(window.id)}
                 />
               )}
-
               {window.component === "filemanager" && (
                 <FileManager onOpenFile={openFile} />
               )}
-
               {window.component === "texteditor" && (
                 <TextEditor
                   filePath={window.filePath}
@@ -424,24 +465,27 @@ function App() {
                   windowId={window.id}
                 />
               )}
-
               {window.component === "browser" && (
                 <Browser
                   filePath={window.filePath}
                   fileObj={window.fileObj}
                   onOpenWindow={openWindow}
                 />
-              )}
+              )}{" "}
               {window.component === "musicplayer" && (
                 <MusicPlayer
-                  systemStatus={systemStatus}
-                  onToggleMusic={toggleMusic}
-                  onVolumeChange={updateVolume}
                   filePath={window.filePath}
-                  fileObj={window.fileObj}
+                  playerId={window.id}
+                  onPlayerStatusChange={handlePlayerStatusChange}
+                  systemVolume={systemStatus.volume}
+                  onVolumeChange={(newVolume) => {
+                    setSystemStatus((prev) => {
+                      setVolume(newVolume / 100); // Update music manager volume
+                      return { ...prev, volume: newVolume };
+                    });
+                  }}
                 />
               )}
-
               {window.component === "imageviewer" && (
                 <ImageViewer
                   filePath={window.filePath}
@@ -450,10 +494,13 @@ function App() {
               )}
             </div>
 
-            <div
-              className="resize-handle"
-              onMouseDown={(e) => handleMouseDown(e, window.id, "resize")}
-            />
+            {/* Only show resize handle for non-music player windows */}
+            {window.component !== "musicplayer" && (
+              <div
+                className="resize-handle"
+                onMouseDown={(e) => handleMouseDown(e, window.id, "resize")}
+              />
+            )}
           </div>
         ))}
       </div>

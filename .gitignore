@@ -23,6 +23,7 @@ chainlit.md
 *.pem
 .dockerignore
 *.log
+_*
 
 # debug
 npm-debug.log*
