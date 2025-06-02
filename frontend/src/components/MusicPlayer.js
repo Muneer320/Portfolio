@@ -1,6 +1,33 @@
+/**
+ * MusicPlayer Component
+ *
+ * A fully functional audio player with vinyl record visual effects and comprehensive controls.
+ * Features include:
+ * - Audio playback with native HTML5 audio element
+ * - Playlist management and track navigation
+ * - Animated vinyl record visualization
+ * - Volume control with popup interface
+ * - Progress tracking and seeking
+ * - Integration with global music manager
+ * - Support for multiple audio formats
+ * - Auto-loading tracks from file system
+ *
+ * @author Muneer
+ * @component
+ */
+
+// ============================================================================
+// IMPORTS
+// ============================================================================
+
+// Core React imports
 import React, { useState, useEffect, useRef, useCallback } from "react";
+
+// Utility and style imports
 import { loadFileSystem } from "../utils/fileSystemLoader";
 import "../styles/music-player.css";
+
+// Music manager imports
 import {
   registerPlayer,
   unregisterPlayer,
@@ -10,6 +37,21 @@ import {
   setVolume,
 } from "../utils/musicManager";
 
+// ============================================================================
+// MUSICPLAYER COMPONENT
+// ============================================================================
+
+/**
+ * MusicPlayer Component
+ *
+ * @param {Object} props - Component props
+ * @param {string} props.filePath - Path to the music file or directory
+ * @param {string} props.playerId - Unique identifier for this player instance
+ * @param {Function} props.onPlayerStatusChange - Callback for player status changes
+ * @param {number} props.systemVolume - System-wide volume setting
+ * @param {Function} props.onVolumeChange - Callback for volume changes
+ * @returns {JSX.Element} MusicPlayer component
+ */
 const MusicPlayer = ({
   filePath,
   playerId,
@@ -17,16 +59,37 @@ const MusicPlayer = ({
   systemVolume,
   onVolumeChange,
 }) => {
+  // ============================================================================
+  // STATE MANAGEMENT
+  // ============================================================================
+
+  // Track and playlist state
   const [tracks, setTracks] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Playback state
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+
+  // Volume and UI state
   const [volume, setVolumeState] = useState(systemVolume || 75);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
+
+  // ============================================================================
+  // REFS
+  // ============================================================================
+
   const audioRef = useRef(new Audio());
   const volumeControlRef = useRef(null);
 
+  // ============================================================================
+  // HELPER FUNCTIONS
+  // ============================================================================
+  /**
+   * Play a specific track by index
+   * @param {number} index - Index of the track to play
+   */
   const playTrack = useCallback(
     (index) => {
       const audio = audioRef.current;
@@ -50,7 +113,6 @@ const MusicPlayer = ({
       } else {
         basePath = `/home/muneer/Music/${tracks[index]}`;
       }
-
       if (!basePath) return;
 
       audio.src = basePath;
@@ -59,6 +121,14 @@ const MusicPlayer = ({
     },
     [filePath, tracks, playerId]
   );
+
+  // ============================================================================
+  // EFFECTS
+  // ============================================================================
+
+  /**
+   * Initialize audio player and event listeners
+   */
   useEffect(() => {
     const audio = audioRef.current;
     registerPlayer(playerId, audio);
@@ -98,6 +168,9 @@ const MusicPlayer = ({
       audio.removeEventListener("ended", onEnded);
     };
   }, [playerId, onPlayerStatusChange, tracks, currentIndex, playTrack]);
+  /**
+   * Load tracks from file system when file path changes
+   */
   useEffect(() => {
     if (!filePath) {
       loadFileSystem().then((fs) => {
@@ -152,6 +225,9 @@ const MusicPlayer = ({
     });
   }, [filePath]);
 
+  /**
+   * Play track when current index changes
+   */
   useEffect(() => {
     if (
       tracks.length === 0 ||
@@ -163,7 +239,9 @@ const MusicPlayer = ({
     playTrack(currentIndex);
   }, [tracks, currentIndex, playTrack]);
 
-  // Auto-start music when component mounts with a specific file path
+  /**
+   * Auto-start music when component mounts with a specific file path
+   */
   useEffect(() => {
     if (filePath && tracks.length > 0 && currentIndex >= 0) {
       setTimeout(() => {
@@ -172,27 +250,9 @@ const MusicPlayer = ({
     }
   }, [filePath, tracks, currentIndex, playerId]);
 
-  const handlePlayPause = () => {
-    togglePlayer(playerId);
-  };
-
-  const handleNext = () => {
-    if (tracks.length === 0) return;
-    setCurrentIndex((i) => (i + 1) % tracks.length);
-  };
-
-  const handlePrev = () => {
-    if (tracks.length === 0) return;
-    setCurrentIndex((i) => (i - 1 + tracks.length) % tracks.length);
-  };
-
-  const handleSeek = (e) => {
-    const time = Number(e.target.value);
-    audioRef.current.currentTime = time;
-    setCurrentTime(time);
-  };
-
-  // Sync with system volume
+  /**
+   * Sync volume with system volume
+   */
   useEffect(() => {
     if (systemVolume !== undefined && systemVolume !== volume) {
       setVolumeState(systemVolume);
@@ -200,7 +260,9 @@ const MusicPlayer = ({
     }
   }, [systemVolume]);
 
-  // Close volume control when clicking outside
+  /**
+   * Close volume control when clicking outside
+   */
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -219,6 +281,47 @@ const MusicPlayer = ({
     }
   }, [showVolumeControl]);
 
+  // ============================================================================
+  // EVENT HANDLERS
+  // ============================================================================
+
+  /**
+   * Handle play/pause button click
+   */
+  const handlePlayPause = () => {
+    togglePlayer(playerId);
+  };
+
+  /**
+   * Handle next track button click
+   */
+  const handleNext = () => {
+    if (tracks.length === 0) return;
+    setCurrentIndex((i) => (i + 1) % tracks.length);
+  };
+
+  /**
+   * Handle previous track button click
+   */
+  const handlePrev = () => {
+    if (tracks.length === 0) return;
+    setCurrentIndex((i) => (i - 1 + tracks.length) % tracks.length);
+  };
+
+  /**
+   * Handle progress bar seeking
+   * @param {Event} e - Change event from progress slider
+   */
+  const handleSeek = (e) => {
+    const time = Number(e.target.value);
+    audioRef.current.currentTime = time;
+    setCurrentTime(time);
+  };
+
+  /**
+   * Handle volume change
+   * @param {Event} e - Change event from volume slider
+   */
   const handleVolumeChange = (e) => {
     const newVolume = Number(e.target.value);
     setVolumeState(newVolume);
@@ -228,10 +331,17 @@ const MusicPlayer = ({
     }
   };
 
+  /**
+   * Toggle volume control popup visibility
+   */
   const toggleVolumeControl = () => {
     setShowVolumeControl(!showVolumeControl);
   };
 
+  /**
+   * Get appropriate volume icon based on current volume
+   * @returns {string} Volume icon emoji
+   */
   const getVolumeIcon = () => {
     if (volume === 0) return "🔇";
     if (volume < 30) return "🔈";
@@ -239,16 +349,31 @@ const MusicPlayer = ({
     return "🔊";
   };
 
+  /**
+   * Format time in MM:SS format
+   * @param {number} time - Time in seconds
+   * @returns {string} Formatted time string
+   */
   const formatTime = (time) => {
     if (isNaN(time) || time === Infinity) return "0:00";
     const mins = Math.floor(time / 60);
     const secs = Math.floor(time % 60);
     return `${mins}:${secs < 10 ? "0" + secs : secs}`;
   };
+
+  // ============================================================================
+  // RENDER
+  // ============================================================================
   return (
     <div className="music-player">
       <div className="music-header">
-        <h3>🎵 {tracks[currentIndex] ? tracks[currentIndex].split('.').slice(0, -1).join('.') || tracks[currentIndex] : "No Track Selected"}</h3>
+        <h3>
+          🎵{" "}
+          {tracks[currentIndex]
+            ? tracks[currentIndex].split(".").slice(0, -1).join(".") ||
+              tracks[currentIndex]
+            : "No Track Selected"}
+        </h3>
       </div>
 
       <div className="vinyl-container">

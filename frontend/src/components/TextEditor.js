@@ -1,15 +1,65 @@
+/**
+ * TextEditor Component
+ *
+ * A fully functional text editor with file operations, similar to notepad
+ * or other text editing applications. Supports both reading existing files
+ * and creating new documents with save functionality.
+ *
+ * Features:
+ * - File loading from filesystem or fileObj
+ * - New file creation with default content
+ * - Save and Save As functionality
+ * - Read-only mode for system files
+ * - Unsaved changes tracking
+ * - Local storage integration for persistence
+ * - Modal dialogs for file naming
+ *
+ * @author Muneer
+ * @component
+ */
+
+// ============================================================================
+// IMPORTS
+// ============================================================================
+
 import React, { useState, useEffect } from "react";
 
+// ============================================================================
+// TEXTEDITOR COMPONENT
+// ============================================================================
+
+/**
+ * TextEditor Component
+ *
+ * @param {Object} props - Component props
+ * @param {string} props.filePath - Path to file being edited
+ * @param {Object} props.fileObj - File object with content (for read-only files)
+ * @param {Function} props.onClose - Function to close the editor window
+ * @param {string} props.windowId - Unique identifier for this editor window
+ * @returns {JSX.Element} TextEditor component
+ */
 const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
+  // ============================================================================
+  // STATE MANAGEMENT
+  // ============================================================================
+
   const [content, setContent] = useState("");
   const [fileName, setFileName] = useState("");
   const [showNameDialog, setShowNameDialog] = useState(false);
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  // ============================================================================
+  // EFFECTS
+  // ============================================================================
+
+  /**
+   * Load file content on component mount or when file path changes
+   */
   useEffect(() => {
     const loadFileContent = async () => {
       if (fileObj && fileObj.content) {
-        // If file object has content, use it
+        // If file object has content, use it (read-only mode)
         setContent(fileObj.content);
         setIsReadOnly(true);
         setFileName(filePath ? filePath.split("/").pop() : "Read-only File");
@@ -51,6 +101,15 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
     loadFileContent();
   }, [filePath, fileObj]);
 
+  // ============================================================================
+  // EVENT HANDLERS
+  // ============================================================================
+
+  /**
+   * Handle content changes in the text area
+   *
+   * @param {Event} e - Change event from textarea
+   */
   const handleContentChange = (e) => {
     if (!isReadOnly) {
       setContent(e.target.value);
@@ -58,6 +117,9 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
     }
   };
 
+  /**
+   * Handle saving the current file
+   */
   const handleSave = () => {
     if (isReadOnly) return;
 
@@ -84,6 +146,11 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
     alert("File saved successfully!");
   };
 
+  /**
+   * Handle saving file with a new name
+   *
+   * @param {string} newFileName - New name for the file
+   */
   const handleSaveAs = (newFileName) => {
     if (!newFileName) return;
 
@@ -108,6 +175,9 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
     alert(`File saved as ${newFileName}!`);
   };
 
+  /**
+   * Handle creating a new file
+   */
   const handleNewFile = () => {
     setContent("");
     setFileName("untitled.txt");
@@ -115,14 +185,43 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
     setHasUnsavedChanges(false);
   };
 
+  /**
+   * Handle keyboard shortcuts in save dialog
+   *
+   * @param {KeyboardEvent} e - Keyboard event
+   */
+  const handleDialogKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSaveAs(e.target.value);
+    } else if (e.key === "Escape") {
+      setShowNameDialog(false);
+    }
+  };
+
+  /**
+   * Handle save button click in dialog
+   */
+  const handleDialogSave = () => {
+    const input = document.querySelector(".modal input");
+    handleSaveAs(input.value);
+  };
+
+  // ============================================================================
+  // RENDER
+  // ============================================================================
+
   return (
     <div className="text-editor">
+      {/* Editor Toolbar */}
       <div className="editor-toolbar">
-        <button onClick={handleNewFile}>📄 New</button>
+        <button onClick={handleNewFile} title="Create new file">
+          📄 New
+        </button>
         <button
           onClick={handleSave}
           disabled={isReadOnly}
           className={isReadOnly ? "disabled" : ""}
+          title="Save current file"
         >
           💾 Save
         </button>
@@ -130,14 +229,20 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
           onClick={() => setShowNameDialog(true)}
           disabled={isReadOnly}
           className={isReadOnly ? "disabled" : ""}
+          title="Save with new name"
         >
           💾 Save As
         </button>
+
+        {/* File Status */}
         <span className="file-path">
-          {fileName} {hasUnsavedChanges && "*"} {isReadOnly && "(Read Only)"}
+          {fileName}
+          {hasUnsavedChanges && "*"}
+          {isReadOnly && "(Read Only)"}
         </span>
       </div>
 
+      {/* Main Editor Area */}
       <textarea
         className="editor-content"
         value={content}
@@ -146,6 +251,7 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
         readOnly={isReadOnly}
       />
 
+      {/* Save As Dialog Modal */}
       {showNameDialog && (
         <div className="modal-overlay">
           <div className="modal">
@@ -153,24 +259,11 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
             <input
               type="text"
               placeholder="Enter filename..."
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSaveAs(e.target.value);
-                } else if (e.key === "Escape") {
-                  setShowNameDialog(false);
-                }
-              }}
+              onKeyDown={handleDialogKeyDown}
               autoFocus
             />
             <div className="modal-buttons">
-              <button
-                onClick={() => {
-                  const input = document.querySelector(".modal input");
-                  handleSaveAs(input.value);
-                }}
-              >
-                Save
-              </button>
+              <button onClick={handleDialogSave}>Save</button>
               <button onClick={() => setShowNameDialog(false)}>Cancel</button>
             </div>
           </div>

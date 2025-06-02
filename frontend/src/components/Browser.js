@@ -1,26 +1,91 @@
-import React, { useState } from 'react';
+/**
+ * Browser Component
+ *
+ * A simulated web browser interface with PDF viewing capabilities and
+ * GitHub profile simulation. Provides a realistic browsing experience
+ * within the portfolio environment.
+ *
+ * Features:
+ * - PDF document viewing for portfolio files
+ * - Simulated GitHub profile page
+ * - Navigation controls (back, forward, refresh)
+ * - URL bar with keyboard navigation
+ * - Quick links to other portfolio applications
+ * - Loading states and animations
+ *
+ * @author Muneer
+ * @component
+ */
 
+// ============================================================================
+// IMPORTS
+// ============================================================================
+
+import React, { useState } from "react";
+
+// ============================================================================
+// BROWSER COMPONENT
+// ============================================================================
+
+/**
+ * Browser Component
+ *
+ * @param {Object} props - Component props
+ * @param {string} props.filePath - Path to file being viewed (for PDFs)
+ * @param {Object} props.fileObj - File object with content (for PDFs)
+ * @param {Function} props.onOpenWindow - Function to open other applications
+ * @returns {JSX.Element} Browser component
+ */
 const Browser = ({ filePath, fileObj, onOpenWindow }) => {
-  const [url, setUrl] = useState(filePath ? `file://${filePath}` : "https://github.com/muneer320");
+  // ============================================================================
+  // STATE MANAGEMENT
+  // ============================================================================
+
+  const [url, setUrl] = useState(
+    filePath ? `file://${filePath}` : "https://github.com/muneer320"
+  );
   const [isLoading, setIsLoading] = useState(false);
 
+  // ============================================================================
+  // HELPER FUNCTIONS
+  // ============================================================================
+
+  /**
+   * Check if the current file is a PDF document
+   *
+   * @param {string} filename - Name of the file to check
+   * @returns {boolean} True if file is a PDF
+   */
   const isPdfFile = (filename) => {
-    return filename && filename.toLowerCase().endsWith('.pdf');
+    return filename && filename.toLowerCase().endsWith(".pdf");
   };
 
+  /**
+   * Handle URL navigation with Enter key
+   *
+   * @param {KeyboardEvent} e - Keyboard event
+   */
+  const handleUrlNavigation = (e) => {
+    if (e.key === "Enter") {
+      setIsLoading(true);
+      // Simulate loading delay
+      setTimeout(() => setIsLoading(false), 1000);
+    }
+  };
+
+  // ============================================================================
+  // RENDER - PDF VIEWER
+  // ============================================================================
+
+  // Special rendering for PDF files
   if (fileObj && isPdfFile(filePath)) {
     return (
       <div className="browser">
         <div className="browser-bar">
-          <input 
-            type="text" 
-            className="url-bar"
-            value={url}
-            readOnly
-          />
+          <input type="text" className="url-bar" value={url} readOnly />
         </div>
         <div className="browser-content pdf-viewer">
-          <h2>📄 {filePath.split('/').pop()}</h2>
+          <h2>📄 {filePath.split("/").pop()}</h2>
           <div className="pdf-content">
             <pre>{fileObj.content}</pre>
           </div>
@@ -29,46 +94,60 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
     );
   }
 
+  // ============================================================================
+  // RENDER - MAIN BROWSER
+  // ============================================================================
+
   return (
     <div className="browser">
+      {/* Browser Navigation Bar */}
       <div className="browser-bar">
-        <button 
+        <button
           className="nav-btn"
           onClick={() => window.history.back()}
           disabled
+          title="Go back"
         >
           ←
         </button>
-        <button 
+        <button
           className="nav-btn"
           onClick={() => window.history.forward()}
           disabled
+          title="Go forward"
         >
           →
         </button>
-        <input 
-          type="text" 
+        <input
+          type="text"
           className="url-bar"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              setIsLoading(true);
-              // Simulate loading
-              setTimeout(() => setIsLoading(false), 1000);
-            }
-          }}
+          onKeyDown={handleUrlNavigation}
+          placeholder="Enter URL or search..."
         />
-        <button className="refresh-btn">⟳</button>
+        <button
+          className="refresh-btn"
+          onClick={() => {
+            setIsLoading(true);
+            setTimeout(() => setIsLoading(false), 1000);
+          }}
+          title="Refresh page"
+        >
+          ⟳
+        </button>
       </div>
-      
+
+      {/* Browser Content Area */}
       <div className="browser-content">
         {isLoading ? (
+          // Loading State
           <div className="loading">
             <div className="loading-spinner">⟳</div>
             <p>Loading...</p>
           </div>
         ) : url === "https://github.com/muneer320" ? (
+          // GitHub Profile Simulation
           <div className="github-page">
             <div className="github-header">
               <div className="github-avatar">
@@ -77,7 +156,10 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
               <div className="github-info">
                 <h1>Muneer Alam</h1>
                 <p className="github-username">@muneer320</p>
-                <p className="github-bio">Full-stack developer passionate about creating innovative solutions</p>
+                <p className="github-bio">
+                  Full-stack developer passionate about creating innovative
+                  solutions
+                </p>
                 <div className="github-stats">
                   <span>📍 San Francisco, CA</span>
                   <span>📧 muneer.alam@email.com</span>
@@ -85,14 +167,14 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
                 </div>
               </div>
             </div>
-            
+
             <div className="github-nav">
               <button className="github-tab active">Repositories</button>
               <button className="github-tab">Projects</button>
               <button className="github-tab">Packages</button>
               <button className="github-tab">Stars</button>
             </div>
-            
+
             <div className="github-repos">
               <div className="repo-item">
                 <h3>🌟 portfolio-website</h3>
@@ -103,7 +185,7 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
                   <span>🍴 12</span>
                 </div>
               </div>
-              
+
               <div className="repo-item">
                 <h3>🛒 ecommerce-platform</h3>
                 <p>Full-stack e-commerce application with modern features</p>
@@ -113,7 +195,7 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
                   <span>🍴 8</span>
                 </div>
               </div>
-              
+
               <div className="repo-item">
                 <h3>🤖 ai-chat-assistant</h3>
                 <p>Real-time chat application with AI integration</p>
@@ -123,7 +205,7 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
                   <span>🍴 15</span>
                 </div>
               </div>
-              
+
               <div className="repo-item">
                 <h3>📊 data-viz-dashboard</h3>
                 <p>Interactive dashboard for business analytics</p>
@@ -136,18 +218,30 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
             </div>
           </div>
         ) : (
+          // Default Welcome Page
           <div className="default-page">
             <h2>🌟 Muneer Alam - Portfolio Browser</h2>
-            <p>Welcome to my portfolio browser! This simulates a web browser experience.</p>
-            
+            <p>
+              Welcome to my portfolio browser! This simulates a web browser
+              experience.
+            </p>
+
             <div className="quick-links">
               <h3>Quick Navigation:</h3>
-              <button onClick={() => setUrl("https://github.com/muneer320")}>🐙 GitHub Profile</button>
-              <button onClick={() => onOpenWindow('terminal')}>🖥️ Open Terminal</button>
-              <button onClick={() => onOpenWindow('filemanager')}>📁 Browse Files</button>
-              <button onClick={() => onOpenWindow('musicplayer')}>🎵 Music Player</button>
+              <button onClick={() => setUrl("https://github.com/muneer320")}>
+                🐙 GitHub Profile
+              </button>
+              <button onClick={() => onOpenWindow("terminal")}>
+                🖥️ Open Terminal
+              </button>
+              <button onClick={() => onOpenWindow("filemanager")}>
+                📁 Browse Files
+              </button>
+              <button onClick={() => onOpenWindow("musicplayer")}>
+                🎵 Music Player
+              </button>
             </div>
-            
+
             <div className="browser-features">
               <h3>Browser Features:</h3>
               <ul>
