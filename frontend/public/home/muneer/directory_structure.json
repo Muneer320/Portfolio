@@ -23,6 +23,12 @@
             "Cover_Letter.txt": {
                 "type": "file"
             },
+            "CV.pdf": {
+                "type": "file"
+            },
+            "CV.png": {
+                "type": "file"
+            },
             "CV.txt": {
                 "type": "file"
             }
@@ -42,9 +48,6 @@
     "Music": {
         "type": "directory",
         "children": {
-            "_lofi.webm": {
-                "type": "file"
-            },
             "Afreen_Afreen.mp3": {
                 "type": "file"
             },
@@ -88,6 +91,9 @@
                 "type": "file"
             },
             "Yeh Aaina.webm": {
+                "type": "file"
+            },
+            "_lofi.webm": {
                 "type": "file"
             }
         }

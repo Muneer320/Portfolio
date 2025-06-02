@@ -109,7 +109,7 @@ const Dock = ({
           </div>
         </div>
         <button className="logout-btn" onClick={onLogout} title="Logout">
-          ⏻
+          🔒
         </button>
       </div>
     </div>

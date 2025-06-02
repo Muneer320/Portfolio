@@ -1,4 +1,27 @@
-/* Terminal */
+/**
+ * Terminal Styles
+ * 
+ * Comprehensive styling for the terminal component including:
+ * - Main terminal container with proper font and background
+ * - Scrollable output area with hidden scrollbars
+ * - Command line styling with syntax highlighting
+ * - Neofetch output with monospace font optimization
+ * - Input form and prompt styling
+ * - Responsive and accessible design
+ * 
+ * @author Muneer
+ */
+
+/* ============================================================================
+   MAIN TERMINAL CONTAINER
+   ============================================================================ */
+
+/**
+ * Main terminal container
+ * - Full height with dark semi-transparent background
+ * - Monospace font family stack for proper code display
+ * - Default font size and color settings
+ */
 .terminal {
   height: 100%;
   background: rgba(0, 0, 0, 0.9);
@@ -9,44 +32,152 @@
   overflow: hidden;
 }
 
+/* ============================================================================
+   TERMINAL OUTPUT AREA
+   ============================================================================ */
+
+/**
+ * Scrollable output container
+ * - Takes up most of the terminal height
+ * - Allows vertical scrolling for command history
+ * - Bottom padding for better visual spacing
+ */
 .terminal-output {
   height: calc(100% - 30px);
   overflow-y: auto;
   padding-bottom: 10px;
 }
 
+/**
+ * Hide scrollbars for cleaner appearance
+ * - WebKit browsers (Chrome, Safari, Edge)
+ */
 .terminal-output::-webkit-scrollbar {
   display: none;
 }
 
+/**
+ * Hide scrollbars for other browsers
+ * - Internet Explorer and Firefox
+ */
 .terminal-output {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
+/* ============================================================================
+   TERMINAL LINES AND TEXT DISPLAY
+   ============================================================================ */
+
+/**
+ * Base styling for all terminal lines
+ * - Consistent line spacing and formatting
+ * - Text wrapping enabled for long lines (no horizontal scrollbars)
+ * - Preserve whitespace but allow wrapping
+ * - Inherit color from parent for dynamic theming
+ */
 .terminal-line {
   margin-bottom: 2px;
   white-space: pre-wrap;
+  word-wrap: break-word;
   line-height: 1.3;
-  word-break: break-word;
+  overflow-x: hidden;
+  color: inherit;
 }
 
+/**
+ * Handle empty lines properly
+ * - Maintain consistent spacing even for empty content
+ */
+.terminal-line:empty {
+  height: 1.3em;
+  margin-bottom: 4px;
+}
+
+/* ============================================================================
+   COMMAND LINE STYLING
+   ============================================================================ */
+
+/**
+ * Styling for command input lines
+ * - Distinctive blue color to differentiate from output
+ * - Medium font weight for better readability
+ */
+.command-line {
+  color: #61dafb;
+  font-weight: 500;
+}
+
+/**
+ * Styling for command output lines
+ * - Inherit color for consistency with theme
+ * - No left margin for clean alignment
+ */
+.output-line {
+  color: inherit;
+  margin-left: 0;
+}
+
+/**
+ * Current command line (input area)
+ * - Bold font weight to highlight active input
+ */
+.current-command {
+  font-weight: 600;
+}
+
+/* ============================================================================
+   NEOFETCH OUTPUT STYLING
+   ============================================================================ */
+
+/**
+ * Special styling for neofetch ASCII art and system info
+ * - Optimized monospace font stack for ASCII art
+ * - Smaller font size for better ASCII art rendering
+ * - Enhanced line height for proper spacing
+ * - Distinctive blue color matching command theme
+ * - Typography optimizations for better rendering
+ * - Text wrapping enabled for long system info lines
+ */
 .neofetch-output {
-  font-family: "JetBrains Mono", "Monaco", "Menlo", "Ubuntu Mono", monospace;
-  white-space: pre;
+  font-family: "Courier New", "JetBrains Mono", "Monaco", "Menlo", "Ubuntu Mono",
+    monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
   font-size: 0.75rem;
-  line-height: 1.2;
+  line-height: 1.4;
   color: #61dafb;
   font-weight: 400;
   letter-spacing: 0;
+  font-feature-settings: "liga" 0; /* Disable ligatures for ASCII art */
+  text-rendering: optimizeLegibility;
+  font-variant-numeric: tabular-nums; /* Better number alignment */
 }
 
+/* ============================================================================
+   INPUT FORM AND PROMPT STYLING
+   ============================================================================ */
+
+/**
+ * Terminal input form container
+ * - Flexbox layout for proper alignment
+ * - Full width utilization
+ * - Allow wrapping for long input lines
+ */
 .terminal-input-form {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
+  flex-wrap: wrap;
 }
 
+/**
+ * Terminal prompt styling
+ * - Distinctive blue color matching command theme
+ * - Prevent line wrapping for consistent appearance
+ * - Bold font weight for prominence
+ * - Right margin for spacing from input
+ */
 .terminal-prompt {
   color: #61dafb;
   margin-right: 5px;
@@ -54,13 +185,42 @@
   white-space: nowrap;
 }
 
+/**
+ * Terminal input field
+ * - Transparent background to blend with terminal
+ * - No border or outline for seamless appearance
+ * - Inherit font properties from parent
+ * - Flexible width to fill available space
+ * - Minimum width to prevent layout issues
+ * - Text wrapping enabled for long commands
+ * - Auto-resizing textarea for better UX
+ */
 .terminal-input {
   background: transparent;
   border: none;
-  color: white;
+  color: inherit;
   font-family: inherit;
   font-size: inherit;
   flex: 1;
   outline: none;
   min-width: 0;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow: hidden;
+  resize: none;
+  padding: 0;
+  margin: 0;
+  line-height: 1.3;
+  min-height: 1.3em;
+  max-height: 10em;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/**
+ * Hide scrollbars for textarea
+ */
+.terminal-input::-webkit-scrollbar {
+  display: none;
 }

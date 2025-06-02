@@ -248,7 +248,7 @@ const MusicPlayer = ({
   return (
     <div className="music-player">
       <div className="music-header">
-        <h3>🎵 {tracks[currentIndex] || "No Track Selected"}</h3>
+        <h3>🎵 {tracks[currentIndex] ? tracks[currentIndex].split('.').slice(0, -1).join('.') || tracks[currentIndex] : "No Track Selected"}</h3>
       </div>
 
       <div className="vinyl-container">
