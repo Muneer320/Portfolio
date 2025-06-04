@@ -68,6 +68,28 @@ const FileManager = ({ onOpenFile, initialPath = "/home/muneer" }) => {
     });
   }, []);
 
+  /**
+   * Listen for localStorage changes to refresh file system
+   */
+  useEffect(() => {
+    const handleStorageChange = () => {
+      loadFileSystem().then((fs) => {
+        setFileSystem(fs);
+      });
+    };
+
+    // Listen for storage events (from other tabs)
+    window.addEventListener("storage", handleStorageChange);
+
+    // Also listen for a custom event for same-tab updates
+    window.addEventListener("filesystemUpdate", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("filesystemUpdate", handleStorageChange);
+    };
+  }, []);
+
   // ============================================================================
   // HELPER FUNCTIONS
   // ============================================================================

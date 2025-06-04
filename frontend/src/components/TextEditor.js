@@ -23,7 +23,7 @@
 // ============================================================================
 
 import React, { useState, useEffect } from "react";
-import { FaFileAlt, FaSave, FaFolderOpen } from "react-icons/fa";
+import { FaFileAlt, FaSave, FaFolderOpen, FaTrash } from "react-icons/fa";
 
 // ============================================================================
 // TEXTEDITOR COMPONENT
@@ -43,27 +43,43 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
   // ============================================================================
   // STATE MANAGEMENT
   // ============================================================================
-
   const [content, setContent] = useState("");
   const [fileName, setFileName] = useState("");
   const [showNameDialog, setShowNameDialog] = useState(false);
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [saveNotification, setSaveNotification] = useState("");
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [validationErrors, setValidationErrors] = useState([]);
+  const [tempFileName, setTempFileName] = useState("");
 
   // ============================================================================
   // EFFECTS
   // ============================================================================
-
   /**
    * Load file content on component mount or when file path changes
    */
   useEffect(() => {
     const loadFileContent = async () => {
       if (fileObj && fileObj.content) {
-        // If file object has content, use it (read-only mode)
-        setContent(fileObj.content);
-        setIsReadOnly(true);
-        setFileName(filePath ? filePath.split("/").pop() : "Read-only File");
+        // Check if this is a user-saved file
+        const documentsFiles = JSON.parse(
+          localStorage.getItem("documentsFiles") || "{}"
+        );
+        const fileName = filePath ? filePath.split("/").pop() : "";
+        const isUserSavedFile = documentsFiles[fileName];
+
+        if (isUserSavedFile) {
+          // User-saved file - editable
+          setContent(fileObj.content);
+          setIsReadOnly(false);
+          setFileName(fileName);
+        } else {
+          // Static file - read-only
+          setContent(fileObj.content);
+          setIsReadOnly(true);
+          setFileName(filePath ? filePath.split("/").pop() : "Read-only File");
+        }
       } else if (filePath) {
         try {
           // Try to fetch the actual file from public directory
@@ -117,63 +133,113 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
       setHasUnsavedChanges(true);
     }
   };
-
   /**
    * Handle saving the current file
-   */
-  const handleSave = () => {
+   */ const handleSave = () => {
     if (isReadOnly) return;
 
+    // If this is a new file without a name, prompt for name
     if (fileName === "untitled.txt" || !fileName) {
-      setShowNameDialog(true);
+      openSaveDialog();
       return;
     }
 
-    // Save to localStorage (simulating local file system)
-    localStorage.setItem(`file_${fileName}`, content);
+    // Validate the current filename
+    const validation = validateFileName(fileName);
+    if (!validation.isValid && validation.errors.length > 0) {
+      // Show validation errors but still save with corrected name
+      showSaveNotification(
+        `File saved with corrections: ${validation.errors.join(", ")}`
+      );
+    }
 
-    // Also save to Documents if it's a new file
+    const finalFileName = validation.sanitizedName;
+
+    // Save the file
+    localStorage.setItem(`file_${finalFileName}`, content);
+
+    // Add/Update in Documents
     const documentsFiles = JSON.parse(
       localStorage.getItem("documentsFiles") || "{}"
     );
-    documentsFiles[fileName] = {
+    documentsFiles[finalFileName] = {
       type: "file",
       content: content,
       created: new Date().toISOString(),
+      modified: new Date().toISOString(),
     };
     localStorage.setItem("documentsFiles", JSON.stringify(documentsFiles));
 
-    setHasUnsavedChanges(false);
-    alert("File saved successfully!");
-  };
+    // Update filename if it was sanitized
+    if (finalFileName !== fileName) {
+      setFileName(finalFileName);
+    }
 
+    setHasUnsavedChanges(false);
+
+    if (validation.isValid) {
+      showSaveNotification("File saved successfully!");
+    }
+
+    // Trigger filesystem update event for FileManager refresh
+    window.dispatchEvent(new Event("filesystemUpdate"));
+  };
   /**
    * Handle saving file with a new name
    *
    * @param {string} newFileName - New name for the file
    */
   const handleSaveAs = (newFileName) => {
-    if (!newFileName) return;
+    if (!newFileName.trim()) {
+      setValidationErrors(["Filename cannot be empty"]);
+      return;
+    }
 
-    setFileName(newFileName);
+    // Validate the filename
+    const validation = validateFileName(newFileName);
+
+    if (!validation.isValid) {
+      setValidationErrors(validation.errors);
+      // Still proceed with sanitized name
+    } else {
+      setValidationErrors([]);
+    }
+
+    const finalFileName = validation.sanitizedName;
+
+    setFileName(finalFileName);
     setShowNameDialog(false);
+    setValidationErrors([]);
 
     // Save the file
-    localStorage.setItem(`file_${newFileName}`, content);
+    localStorage.setItem(`file_${finalFileName}`, content);
 
     // Add to Documents
     const documentsFiles = JSON.parse(
       localStorage.getItem("documentsFiles") || "{}"
     );
-    documentsFiles[newFileName] = {
+    documentsFiles[finalFileName] = {
       type: "file",
       content: content,
       created: new Date().toISOString(),
+      modified: new Date().toISOString(),
     };
     localStorage.setItem("documentsFiles", JSON.stringify(documentsFiles));
-
     setHasUnsavedChanges(false);
-    alert(`File saved as ${newFileName}!`);
+
+    // Show appropriate notification
+    if (validation.isValid) {
+      showSaveNotification(`File saved as ${finalFileName}!`);
+    } else {
+      showSaveNotification(
+        `File saved as ${finalFileName} with corrections: ${validation.errors.join(
+          ", "
+        )}`
+      );
+    }
+
+    // Trigger filesystem update event for FileManager refresh
+    window.dispatchEvent(new Event("filesystemUpdate"));
   };
 
   /**
@@ -187,6 +253,162 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
   };
 
   /**
+   * Show save notification and auto-hide after 3 seconds
+   */
+  const showSaveNotification = (message) => {
+    setSaveNotification(message);
+    setTimeout(() => {
+      setSaveNotification("");
+    }, 3000);
+  };
+
+  /**
+   * Check if current file is user-saved (and therefore deletable)
+   */
+  const isUserSavedFile = () => {
+    const documentsFiles = JSON.parse(
+      localStorage.getItem("documentsFiles") || "{}"
+    );
+    return documentsFiles[fileName];
+  };
+
+  /**
+   * Validate and sanitize filename
+   * @param {string} filename - The filename to validate
+   * @returns {Object} { isValid: boolean, sanitizedName: string, errors: string[] }
+   */
+  const validateFileName = (filename) => {
+    const errors = [];
+    let sanitizedName = filename.trim();
+
+    // Check if empty
+    if (!sanitizedName) {
+      errors.push("Filename cannot be empty");
+      return { isValid: false, sanitizedName: "untitled.txt", errors };
+    }
+
+    // Valid extensions for text editor
+    const validExtensions = [
+      ".txt",
+      ".md",
+      ".json",
+      ".js",
+      ".css",
+      ".html",
+      ".xml",
+      ".log",
+      ".csv",
+    ];
+
+    // Remove illegal characters (Windows + general safety)
+    const illegalChars = /[<>:"/\\|?*\x00-\x1f]/g;
+    if (illegalChars.test(sanitizedName)) {
+      sanitizedName = sanitizedName.replace(illegalChars, "_");
+      errors.push("Illegal characters replaced with underscores");
+    }
+
+    // Check filename length (Windows has 255 char limit for full path, we'll use 50 for filename)
+    if (sanitizedName.length > 50) {
+      sanitizedName = sanitizedName.substring(0, 50);
+      errors.push("Filename truncated to 50 characters");
+    }
+
+    // Check for reserved Windows names
+    const reservedNames = /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\.|$)/i;
+    if (reservedNames.test(sanitizedName)) {
+      sanitizedName = `file_${sanitizedName}`;
+      errors.push("Reserved filename modified");
+    }
+
+    // Check if it has a valid extension
+    const hasValidExtension = validExtensions.some((ext) =>
+      sanitizedName.toLowerCase().endsWith(ext.toLowerCase())
+    );
+
+    if (!hasValidExtension) {
+      // Check if it has any extension
+      const lastDotIndex = sanitizedName.lastIndexOf(".");
+      if (lastDotIndex === -1 || lastDotIndex === sanitizedName.length - 1) {
+        // No extension or ends with dot
+        sanitizedName += ".txt";
+        errors.push("Added .txt extension");
+      } else {
+        // Has extension but not valid for text editor
+        const currentExt = sanitizedName.substring(lastDotIndex);
+        sanitizedName = sanitizedName.substring(0, lastDotIndex) + ".txt";
+        errors.push(`Changed ${currentExt} to .txt extension`);
+      }
+    }
+
+    // Check for duplicate names
+    const documentsFiles = JSON.parse(
+      localStorage.getItem("documentsFiles") || "{}"
+    );
+
+    let finalName = sanitizedName;
+    let counter = 1;
+    while (documentsFiles[finalName] && finalName !== fileName) {
+      const lastDotIndex = sanitizedName.lastIndexOf(".");
+      const baseName = sanitizedName.substring(0, lastDotIndex);
+      const extension = sanitizedName.substring(lastDotIndex);
+      finalName = `${baseName}_${counter}${extension}`;
+      counter++;
+    }
+
+    if (finalName !== sanitizedName) {
+      errors.push(`Renamed to avoid duplicate: ${finalName}`);
+      sanitizedName = finalName;
+    }
+
+    return {
+      isValid: errors.length === 0,
+      sanitizedName,
+      errors,
+    };
+  };
+
+  /**
+   * Handle file deletion
+   */
+  const handleDelete = () => {
+    if (!isUserSavedFile()) return;
+
+    // Remove from localStorage
+    localStorage.removeItem(`file_${fileName}`);
+
+    // Remove from documentsFiles
+    const documentsFiles = JSON.parse(
+      localStorage.getItem("documentsFiles") || "{}"
+    );
+    delete documentsFiles[fileName];
+    localStorage.setItem("documentsFiles", JSON.stringify(documentsFiles));
+
+    // Show notification and close dialog
+    showSaveNotification(`File ${fileName} deleted successfully!`);
+    setShowDeleteDialog(false);
+
+    // Trigger filesystem update
+    window.dispatchEvent(new Event("filesystemUpdate"));
+
+    // Reset to new file state
+    handleNewFile();
+  };
+  /**
+   * Handle input changes in save dialog with real-time validation
+   */
+  const handleDialogInputChange = (e) => {
+    const value = e.target.value;
+    setTempFileName(value);
+
+    if (value.trim()) {
+      const validation = validateFileName(value);
+      setValidationErrors(validation.errors);
+    } else {
+      setValidationErrors(["Filename cannot be empty"]);
+    }
+  };
+
+  /**
    * Handle keyboard shortcuts in save dialog
    *
    * @param {KeyboardEvent} e - Keyboard event
@@ -196,6 +418,8 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
       handleSaveAs(e.target.value);
     } else if (e.key === "Escape") {
       setShowNameDialog(false);
+      setValidationErrors([]);
+      setTempFileName("");
     }
   };
 
@@ -205,6 +429,15 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
   const handleDialogSave = () => {
     const input = document.querySelector(".modal input");
     handleSaveAs(input.value);
+  };
+
+  /**
+   * Handle dialog open
+   */
+  const openSaveDialog = () => {
+    setTempFileName(fileName === "untitled.txt" ? "" : fileName);
+    setValidationErrors([]);
+    setShowNameDialog(true);
   };
 
   // ============================================================================
@@ -226,23 +459,32 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
           title="Save current file"
         >
           <FaSave /> Save
-        </button>
+        </button>{" "}
         <button
-          onClick={() => setShowNameDialog(true)}
+          onClick={openSaveDialog}
           disabled={isReadOnly}
           className={isReadOnly ? "disabled" : ""}
           title="Save with new name"
         >
           <FaFolderOpen /> Save As
         </button>
+        {/* Delete button - only show for user-saved files */}
+        {isUserSavedFile() && (
+          <button
+            onClick={() => setShowDeleteDialog(true)}
+            className="delete-btn"
+            title="Delete this file"
+          >
+            <FaTrash /> Delete
+          </button>
+        )}
         {/* File Status */}
         <span className="file-path">
           {fileName}
           {hasUnsavedChanges && "*"}
           {isReadOnly && "(Read Only)"}
         </span>
-      </div>
-
+      </div>{" "}
       {/* Main Editor Area */}
       <textarea
         className="editor-content"
@@ -251,7 +493,10 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
         placeholder="Start typing..."
         readOnly={isReadOnly}
       />
-
+      {/* Save Notification */}
+      {saveNotification && (
+        <div className="save-notification">{saveNotification}</div>
+      )}{" "}
       {/* Save As Dialog Modal */}
       {showNameDialog && (
         <div className="modal-overlay">
@@ -260,12 +505,48 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
             <input
               type="text"
               placeholder="Enter filename..."
+              value={tempFileName}
+              onChange={handleDialogInputChange}
               onKeyDown={handleDialogKeyDown}
               autoFocus
             />
+            {/* Validation feedback */}
+            {validationErrors.length > 0 && (
+              <div className="validation-feedback">
+                {validationErrors.map((error, index) => (
+                  <div key={index} className="validation-error">
+                    ⚠️ {error}
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="modal-buttons">
               <button onClick={handleDialogSave}>Save</button>
-              <button onClick={() => setShowNameDialog(false)}>Cancel</button>
+              <button
+                onClick={() => {
+                  setShowNameDialog(false);
+                  setValidationErrors([]);
+                  setTempFileName("");
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Delete Confirmation Dialog */}
+      {showDeleteDialog && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Delete File</h3>
+            <p>Are you sure you want to delete "{fileName}"?</p>
+            <p className="warning-text">This action cannot be undone.</p>
+            <div className="modal-buttons">
+              <button onClick={handleDelete} className="delete-confirm-btn">
+                Delete
+              </button>
+              <button onClick={() => setShowDeleteDialog(false)}>Cancel</button>
             </div>
           </div>
         </div>

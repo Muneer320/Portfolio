@@ -3,6 +3,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .editor-toolbar {
@@ -33,6 +34,18 @@
   color: #61dafb;
 }
 
+/* Delete Button Styling */
+.editor-toolbar .delete-btn {
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  color: #f44336;
+}
+
+.editor-toolbar .delete-btn:hover:not(:disabled) {
+  background: rgba(244, 67, 54, 0.2);
+  border-color: rgba(244, 67, 54, 0.5);
+}
+
 .file-path {
   color: #61dafb;
   font-size: 0.8rem;
@@ -56,6 +69,42 @@
 .editor-toolbar button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Save Notification */
+.save-notification {
+  position: absolute;
+  top: 50px;
+  right: 15px;
+  background: rgba(76, 175, 80, 0.9);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s;
+  z-index: 1000;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }
 
 .modal-overlay {
@@ -86,6 +135,7 @@
   color: #61dafb;
 }
 
+/* Enhanced Modal Input */
 .modal input {
   width: 100%;
   background: rgba(255, 255, 255, 0.1);
@@ -93,8 +143,66 @@
   color: white;
   padding: 8px 12px;
   border-radius: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   outline: none;
+}
+
+.modal input:focus {
+  outline: none;
+  border-color: #61dafb;
+  box-shadow: 0 0 0 2px rgba(97, 218, 251, 0.2);
+}
+
+/* Validation Feedback */
+.validation-feedback {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.validation-error {
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin-bottom: 5px;
+  color: #ffcdd2;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: slideIn 0.2s ease-out;
+}
+
+.validation-error:last-child {
+  margin-bottom: 0;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Delete Confirmation Dialog */
+.modal .warning-text {
+  color: #f44336;
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.modal .delete-confirm-btn {
+  background: #f44336;
+  color: white;
+}
+
+.modal .delete-confirm-btn:hover {
+  background: #d32f2f;
 }
 
 .modal-buttons {

@@ -90,11 +90,13 @@ function App() {
 
   // ============================================================================
   // CONFIGURATION
-  // ============================================================================  // Minimum window sizes for each application type
+  // ============================================================================  
+  // Minimum window sizes for each application type
+  // ============================================================================  
   const minWindowSizes = {
     terminal: { width: 800, height: 450 },
     filemanager: { width: 650, height: 400 },
-    texteditor: { width: 500, height: 350 },
+    texteditor: { width: 600, height: 350 },
     browser: { width: 1000, height: 600 },
     musicplayer: { width: 450, height: 500 },
     imageviewer: { width: 500, height: 600 },
