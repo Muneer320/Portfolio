@@ -20,6 +20,7 @@
 // ============================================================================
 
 import React from "react";
+import { FaTerminal, FaFolder, FaEdit, FaGlobe, FaMusic } from "react-icons/fa";
 
 // ============================================================================
 // DESKTOP COMPONENT
@@ -36,7 +37,6 @@ const Desktop = ({ onOpenWindow }) => {
   // ============================================================================
   // CONSTANTS
   // ============================================================================
-
   /**
    * Desktop icons configuration
    * Contains application icons with their display properties and positions
@@ -44,31 +44,31 @@ const Desktop = ({ onOpenWindow }) => {
   const desktopIcons = [
     {
       id: "terminal",
-      icon: "💻",
+      icon: <FaTerminal />,
       name: "Terminal",
       position: { x: 50, y: 100 },
     },
     {
       id: "filemanager",
-      icon: "📁",
+      icon: <FaFolder />,
       name: "Files",
       position: { x: 50, y: 200 },
     },
     {
       id: "texteditor",
-      icon: "📝",
+      icon: <FaEdit />,
       name: "Text Editor",
       position: { x: 50, y: 300 },
     },
     {
       id: "browser",
-      icon: "🌐",
+      icon: <FaGlobe />,
       name: "Browser",
       position: { x: 50, y: 400 },
     },
     {
       id: "musicplayer",
-      icon: "🎵",
+      icon: <FaMusic />,
       name: "Music",
       position: { x: 50, y: 500 },
     },

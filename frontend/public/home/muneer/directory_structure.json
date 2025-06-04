@@ -101,6 +101,9 @@
     "Pictures": {
         "type": "directory",
         "children": {
+            "Arch-Linux-Wallpaper.jpg": {
+                "type": "file"
+            },
             "avatar.png": {
                 "type": "file"
             },

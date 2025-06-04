@@ -22,6 +22,13 @@
 // ============================================================================
 
 import React, { useState } from "react";
+import {
+  FaSearchPlus,
+  FaSearchMinus,
+  FaUndo,
+  FaSync,
+  FaRedo,
+} from "react-icons/fa";
 
 // ============================================================================
 // IMAGEVIEWER COMPONENT
@@ -201,38 +208,37 @@ const ImageViewer = ({ filePath, fileObj }) => {
       <div className="image-controls">
         {/* Zoom Controls */}
         <div className="control-group">
+          {" "}
           <button
             onClick={handleZoomOut}
             disabled={zoom <= MIN_ZOOM}
             title="Zoom out"
           >
-            🔍- Zoom Out
+            <FaSearchMinus /> Zoom Out
           </button>
           <button
             onClick={handleZoomIn}
             disabled={zoom >= MAX_ZOOM}
             title="Zoom in"
           >
-            🔍+ Zoom In
+            <FaSearchPlus /> Zoom In
           </button>
           <button onClick={handleReset} title="Reset all transformations">
-            🔄 Reset
+            <FaUndo /> Reset
           </button>
-        </div>
-
+        </div>{" "}
         {/* Rotation Controls */}
         <div className="control-group">
           <button onClick={handleRotate} title="Rotate 90 degrees clockwise">
-            ↻ Rotate 90°
+            <FaRedo /> Rotate 90°
           </button>
           <button
             onClick={handleResetRotation}
             title="Reset rotation to 0 degrees"
           >
-            📐 Reset Rotation
+            <FaSync /> Reset Rotation
           </button>
         </div>
-
         {/* Zoom Slider */}
         <div className="zoom-slider">
           <span>{MIN_ZOOM}%</span>

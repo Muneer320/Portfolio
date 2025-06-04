@@ -248,11 +248,17 @@
   border-radius: 50%;
   font-size: 1.2rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .main-controls button:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(97, 218, 251, 0.2);
+  color: #61dafb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Volume button positioned at right end */
@@ -269,9 +275,19 @@
   color: white !important;
   padding: 10px !important;
   border-radius: 50% !important;
-  font-size: 1.2rem !important;
+  font-size: 1rem !important;
   cursor: pointer !important;
-  transition: background 0.2s !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.volume-button:hover {
+  background: rgba(97, 218, 251, 0.2) !important;
+  color: #61dafb !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
 .volume-button:hover {

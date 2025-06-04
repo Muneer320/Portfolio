@@ -96,11 +96,17 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.8rem;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .image-controls button:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(97, 218, 251, 0.2);
+  color: #61dafb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .image-controls button:disabled {

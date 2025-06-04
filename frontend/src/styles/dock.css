@@ -41,11 +41,14 @@
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.1);
   font-size: 1.2rem;
+  color: white;
 }
 
 .dock-item:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(97, 218, 251, 0.2);
+  color: #61dafb;
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .dock-item.logo {
@@ -108,10 +111,14 @@
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.1);
   font-size: 1rem;
+  color: white;
 }
 
 .status-indicator:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(97, 218, 251, 0.2);
+  color: #61dafb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .status-indicator.music.active {
@@ -226,4 +233,5 @@
 .logout-btn:hover {
   background: rgba(255, 59, 48, 1);
   transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 59, 48, 0.4);
 }

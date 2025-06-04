@@ -23,10 +23,14 @@
   cursor: pointer;
   font-size: 0.8rem;
   transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.editor-toolbar button:hover {
+.editor-toolbar button:hover:not(.disabled) {
   background: rgba(255, 255, 255, 0.2);
+  color: #61dafb;
 }
 
 .file-path {

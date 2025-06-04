@@ -22,6 +22,7 @@
 // ============================================================================
 
 import React, { useState } from "react";
+import { FaArrowLeft, FaArrowRight, FaSync } from "react-icons/fa";
 
 // ============================================================================
 // BROWSER COMPONENT
@@ -102,13 +103,14 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
     <div className="browser">
       {/* Browser Navigation Bar */}
       <div className="browser-bar">
+        {" "}
         <button
           className="nav-btn"
           onClick={() => window.history.back()}
           disabled
           title="Go back"
         >
-          ←
+          <FaArrowLeft />
         </button>
         <button
           className="nav-btn"
@@ -116,7 +118,7 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
           disabled
           title="Go forward"
         >
-          →
+          <FaArrowRight />
         </button>
         <input
           type="text"
@@ -125,7 +127,7 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
           onChange={(e) => setUrl(e.target.value)}
           onKeyDown={handleUrlNavigation}
           placeholder="Enter URL or search..."
-        />
+        />{" "}
         <button
           className="refresh-btn"
           onClick={() => {
@@ -134,7 +136,7 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
           }}
           title="Refresh page"
         >
-          ⟳
+          <FaSync />
         </button>
       </div>
 

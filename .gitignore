@@ -31,7 +31,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
+*.env*
 *token.json*
 # vercel
 .vercel
@@ -40,9 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 *pyc*
-*.env*
 .ac
-agenthub/agents/youtube/db
 *credentials.json*
 
 venv/

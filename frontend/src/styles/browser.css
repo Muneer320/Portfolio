@@ -99,6 +99,18 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover:not(:disabled),
+.refresh-btn:hover {
+  background: rgba(97, 218, 251, 0.2);
+  color: #61dafb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .nav-btn:disabled {

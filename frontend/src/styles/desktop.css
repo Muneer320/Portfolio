@@ -1,7 +1,9 @@
 /* Desktop */
 .desktop {
   height: 100vh;
-  background: linear-gradient(135deg, #1e1e2e, #2d3748);
+  background: url("../../public/home/muneer/Pictures/Arch-Linux-Wallpaper.jpg")
+      center/cover no-repeat,
+    linear-gradient(135deg, #1e1e2e, #2d3748);
   position: relative;
   overflow: hidden;
   user-select: none;
@@ -42,6 +44,15 @@
 .desktop-icon .icon {
   font-size: 2.5rem;
   margin-bottom: 8px;
+  color: #ffffff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.2s ease;
+}
+
+.desktop-icon:hover .icon {
+  color: #61dafb;
+  transform: scale(1.1);
+  filter: drop-shadow(0 4px 8px rgba(97, 218, 251, 0.3));
 }
 
 .desktop-icon span {

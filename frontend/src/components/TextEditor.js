@@ -23,6 +23,7 @@
 // ============================================================================
 
 import React, { useState, useEffect } from "react";
+import { FaFileAlt, FaSave, FaFolderOpen } from "react-icons/fa";
 
 // ============================================================================
 // TEXTEDITOR COMPONENT
@@ -214,8 +215,9 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
     <div className="text-editor">
       {/* Editor Toolbar */}
       <div className="editor-toolbar">
+        {" "}
         <button onClick={handleNewFile} title="Create new file">
-          📄 New
+          <FaFileAlt /> New
         </button>
         <button
           onClick={handleSave}
@@ -223,7 +225,7 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
           className={isReadOnly ? "disabled" : ""}
           title="Save current file"
         >
-          💾 Save
+          <FaSave /> Save
         </button>
         <button
           onClick={() => setShowNameDialog(true)}
@@ -231,9 +233,8 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
           className={isReadOnly ? "disabled" : ""}
           title="Save with new name"
         >
-          💾 Save As
+          <FaFolderOpen /> Save As
         </button>
-
         {/* File Status */}
         <span className="file-path">
           {fileName}

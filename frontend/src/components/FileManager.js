@@ -21,6 +21,17 @@
 
 import React, { useState, useEffect } from "react";
 import { loadFileSystem } from "../utils/fileSystemLoader";
+import {
+  FaFolder,
+  FaImage,
+  FaFilePdf,
+  FaMusic,
+  FaFileAlt,
+  FaCog,
+  FaFile,
+  FaArrowLeft,
+  FaHome,
+} from "react-icons/fa";
 
 // ============================================================================
 // FILEMANAGER COMPONENT
@@ -123,23 +134,22 @@ const FileManager = ({ onOpenFile, initialPath = "/home/muneer" }) => {
     const audioExtensions = ["mp3", "wav", "ogg", "flac", "m4a", "webm"];
     return audioExtensions.includes(getFileExtension(filename));
   };
-
   /**
    * Get appropriate icon for file or directory
    *
    * @param {string} name - Name of the file/directory
    * @param {Object} item - File/directory object with type information
-   * @returns {string} Emoji icon representing the file type
+   * @returns {JSX.Element} React Icon component representing the file type
    */
   const getFileIcon = (name, item) => {
-    if (item.type === "directory") return "📁";
-    if (isImageFile(name)) return "🖼️";
-    if (isPdfFile(name)) return "📄";
-    if (isAudioFile(name)) return "🎵";
-    if (name.endsWith(".md")) return "📝";
-    if (name.endsWith(".txt")) return "📄";
-    if (name.endsWith(".json")) return "⚙️";
-    return "📄";
+    if (item.type === "directory") return <FaFolder />;
+    if (isImageFile(name)) return <FaImage />;
+    if (isPdfFile(name)) return <FaFilePdf />;
+    if (isAudioFile(name)) return <FaMusic />;
+    if (name.endsWith(".md")) return <FaFileAlt />;
+    if (name.endsWith(".txt")) return <FaFileAlt />;
+    if (name.endsWith(".json")) return <FaCog />;
+    return <FaFile />;
   };
 
   // ============================================================================
@@ -212,20 +222,20 @@ const FileManager = ({ onOpenFile, initialPath = "/home/muneer" }) => {
       {/* Header with navigation */}
       <div className="file-header">
         <div className="file-navigation">
+          {" "}
           {/* Back button (only show if not at root) */}
           {currentPath !== "/" && (
             <button className="back-btn" onClick={handleBackClick}>
-              ← Back
+              <FaArrowLeft /> Back
             </button>
           )}
-
           {/* Breadcrumb path */}
           <div className="file-path">
             <span
               className="path-segment clickable"
               onClick={() => setCurrentPath("/")}
             >
-              📁
+              <FaHome />
             </span>
             {pathParts.map((part, index) => (
               <span key={index}>
@@ -268,7 +278,14 @@ const FileManager = ({ onOpenFile, initialPath = "/home/muneer" }) => {
             ))
         ) : (
           <div className="empty-directory">
-            <p>📂 Directory is empty</p>
+            <FaFolder
+              style={{
+                fontSize: "3rem",
+                marginBottom: "1rem",
+                color: "#61dafb",
+              }}
+            />
+            <p>Directory is empty</p>
           </div>
         )}
       </div>

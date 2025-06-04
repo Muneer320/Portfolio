@@ -22,6 +22,14 @@
 
 // Core React imports
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import {
+  FaPlay,
+  FaPause,
+  FaVolumeUp,
+  FaVolumeMute,
+  FaStepBackward,
+  FaStepForward,
+} from "react-icons/fa";
 
 // Utility and style imports
 import { loadFileSystem } from "../utils/fileSystemLoader";
@@ -337,16 +345,13 @@ const MusicPlayer = ({
   const toggleVolumeControl = () => {
     setShowVolumeControl(!showVolumeControl);
   };
-
   /**
    * Get appropriate volume icon based on current volume
-   * @returns {string} Volume icon emoji
+   * @returns {JSX.Element} Volume icon component
    */
   const getVolumeIcon = () => {
-    if (volume === 0) return "🔇";
-    if (volume < 30) return "🔈";
-    if (volume < 70) return "🔉";
-    return "🔊";
+    if (volume === 0) return <FaVolumeMute />;
+    return <FaVolumeUp />;
   };
 
   /**
@@ -401,12 +406,18 @@ const MusicPlayer = ({
         </div>
 
         <div className="controls-row">
+          {" "}
           <div className="main-controls">
-            <button onClick={handlePrev}>⏮️</button>
-            <button onClick={handlePlayPause}>{isPlaying ? "⏸️" : "▶️"}</button>
-            <button onClick={handleNext}>⏭️</button>
+            <button onClick={handlePrev}>
+              <FaStepBackward />
+            </button>
+            <button onClick={handlePlayPause}>
+              {isPlaying ? <FaPause /> : <FaPlay />}
+            </button>
+            <button onClick={handleNext}>
+              <FaStepForward />
+            </button>
           </div>
-
           <div className="volume-button-container" ref={volumeControlRef}>
             <button onClick={toggleVolumeControl} className="volume-button">
               {getVolumeIcon()}

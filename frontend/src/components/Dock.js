@@ -37,6 +37,15 @@
 
 // Core React imports
 import React, { useState } from "react";
+import {
+  FaMusic,
+  FaVolumeUp,
+  FaVolumeMute,
+  FaWifi,
+  FaBatteryFull,
+  FaLinux,
+  FaLock,
+} from "react-icons/fa";
 
 // ============================================================================
 // DOCK COMPONENT
@@ -97,10 +106,12 @@ const Dock = ({
     <div className="dock">
       {/* ================================================================== */}
       {/* LEFT SECTION - BRANDING */}
-      {/* ================================================================== */}
+      {/* ================================================================== */}{" "}
       <div className="dock-left">
         <div className="dock-item logo">
-          <span>🐧</span>
+          <span>
+            <FaLinux />
+          </span>
           <div className="tooltip">Arch Linux</div>
         </div>
         <div className="dock-separator"></div>
@@ -124,13 +135,14 @@ const Dock = ({
               }`}
               onClick={toggleMusic}
             >
-              <span>{systemStatus.musicPlaying ? "⏸️" : "▶️"}</span>
+              <span>
+                {systemStatus.musicPlaying ? <FaMusic /> : <FaMusic />}
+              </span>
               <div className="tooltip">
                 {systemStatus.musicPlaying ? "Pause" : "Play"}
               </div>
             </div>
           )}
-
           {/* No Music Available Indicator */}
           {!systemStatus.hasMusic && (
             <div className="status-indicator music disabled">
@@ -138,14 +150,15 @@ const Dock = ({
               <div className="tooltip">No Music Available</div>
             </div>
           )}
-
           {/* Volume Control with Interactive Slider */}
           <div
             className="status-indicator volume"
             onMouseEnter={handleVolumeEnter}
             onMouseLeave={handleVolumeLeave}
           >
-            <span>🔊</span>
+            <span>
+              {systemStatus.volume > 0 ? <FaVolumeUp /> : <FaVolumeMute />}
+            </span>
             <div className="tooltip">Volume: {systemStatus.volume}%</div>
             {volumeMenuVisible && (
               <div
@@ -168,19 +181,21 @@ const Dock = ({
                 <button onClick={() => adjustVolume(5)}>+</button>
               </div>
             )}
-          </div>
-
+          </div>{" "}
           {/* WiFi Connection Status */}
           <div className="status-indicator wifi">
-            <span>{systemStatus.wifi ? "📶" : "📵"}</span>
+            <span>
+              <FaWifi />
+            </span>
             <div className="tooltip">
               {systemStatus.wifi ? "Connected" : "Disconnected"}
             </div>
           </div>
-
           {/* Battery Level Indicator */}
           <div className="status-indicator battery">
-            <span>🔋</span>
+            <span>
+              <FaBatteryFull />
+            </span>
             <div className="tooltip">
               Battery: {Math.round(systemStatus.battery)}%
             </div>
@@ -192,7 +207,7 @@ const Dock = ({
 
         {/* User Session Controls */}
         <button className="logout-btn" onClick={onLogout} title="Logout">
-          🔒
+          <FaLock />
         </button>
       </div>
     </div>
