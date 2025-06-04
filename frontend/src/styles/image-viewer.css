@@ -92,14 +92,17 @@
   background: rgba(255, 255, 255, 0.1);
   border: none;
   color: white;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 12px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  position: relative;
 }
 
 .image-controls button:hover:not(:disabled) {
@@ -107,6 +110,22 @@
   color: #61dafb;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.image-controls button:hover:not(:disabled)::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
 }
 
 .image-controls button:disabled {
@@ -138,4 +157,16 @@
   background: #61dafb;
   border-radius: 50%;
   cursor: pointer;
+}
+
+/* Reset Button Special Styling */
+.image-controls button.reset-button {
+  background: rgba(255, 87, 87, 0.15);
+  border: 1px solid rgba(255, 87, 87, 0.3);
+}
+
+.image-controls button.reset-button:hover:not(:disabled) {
+  background: rgba(255, 87, 87, 0.25);
+  color: #ff5757;
+  border-color: rgba(255, 87, 87, 0.5);
 }

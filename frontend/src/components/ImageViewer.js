@@ -22,13 +22,7 @@
 // ============================================================================
 
 import React, { useState } from "react";
-import {
-  FaSearchPlus,
-  FaSearchMinus,
-  FaUndo,
-  FaSync,
-  FaRedo,
-} from "react-icons/fa";
+import { FaSearchPlus, FaSearchMinus, FaRedo, FaHome } from "react-icons/fa";
 
 // ============================================================================
 // IMAGEVIEWER COMPONENT
@@ -109,7 +103,6 @@ const ImageViewer = ({ filePath, fileObj }) => {
     setZoom(100);
     setRotation(0);
   };
-
   /**
    * Handle zoom slider changes
    *
@@ -117,13 +110,6 @@ const ImageViewer = ({ filePath, fileObj }) => {
    */
   const handleZoomSlider = (e) => {
     setZoom(parseInt(e.target.value));
-  };
-
-  /**
-   * Reset only rotation to 0 degrees
-   */
-  const handleResetRotation = () => {
-    setRotation(0);
   };
 
   // ============================================================================
@@ -162,7 +148,6 @@ const ImageViewer = ({ filePath, fileObj }) => {
           <span>Rotation: {rotation}°</span>
         </div>
       </div>
-
       {/* Main Image Content Area */}
       <div className="image-content">
         <div className="image-container">
@@ -202,43 +187,37 @@ const ImageViewer = ({ filePath, fileObj }) => {
             </div>
           )}
         </div>
-      </div>
-
+      </div>{" "}
       {/* Image Controls */}
       <div className="image-controls">
-        {/* Zoom Controls */}
+        {/* All Controls in One Line */}
         <div className="control-group">
-          {" "}
           <button
             onClick={handleZoomOut}
             disabled={zoom <= MIN_ZOOM}
             title="Zoom out"
           >
-            <FaSearchMinus /> Zoom Out
+            <FaSearchMinus />
           </button>
           <button
             onClick={handleZoomIn}
             disabled={zoom >= MAX_ZOOM}
             title="Zoom in"
           >
-            <FaSearchPlus /> Zoom In
-          </button>
-          <button onClick={handleReset} title="Reset all transformations">
-            <FaUndo /> Reset
-          </button>
-        </div>{" "}
-        {/* Rotation Controls */}
-        <div className="control-group">
+            <FaSearchPlus />
+          </button>{" "}
           <button onClick={handleRotate} title="Rotate 90 degrees clockwise">
-            <FaRedo /> Rotate 90°
+            <FaRedo />
           </button>
           <button
-            onClick={handleResetRotation}
-            title="Reset rotation to 0 degrees"
+            onClick={handleReset}
+            title="Reset all transformations"
+            className="reset-button"
           >
-            <FaSync /> Reset Rotation
+            <FaHome />
           </button>
         </div>
+
         {/* Zoom Slider */}
         <div className="zoom-slider">
           <span>{MIN_ZOOM}%</span>
