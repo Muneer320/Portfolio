@@ -235,6 +235,24 @@ function App() {
     });
   }, []);
 
+  /**
+   * Login Screen Focus Management
+   * Automatically focus the user card when login screen loads for keyboard accessibility
+   */
+  useEffect(() => {
+    if (currentScreen === "login") {
+      // Small delay to ensure DOM is rendered
+      const timer = setTimeout(() => {
+        const userCard = document.querySelector(".user-card");
+        if (userCard) {
+          userCard.focus();
+        }
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentScreen]);
+
   // ============================================================================
   // UTILITY FUNCTIONS - FILE TYPE DETECTION
   // ============================================================================
@@ -571,11 +589,17 @@ function App() {
       </div>
     );
   }
-
   // Login Screen - User Authentication Interface
   if (currentScreen === "login") {
+    // Handle global Enter key for login
+    const handleLoginKeyPress = (e) => {
+      if (e.key === "Enter") {
+        setCurrentScreen("desktop");
+      }
+    };
+
     return (
-      <div className="login-screen">
+      <div className="login-screen" onKeyDown={handleLoginKeyPress}>
         <div className="login-container">
           <h1 className="system-title">Arch Linux</h1>
           <div className="user-selection">
@@ -586,6 +610,7 @@ function App() {
                 e.key === "Enter" && setCurrentScreen("desktop")
               }
               tabIndex={0}
+              autoFocus
             >
               <div className="user-avatar">
                 <span>MA</span>

@@ -36,15 +36,21 @@
 // ============================================================================
 
 // Core React imports
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaMusic,
   FaVolumeUp,
   FaVolumeMute,
   FaWifi,
   FaBatteryFull,
+  FaBatteryHalf,
+  FaBatteryQuarter,
+  FaPlug,
   FaLinux,
   FaLock,
+  FaInfoCircle,
+  FaDesktop,
+  FaClock,
 } from "react-icons/fa";
 
 // ============================================================================
@@ -64,6 +70,133 @@ const Dock = ({
 
   // Volume control menu visibility state
   const [volumeMenuVisible, setVolumeMenuVisible] = useState(false);
+
+  // System info panel visibility state
+  const [systemInfoVisible, setSystemInfoVisible] = useState(false);
+  // Real battery information state
+  const [batteryInfo, setBatteryInfo] = useState({
+    level: systemStatus.battery || 85, // Default fallback value
+    charging: false,
+    chargingTime: null,
+    dischargingTime: null,
+    supported: false,
+  });
+
+  // System information state
+  const [systemInfo, setSystemInfo] = useState({
+    userAgent: navigator.userAgent,
+    platform: navigator.platform,
+    language: navigator.language,
+    onlineStatus: navigator.onLine,
+    cookieEnabled: navigator.cookieEnabled,
+    screenResolution: `${screen.width}x${screen.height}`,
+    viewport: `${window.innerWidth}x${window.innerHeight}`,
+    colorDepth: screen.colorDepth,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  });
+
+  // ============================================================================
+  // EFFECTS - BATTERY API AND SYSTEM MONITORING
+  // ============================================================================
+  /**
+   * Initialize Battery API and monitor battery status
+   */
+  useEffect(() => {
+    const initBatteryAPI = async () => {
+      // Check if Battery API is supported
+      if ("getBattery" in navigator) {
+        try {
+          const battery = await navigator.getBattery();
+
+          setBatteryInfo({
+            level: Math.round(battery.level * 100),
+            charging: battery.charging,
+            chargingTime: battery.chargingTime,
+            dischargingTime: battery.dischargingTime,
+            supported: true,
+          });
+
+          // Add event listeners for battery changes
+          const updateBatteryInfo = () => {
+            setBatteryInfo({
+              level: Math.round(battery.level * 100),
+              charging: battery.charging,
+              chargingTime: battery.chargingTime,
+              dischargingTime: battery.dischargingTime,
+              supported: true,
+            });
+          };
+
+          battery.addEventListener("chargingchange", updateBatteryInfo);
+          battery.addEventListener("levelchange", updateBatteryInfo);
+          battery.addEventListener("chargingtimechange", updateBatteryInfo);
+          battery.addEventListener("dischargingtimechange", updateBatteryInfo);
+
+          // Cleanup listeners
+          return () => {
+            battery.removeEventListener("chargingchange", updateBatteryInfo);
+            battery.removeEventListener("levelchange", updateBatteryInfo);
+            battery.removeEventListener(
+              "chargingtimechange",
+              updateBatteryInfo
+            );
+            battery.removeEventListener(
+              "dischargingtimechange",
+              updateBatteryInfo
+            );
+          };
+        } catch (error) {
+          console.log("Battery API not supported or failed:", error);
+          // Fallback to simulated battery with default values
+          setBatteryInfo((prev) => ({
+            ...prev,
+            level: systemStatus.battery || 85,
+            supported: false,
+          }));
+        }
+      } else {
+        // Battery API not available, use fallback
+        console.log("Battery API not available in this browser");
+        setBatteryInfo((prev) => ({
+          ...prev,
+          level: systemStatus.battery || 85,
+          supported: false,
+        }));
+      }
+    };
+
+    initBatteryAPI();
+  }, [systemStatus.battery]);
+
+  /**
+   * Monitor online status and update system info
+   */
+  useEffect(() => {
+    const updateOnlineStatus = () => {
+      setSystemInfo((prev) => ({
+        ...prev,
+        onlineStatus: navigator.onLine,
+        viewport: `${window.innerWidth}x${window.innerHeight}`,
+      }));
+    };
+
+    const updateViewport = () => {
+      setSystemInfo((prev) => ({
+        ...prev,
+        viewport: `${window.innerWidth}x${window.innerHeight}`,
+      }));
+    };
+
+    window.addEventListener("online", updateOnlineStatus);
+    window.addEventListener("offline", updateOnlineStatus);
+    window.addEventListener("resize", updateViewport);
+
+    return () => {
+      window.removeEventListener("online", updateOnlineStatus);
+      window.removeEventListener("offline", updateOnlineStatus);
+      window.removeEventListener("resize", updateViewport);
+    };
+  }, []);
 
   // ============================================================================
   // EVENT HANDLERS
@@ -96,6 +229,76 @@ const Dock = ({
         setVolumeMenuVisible(false);
       }
     }, 100);
+  };
+
+  /**
+   * Handle system info panel visibility
+   */
+  const handleSystemInfoEnter = () => {
+    setSystemInfoVisible(true);
+  };
+
+  const handleSystemInfoLeave = () => {
+    setTimeout(() => {
+      const systemInfoPanel = document.querySelector(".system-info-panel");
+      const systemInfoIndicator = document.querySelector(
+        ".status-indicator.system-info"
+      );
+
+      if (
+        !systemInfoPanel ||
+        (!systemInfoPanel.matches(":hover") &&
+          !systemInfoIndicator.matches(":hover"))
+      ) {
+        setSystemInfoVisible(false);
+      }
+    }, 100);
+  };
+
+  // ============================================================================
+  // HELPER FUNCTIONS
+  // ============================================================================
+
+  /**
+   * Get appropriate battery icon based on level and charging status
+   */
+  const getBatteryIcon = () => {
+    const level = batteryInfo.supported
+      ? batteryInfo.level
+      : systemStatus.battery;
+
+    if (batteryInfo.charging) {
+      return <FaPlug />;
+    }
+
+    if (level > 75) {
+      return <FaBatteryFull />;
+    } else if (level > 25) {
+      return <FaBatteryHalf />;
+    } else {
+      return <FaBatteryQuarter />;
+    }
+  };
+  /**
+   * Get battery status tooltip text
+   */
+  const getBatteryTooltip = () => {
+    const level = batteryInfo.supported
+      ? batteryInfo.level
+      : Math.round(systemStatus.battery);
+    const status = batteryInfo.charging ? " (Charging)" : "";
+    const apiStatus = batteryInfo.supported ? "" : " (Simulated)";
+    return `Battery: ${level}%${status}${apiStatus}`;
+  };
+
+  /**
+   * Format time remaining for battery
+   */
+  const formatBatteryTime = (seconds) => {
+    if (!seconds || seconds === Infinity) return "Unknown";
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
   };
 
   // ============================================================================
@@ -180,28 +383,99 @@ const Dock = ({
                 <span>{systemStatus.volume}%</span>
                 <button onClick={() => adjustVolume(5)}>+</button>
               </div>
-            )}
+            )}{" "}
           </div>{" "}
-          {/* WiFi Connection Status */}
-          <div className="status-indicator wifi">
+          {/* System Information Panel */}
+          <div
+            className="status-indicator system-info"
+            onMouseEnter={handleSystemInfoEnter}
+            onMouseLeave={handleSystemInfoLeave}
+          >
             <span>
-              <FaWifi />
+              <FaInfoCircle />
             </span>
-            <div className="tooltip">
-              {systemStatus.wifi ? "Connected" : "Disconnected"}
-            </div>
+            <div className="tooltip">System Information</div>
+            {systemInfoVisible && (
+              <div
+                className="system-info-panel"
+                onMouseEnter={() => setSystemInfoVisible(true)}
+                onMouseLeave={handleSystemInfoLeave}
+              >
+                <div className="system-info-section">
+                  <h4>Network Status</h4>
+                  <div className="info-item">
+                    <FaWifi />
+                    <span>
+                      {systemInfo.onlineStatus ? "Online" : "Offline"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="system-info-section">
+                  <h4>Display</h4>
+                  <div className="info-item">
+                    <FaDesktop />
+                    <span>{systemInfo.viewport}</span>
+                  </div>
+                  <div className="info-item">
+                    <span>Screen: {systemInfo.screenResolution}</span>
+                  </div>
+                </div>
+
+                <div className="system-info-section">
+                  <h4>System</h4>
+                  <div className="info-item">
+                    <span>Platform: {systemInfo.platform}</span>
+                  </div>
+                  <div className="info-item">
+                    <FaClock />
+                    <span>{systemInfo.timezone}</span>
+                  </div>
+                  <div className="info-item">
+                    <span>Language: {systemInfo.language}</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-          {/* Battery Level Indicator */}
+          {/* Enhanced Battery Level Indicator */}
           <div className="status-indicator battery">
-            <span>
-              <FaBatteryFull />
+            <span
+              style={{
+                color:
+                  batteryInfo.supported && batteryInfo.level < 20
+                    ? "#ff4444"
+                    : batteryInfo.charging
+                    ? "#4ade80"
+                    : "white",
+              }}
+            >
+              {getBatteryIcon()}
             </span>
-            <div className="tooltip">
-              Battery: {Math.round(systemStatus.battery)}%
-            </div>
+            <div className="tooltip">{getBatteryTooltip()}</div>
             <div className="battery-level">
-              {Math.round(systemStatus.battery)}%
+              {batteryInfo.supported
+                ? batteryInfo.level
+                : Math.round(systemStatus.battery)}
+              %
+              {batteryInfo.supported && batteryInfo.charging && (
+                <span className="charging-indicator">⚡</span>
+              )}
             </div>
+            {batteryInfo.supported && (
+              <div className="battery-details">
+                {batteryInfo.charging ? (
+                  <span>
+                    Charging - {formatBatteryTime(batteryInfo.chargingTime)} to
+                    full
+                  </span>
+                ) : (
+                  <span>
+                    {formatBatteryTime(batteryInfo.dischargingTime)} remaining
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
