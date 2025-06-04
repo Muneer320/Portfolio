@@ -271,8 +271,10 @@ const FileManager = ({ onOpenFile, initialPath = "/home/muneer" }) => {
                 onClick={() => handleItemClick(name, item)}
                 title={item.description || name}
               >
-                <span className="file-icon">{getFileIcon(name, item)}</span>
-                <span className="file-name">{name}</span>
+                <div className="file-item-left">
+                  <span className="file-icon">{getFileIcon(name, item)}</span>
+                  <span className="file-name">{name}</span>
+                </div>
                 <span className="file-type">{item.type}</span>
               </div>
             ))

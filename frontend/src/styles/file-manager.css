@@ -13,6 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 50px;
 }
 
 .back-btn {
@@ -45,6 +46,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  position: relative;
+  justify-content: space-between;
 }
 
 .file-item:hover {
@@ -61,18 +64,41 @@
   align-items: center;
   gap: 10px;
   width: 100%;
+  min-height: 30px;
+  height: 30px;
+  white-space: nowrap;
+}
+
+.file-navigation * {
+  vertical-align: middle;
 }
 
 .file-path {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 0;
   flex: 1;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  height: 100%;
+}
+
+.file-path > span {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex-shrink: 0;
 }
 
 .path-segment {
   color: #61dafb;
   font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  white-space: nowrap;
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .path-segment.clickable {
@@ -88,7 +114,13 @@
 
 .path-separator {
   color: #666;
-  margin: 0 2px;
+  margin: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  line-height: 1;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 .file-icon {
@@ -116,6 +148,8 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  height: 30px;
+  flex-shrink: 0;
 }
 
 .back-btn:hover {
@@ -136,4 +170,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* File item content organization */
+.file-item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.file-name {
+  color: white;
+  font-size: 0.9rem;
+}
+
+.file-type {
+  font-size: 0.7rem;
+  color: #999;
+  font-style: italic;
+  text-transform: capitalize;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.8;
 }
