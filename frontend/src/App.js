@@ -55,6 +55,7 @@ import TextEditor from "./components/TextEditor";
 import Browser from "./components/Browser";
 import MusicPlayer from "./components/MusicPlayer";
 import ImageViewer from "./components/ImageViewer";
+import MobileArchInstaller from "./components/MobileArchInstaller";
 
 // ============================================================================
 // MAIN APPLICATION COMPONENT
@@ -90,9 +91,9 @@ function App() {
 
   // ============================================================================
   // CONFIGURATION
-  // ============================================================================  
+  // ============================================================================
   // Minimum window sizes for each application type
-  // ============================================================================  
+  // ============================================================================
   const minWindowSizes = {
     terminal: { width: 800, height: 450 },
     filemanager: { width: 650, height: 400 },
@@ -561,33 +562,10 @@ function App() {
 
   // ============================================================================
   // RENDER LOGIC - RESPONSIVE AND SCREEN-BASED RENDERING
-  // ============================================================================  // ============================================================================
-  // RENDER LOGIC - RESPONSIVE AND SCREEN-BASED RENDERING
   // ============================================================================
-
-  // Mobile/Small Screen Warning - Responsive Design Fallback
+  // Mobile/Small Screen - Arch Installer Experience
   if (isSmallScreen) {
-    return (
-      <div className="small-screen-warning">
-        <div className="warning-content">
-          <h1>🖥️ Desktop Experience Required</h1>
-          <p>
-            This portfolio is designed as an interactive Linux desktop
-            experience.
-          </p>
-          <p>
-            Please view on a larger screen (minimum 1024x768) for the best
-            experience.
-          </p>
-          <div className="contact-info">
-            <h3>Quick Contact:</h3>
-            <p>📧 muneer.alam320@email.com</p>
-            <p>🐙 github.com/muneer320</p>
-            <p>🌐 linkedin.com/in/muneer320</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <MobileArchInstaller />;
   }
   // Login Screen - User Authentication Interface
   if (currentScreen === "login") {

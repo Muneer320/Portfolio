@@ -1,20 +1,24 @@
 .idea/
 dist
+
 # dependencies
 node_modules/
 /.pnp
 .pnp.js
 .yarn/install-state.gz
 .vscode
+
 # testing
 /coverage
 dump.rdb
 chainlit.md
 .chainlit
+
 # next.js
 /.next/
 /out/
 .ipynb_checkpoints/
+
 # production
 /build
 
@@ -24,6 +28,7 @@ chainlit.md
 .dockerignore
 *.log
 _*
+*.py
 
 # debug
 npm-debug.log*

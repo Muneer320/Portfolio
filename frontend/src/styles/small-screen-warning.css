@@ -1,4 +1,21 @@
-/* Small Screen Warning */
+/**
+ * Small Screen Warning Styles
+ * 
+ * Styling for the deprecated small screen warning component.
+ * This has been replaced by the MobileArchInstaller component
+ * but is kept for reference and potential fallback scenarios.
+ * 
+ * @author Muneer
+ * @deprecated Replaced by MobileArchInstaller component
+ */
+
+/* ============================================================================
+   MAIN WARNING CONTAINER
+   ============================================================================ */
+
+/**
+ * Full-screen warning container with gradient background
+ */
 .small-screen-warning {
   height: 100vh;
   background: linear-gradient(135deg, #0f0f23, #1a1a2e);
@@ -10,18 +27,35 @@
   padding: 2rem;
 }
 
+/* ============================================================================
+   WARNING CONTENT
+   ============================================================================ */
+
+/**
+ * Main warning heading
+ */
 .warning-content h1 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
   color: #61dafb;
 }
 
+/**
+ * Warning description text
+ */
 .warning-content p {
   font-size: 1.1rem;
   margin-bottom: 1rem;
   line-height: 1.6;
 }
 
+/* ============================================================================
+   CONTACT INFORMATION SECTION
+   ============================================================================ */
+
+/**
+ * Contact information card with glass effect
+ */
 .contact-info {
   margin-top: 2rem;
   padding: 1.5rem;
@@ -30,11 +64,17 @@
   backdrop-filter: blur(10px);
 }
 
+/**
+ * Contact section heading
+ */
 .contact-info h3 {
   margin-bottom: 1rem;
   color: #21e065;
 }
 
+/**
+ * Contact information items
+ */
 .contact-info p {
   font-size: 1rem;
   margin-bottom: 0.5rem;

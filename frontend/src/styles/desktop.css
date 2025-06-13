@@ -1,4 +1,22 @@
-/* Desktop */
+/**
+ * Desktop Component Styles
+ * 
+ * Styling for the main desktop interface including:
+ * - Desktop background with Arch Linux wallpaper
+ * - Application icons with hover effects
+ * - Proper spacing and transitions
+ * - Icon positioning and animations
+ * 
+ * @author Muneer
+ */
+
+/* ============================================================================
+   MAIN DESKTOP CONTAINER
+   ============================================================================ */
+
+/**
+ * Main desktop container with wallpaper background
+ */
 .desktop {
   height: 100vh;
   background: url("../../public/home/muneer/Pictures/Arch-Linux-Wallpaper.jpg")
@@ -9,14 +27,22 @@
   user-select: none;
 }
 
-/* Desktop Area */
+/**
+ * Desktop area with proper padding for dock
+ */
 .desktop-area {
   padding-top: 80px;
   height: 100vh;
   position: relative;
 }
 
-/* Desktop Icons */
+/* ============================================================================
+   DESKTOP ICONS
+   ============================================================================ */
+
+/**
+ * Container for all desktop icons
+ */
 .desktop-icons {
   position: absolute;
   top: 0;
@@ -25,6 +51,9 @@
   height: 100%;
 }
 
+/**
+ * Individual desktop icon styling
+ */
 .desktop-icon {
   display: flex;
   flex-direction: column;
@@ -36,11 +65,17 @@
   min-width: 80px;
 }
 
+/**
+ * Desktop icon hover effects
+ */
 .desktop-icon:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: scale(1.05);
 }
 
+/**
+ * Icon symbol styling
+ */
 .desktop-icon .icon {
   font-size: 2.5rem;
   margin-bottom: 8px;
@@ -49,14 +84,21 @@
   transition: all 0.2s ease;
 }
 
+/**
+ * Icon hover effects with color and scale changes
+ */
 .desktop-icon:hover .icon {
   color: #61dafb;
   transform: scale(1.1);
   filter: drop-shadow(0 4px 8px rgba(97, 218, 251, 0.3));
 }
 
+/**
+ * Icon label styling
+ */
 .desktop-icon span {
   color: white;
   font-size: 0.8rem;
   text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }

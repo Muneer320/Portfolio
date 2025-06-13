@@ -1,9 +1,31 @@
+/**
+ * Portfolio Data Configuration
+ *
+ * Central data store containing all portfolio information including:
+ * - Personal bio and background
+ * - Education details
+ * - Technical skills and competencies
+ * - Professional experience
+ * - Project showcase
+ * - Contact information
+ *
+ * This data is used throughout the portfolio application to populate
+ * terminal commands, mobile installer content, and other displays.
+ *
+ * @author Muneer Alam
+ * @module portfolioData
+ */
+
+// ============================================================================
+// PORTFOLIO DATA EXPORT
+// ============================================================================
+
 export const portfolioData = {
   bio: `Software Developer with 3+ years of experience in full-stack development.
 Passionate about creating efficient, scalable solutions using modern technologies.
 Currently specializing in React, Node.js, and cloud architecture.
 Love contributing to open-source projects and exploring new tech trends.`,
-  
+
   education: `🎓 Bachelor of Science in Computer Science
 📍 University of Technology (2019-2023)
 📊 CGPA: 3.8/4.0
@@ -22,6 +44,20 @@ Love contributing to open-source projects and exploring new tech trends.`,
 • Docker, Kubernetes, AWS, Git
 • MongoDB, PostgreSQL, Redis
 • Linux, Bash scripting`,
+
+  skillTags: [
+    "React",
+    "Node.js",
+    "Python",
+    "JavaScript",
+    "TypeScript",
+    "Docker",
+    "AWS",
+    "MongoDB",
+    "PostgreSQL",
+    "Git",
+    "Linux",
+  ],
 
   experience: `👨‍💻 Full Stack Developer | TechCorp Solutions
 📅 Jan 2023 - Present
@@ -56,5 +92,12 @@ Love contributing to open-source projects and exploring new tech trends.`,
 🌐 LinkedIn: linkedin.com/in/muneeralam
 🐙 GitHub: github.com/muneeralam
 🌍 Location: San Francisco, CA
-💼 Available for full-time opportunities`
+💼 Available for full-time opportunities`,
+
+  quickStats: {
+    experience: "3+ Years",
+    projects: "15+ Projects",
+    technologies: "10+ Technologies",
+    uptime: new Date().getFullYear() - 2019 + " Years",
+  },
 };

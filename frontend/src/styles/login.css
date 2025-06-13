@@ -1,4 +1,23 @@
-/* Login Screen */
+/**
+ * Login Screen Styles
+ * 
+ * Styling for the login interface with:
+ * - Full-screen background with Arch Linux wallpaper
+ * - Glassmorphic blur effects
+ * - User card selection interface
+ * - Smooth animations and transitions
+ * - Modern gradient typography
+ * 
+ * @author Muneer
+ */
+
+/* ============================================================================
+   MAIN LOGIN CONTAINER
+   ============================================================================ */
+
+/**
+ * Full-screen login container with wallpaper background
+ */
 .login-screen {
   height: 100vh;
   background: url("../../public/home/muneer/Pictures/Arch-Linux-Wallpaper.jpg")
@@ -11,7 +30,9 @@
   position: relative;
 }
 
-/* Glassmorphic blur overlay */
+/**
+ * Glassmorphic blur overlay for better readability
+ */
 .login-screen::before {
   content: "";
   position: absolute;
@@ -25,6 +46,13 @@
   z-index: 1;
 }
 
+/* ============================================================================
+   LOGIN INTERFACE
+   ============================================================================ */
+
+/**
+ * Central login container
+ */
 .login-container {
   text-align: center;
   max-width: 400px;
@@ -32,6 +60,9 @@
   z-index: 2;
 }
 
+/**
+ * Main system title with gradient text effect
+ */
 .system-title {
   font-size: 2.5rem;
   margin-bottom: 3rem;
@@ -43,10 +74,20 @@
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
+/* ============================================================================
+   USER SELECTION
+   ============================================================================ */
+
+/**
+ * User selection section container
+ */
 .user-selection {
   margin-bottom: 2rem;
 }
 
+/**
+ * User card styling with glassmorphic effect
+ */
 .user-card {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(15px);
@@ -62,6 +103,9 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
+/**
+ * User card hover and focus states
+ */
 .user-card:hover,
 .user-card:focus {
   background: rgba(255, 255, 255, 0.12);
@@ -71,7 +115,9 @@
   outline: none;
 }
 
-/* Enhanced focus state for keyboard navigation */
+/**
+ * Enhanced focus state for keyboard navigation
+ */
 .user-card:focus-visible {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(97, 218, 251, 0.6);
@@ -79,11 +125,20 @@
   outline: none;
 }
 
-/* Pulse animation for focused state */
+/**
+ * Pulse animation for focused state
+ */
 .user-card:focus {
   animation: focusPulse 2s infinite;
 }
 
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
+/**
+ * Focus pulse animation keyframes
+ */
 @keyframes focusPulse {
   0%,
   100% {
@@ -95,6 +150,13 @@
   }
 }
 
+/* ============================================================================
+   USER AVATAR AND INFO
+   ============================================================================ */
+
+/**
+ * User avatar styling
+ */
 .user-avatar {
   width: 60px;
   height: 60px;
@@ -110,18 +172,26 @@
   border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-.user-info h3 {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+/**
+ * User information container
+ */
+.user-info {
+  h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
 }
 
-.user-info p {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
+/**
+ * Footer styling for the login screen
+ */
 .login-footer {
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;

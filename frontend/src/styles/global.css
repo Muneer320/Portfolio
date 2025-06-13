@@ -1,10 +1,32 @@
-/* Global Styles and Reset */
+/**
+ * Global Styles and CSS Reset
+ * 
+ * Base styling for the entire portfolio application, including:
+ * - CSS reset and box-sizing normalization
+ * - Body font stack and background gradient
+ * - Responsive breakpoints for larger screens
+ * - Custom scrollbar styling
+ * - User selection controls for better UX
+ * 
+ * @author Muneer
+ */
+
+/* ============================================================================
+   CSS RESET AND BASE STYLES
+   ============================================================================ */
+
+/**
+ * Universal box-sizing reset for consistent layouts
+ */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/**
+ * Body styling with system font stack and gradient background
+ */
 body {
   font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, sans-serif;
@@ -12,7 +34,13 @@ body {
   background: linear-gradient(135deg, #1e1e2e, #2d3748);
 }
 
-/* Responsive adjustments for larger screens */
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+/**
+ * Enhanced layout for larger screens
+ */
 @media (min-width: 1440px) {
   .dock {
     min-width: 900px;
@@ -24,7 +52,13 @@ body {
   }
 }
 
-/* Scrollbar Styling */
+/* ============================================================================
+   CUSTOM SCROLLBAR STYLING
+   ============================================================================ */
+
+/**
+ * Webkit scrollbar customization for modern browsers
+ */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -42,7 +76,14 @@ body {
   background: rgba(255, 255, 255, 0.5);
 }
 
-/* Ensure no text selection except for editable areas */
+/* ============================================================================
+   USER INTERACTION CONTROLS
+   ============================================================================ */
+
+/**
+ * Disable text selection for desktop UI elements
+ * Ensures clean interaction experience
+ */
 .desktop * {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -50,6 +91,9 @@ body {
   user-select: none;
 }
 
+/**
+ * Enable text selection for editable areas
+ */
 .terminal-input,
 .editor-content,
 .url-bar {
