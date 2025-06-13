@@ -1,4 +1,8 @@
-/* Mobile Arch Installer Styles */
+/**
+ * Mobile Arch Installer Styles
+ * Styling for the mobile Arch Linux installer simulation
+ */
+
 .mobile-arch-installer {
   min-height: 100vh;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
@@ -8,7 +12,6 @@
   position: relative;
 }
 
-/* Welcome Screen */
 .arch-welcome {
   display: flex;
   flex-direction: column;
@@ -218,7 +221,6 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Installation Screen */
 .arch-installing {
   padding: 20px;
   min-height: 100vh;
@@ -365,7 +367,6 @@
   animation: spin 1s linear infinite;
 }
 
-/* Boot Screen */
 .arch-boot {
   padding: 20px;
   min-height: 100vh;
@@ -450,7 +451,6 @@
   box-shadow: 0 4px 15px rgba(153, 255, 153, 0.3);
 }
 
-/* Desktop Screen */
 .arch-desktop {
   padding: 20px;
   min-height: 100vh;

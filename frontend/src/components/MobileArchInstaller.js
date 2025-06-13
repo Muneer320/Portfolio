@@ -295,11 +295,9 @@ const MobileArchInstaller = () => {
               {installSteps[installStep].techDescription}
             </p>
           </div>
-        </div>
-
+        </div>{" "}
         <div className="step-content">
           <div className="content-preview">
-            {" "}
             {installSteps[installStep].content === "skills" && (
               <div className="skills-preview">
                 <h4>
@@ -318,17 +316,19 @@ const MobileArchInstaller = () => {
                       <span className="skill-tag">Docker</span>
                     </>
                   )}
-                </div>
+                </div>{" "}
               </div>
-            )}{" "}
+            )}
+
             {installSteps[installStep].content === "bio" && (
               <div className="bio-preview">
                 <h4>
                   <FaUser /> Loading...
                 </h4>
-                <p>{portfolioData.bio.substring(0, 100)}...</p>
+                <p>{portfolioData.bio.substring(0, 100)}...</p>{" "}
               </div>
-            )}{" "}
+            )}
+
             {installSteps[installStep].content === "experience" && (
               <div className="experience-preview">
                 <h4>
@@ -347,7 +347,6 @@ const MobileArchInstaller = () => {
             )}
           </div>
         </div>
-
         <div className="loading-indicator">
           <div className="spinner"></div>
           <span>Processing...</span>
@@ -411,7 +410,6 @@ const MobileArchInstaller = () => {
           </span>
         </div>
       </div>
-
       <div className="desktop-apps">
         {desktopApps.map((app) => (
           <div
@@ -429,10 +427,8 @@ const MobileArchInstaller = () => {
             </div>
           </div>
         ))}
-      </div>
-
+      </div>{" "}
       <div className="desktop-footer">
-        {" "}
         <div className="system-info">
           <span>
             <FaChartBar /> System: Portfolio v2.0
@@ -445,7 +441,6 @@ const MobileArchInstaller = () => {
           </span>
         </div>
       </div>
-
       {selectedApp && (
         <div className="app-modal">
           <div className="modal-content">

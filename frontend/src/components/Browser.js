@@ -5,21 +5,9 @@
  * GitHub profile simulation. Provides a realistic browsing experience
  * within the portfolio environment.
  *
- * Features:
- * - PDF document viewing for portfolio files
- * - Simulated GitHub profile page
- * - Navigation controls (back, forward, refresh)
- * - URL bar with keyboard navigation
- * - Quick links to other portfolio applications
- * - Loading states and animations
- *
- * @author Muneer
+ * @author Muneer Alam
  * @component
  */
-
-// ============================================================================
-// IMPORTS
-// ============================================================================
 
 import React, { useState, useEffect } from "react";
 import {
@@ -31,24 +19,7 @@ import {
   FaExternalLinkAlt,
 } from "react-icons/fa";
 
-// ============================================================================
-// BROWSER COMPONENT
-// ============================================================================
-
-/**
- * Browser Component
- *
- * @param {Object} props - Component props
- * @param {string} props.filePath - Path to file being viewed (for PDFs)
- * @param {Object} props.fileObj - File object with content (for PDFs)
- * @param {Function} props.onOpenWindow - Function to open other applications
- * @returns {JSX.Element} Browser component
- */
 const Browser = ({ filePath, fileObj, onOpenWindow }) => {
-  // ============================================================================
-  // STATE MANAGEMENT
-  // ============================================================================
-
   const [url, setUrl] = useState(
     filePath ? `file://${filePath}` : "https://github.com/muneer320"
   );
@@ -57,14 +28,12 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
   const [gitHubRepos, setGitHubRepos] = useState([]);
   const [gitHubError, setGitHubError] = useState(null);
   const [activeTab, setActiveTab] = useState("repositories");
-
   // ============================================================================
   // GITHUB API FUNCTIONS
   // ============================================================================
 
   /**
    * Fetch GitHub user profile data
-   * @param {string} username - GitHub username
    */
   const fetchGitHubProfile = async (username) => {
     try {
@@ -89,10 +58,8 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
       setIsLoading(false);
     }
   };
-
   /**
    * Fetch GitHub repositories
-   * @param {string} username - GitHub username
    */
   const fetchGitHubRepos = async (username) => {
     try {
@@ -230,10 +197,8 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
   // ============================================================================
   // RENDER - MAIN BROWSER
   // ============================================================================
-
   return (
     <div className="browser">
-      {/* Browser Navigation Bar */}
       <div className="browser-bar">
         {" "}
         <button
@@ -267,21 +232,18 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
         >
           <FaSync />
         </button>
-      </div>
-
-      {/* Browser Content Area */}
+      </div>{" "}
       <div className="browser-content">
+        {" "}
         {isLoading ? (
-          // Loading State
           <div className="loading">
             <div className="loading-spinner">⟳</div>
             <p>Loading...</p>
           </div>
         ) : url === "https://github.com/muneer320" ? (
-          // Real GitHub Profile with API Data
           <div className="github-page">
+            {" "}
             {gitHubError ? (
-              // Error State
               <div className="github-error">
                 <h2>⚠️ Unable to Load GitHub Profile</h2>
                 <p>Error: {gitHubError}</p>
@@ -302,7 +264,6 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
                 </button>
               </div>
             ) : gitHubData ? (
-              // Real GitHub Data
               <>
                 <div className="github-header">
                   <div className="github-avatar">
@@ -463,7 +424,6 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
                 )}
               </>
             ) : (
-              // Loading state for GitHub data
               <div className="github-loading">
                 <div className="loading-spinner">⟳</div>
                 <p>Loading GitHub profile...</p>
@@ -471,7 +431,6 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
             )}
           </div>
         ) : (
-          // Default Welcome Page
           <div className="default-page">
             <h2>🌟 Muneer Alam - Portfolio Browser</h2>
             <p>

@@ -1,4 +1,8 @@
-/* Modern Dock */
+/**
+ * Dock Styles
+ * Styling for the modern dock component with app icons and controls
+ */
+
 .dock {
   position: fixed;
   top: 20px;

@@ -57,7 +57,6 @@ const FileManager = ({ onOpenFile, initialPath = "/home/muneer" }) => {
   // ============================================================================
   // EFFECTS
   // ============================================================================
-
   /**
    * Load the file system on component mount
    */
@@ -67,7 +66,6 @@ const FileManager = ({ onOpenFile, initialPath = "/home/muneer" }) => {
       setLoading(false);
     });
   }, []);
-
   /**
    * Listen for localStorage changes to refresh file system
    */
@@ -76,9 +74,7 @@ const FileManager = ({ onOpenFile, initialPath = "/home/muneer" }) => {
       loadFileSystem().then((fs) => {
         setFileSystem(fs);
       });
-    };
-
-    // Listen for storage events (from other tabs)
+    }; // Listen for storage events (from other tabs)
     window.addEventListener("storage", handleStorageChange);
 
     // Also listen for a custom event for same-tab updates
@@ -241,17 +237,15 @@ const FileManager = ({ onOpenFile, initialPath = "/home/muneer" }) => {
 
   return (
     <div className="file-manager">
-      {/* Header with navigation */}
+      {" "}
       <div className="file-header">
         <div className="file-navigation">
-          {" "}
-          {/* Back button (only show if not at root) */}
           {currentPath !== "/" && (
             <button className="back-btn" onClick={handleBackClick}>
               <FaArrowLeft /> Back
             </button>
           )}
-          {/* Breadcrumb path */}
+
           <div className="file-path">
             <span
               className="path-segment clickable"
@@ -272,9 +266,7 @@ const FileManager = ({ onOpenFile, initialPath = "/home/muneer" }) => {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* File listing */}
+      </div>{" "}
       <div className="file-list">
         {contents && Object.keys(contents).length > 0 ? (
           Object.entries(contents)

@@ -1,4 +1,8 @@
-/* File Manager */
+/**
+ * File Manager Styles
+ * Styling for the file manager component with navigation and file listing
+ */
+
 .file-manager {
   height: 100%;
   display: flex;

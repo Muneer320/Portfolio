@@ -492,12 +492,10 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
         onChange={handleContentChange}
         placeholder="Start typing..."
         readOnly={isReadOnly}
-      />
-      {/* Save Notification */}
+      />{" "}
       {saveNotification && (
         <div className="save-notification">{saveNotification}</div>
-      )}{" "}
-      {/* Save As Dialog Modal */}
+      )}
       {showNameDialog && (
         <div className="modal-overlay">
           <div className="modal">
@@ -510,7 +508,7 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
               onKeyDown={handleDialogKeyDown}
               autoFocus
             />
-            {/* Validation feedback */}
+
             {validationErrors.length > 0 && (
               <div className="validation-feedback">
                 {validationErrors.map((error, index) => (

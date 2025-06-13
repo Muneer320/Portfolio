@@ -15,19 +15,6 @@
  * - Linux-themed styling with Arch Linux branding
  *
  * @component
- * @param {Object} props - Component properties
- * @param {Date} props.time - Current system time for display
- * @param {Object} props.systemStatus - System status information
- * @param {boolean} props.systemStatus.hasMusic - Whether music is available
- * @param {boolean} props.systemStatus.musicPlaying - Whether music is currently playing
- * @param {number} props.systemStatus.volume - Current volume level (0-100)
- * @param {boolean} props.systemStatus.wifi - WiFi connection status
- * @param {number} props.systemStatus.battery - Battery percentage (0-100)
- * @param {Function} props.onOpenWindow - Function to open application windows
- * @param {Function} props.onLogout - Function to handle user logout
- * @param {Function} props.toggleMusic - Function to toggle music playback
- * @param {Function} props.adjustVolume - Function to adjust system volume
- * @returns {JSX.Element} The rendered dock component
  * @author Muneer
  */
 
@@ -94,10 +81,10 @@ const Dock = ({
     colorDepth: screen.colorDepth,
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
-
   // ============================================================================
   // EFFECTS - BATTERY API AND SYSTEM MONITORING
   // ============================================================================
+
   /**
    * Initialize Battery API and monitor battery status
    */
@@ -167,7 +154,6 @@ const Dock = ({
 
     initBatteryAPI();
   }, [systemStatus.battery]);
-
   /**
    * Monitor online status and update system info
    */
@@ -307,9 +293,6 @@ const Dock = ({
 
   return (
     <div className="dock">
-      {/* ================================================================== */}
-      {/* LEFT SECTION - BRANDING */}
-      {/* ================================================================== */}{" "}
       <div className="dock-left">
         <div className="dock-item logo">
           <span>
@@ -319,15 +302,11 @@ const Dock = ({
         </div>
         <div className="dock-separator"></div>
       </div>
-      {/* ================================================================== */}
-      {/* CENTER SECTION - TIME DISPLAY */}
-      {/* ================================================================== */}
+
       <div className="dock-center">
         <span className="time">{time.toLocaleTimeString()}</span>
       </div>
-      {/* ================================================================== */}
-      {/* RIGHT SECTION - STATUS INDICATORS AND CONTROLS */}
-      {/* ================================================================== */}{" "}
+
       <div className="dock-right">
         <div className="status-indicators">
           {/* Music Player Controls */}
@@ -345,8 +324,7 @@ const Dock = ({
                 {systemStatus.musicPlaying ? "Pause" : "Play"}
               </div>
             </div>
-          )}
-          {/* No Music Available Indicator */}
+          )}{" "}
           {!systemStatus.hasMusic && (
             <div className="status-indicator music disabled">
               <span>🚫</span>

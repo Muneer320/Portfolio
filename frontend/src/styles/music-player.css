@@ -1,4 +1,8 @@
-/* Music Player styles */
+/**
+ * Music Player Styles
+ * Styling for the music player component with vinyl animation and controls
+ */
+
 .music-player {
   height: 100%;
   display: flex;
@@ -119,7 +123,6 @@
   transform: translate(-50%, -50%);
 }
 
-/* Different positions for each music note */
 .vinyl-note-1 {
   top: 30%;
   left: 70%;
@@ -191,7 +194,6 @@
   animation-play-state: running;
 }
 
-/* When not spinning, pause the animation at current position */
 .vinyl:not(.spinning) {
   animation-play-state: paused;
 }
@@ -214,7 +216,6 @@
   }
 }
 
-/* Bottom controls anchored to bottom */
 .bottom-controls {
   position: absolute;
   bottom: 15px;
@@ -261,7 +262,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Volume button positioned at right end */
 .volume-button-container {
   position: absolute;
   right: 0;

@@ -403,10 +403,8 @@ const MusicPlayer = ({
             onChange={handleSeek}
           />
           <span>{formatTime(duration)}</span>
-        </div>
-
+        </div>{" "}
         <div className="controls-row">
-          {" "}
           <div className="main-controls">
             <button onClick={handlePrev}>
               <FaStepBackward />

@@ -2,45 +2,16 @@
  * Desktop Component
  *
  * Renders the desktop interface with application icons and handles
- * launching applications when icons are clicked. Provides the main
- * entry point for users to access portfolio applications.
+ * launching applications when icons are clicked.
  *
- * Features:
- * - Desktop icons for various applications (Terminal, Files, Editor, etc.)
- * - Icon positioning with absolute coordinates
- * - Click handlers for launching applications
- * - Special handling for music player with default file path
- *
- * @author Muneer
+ * @author Muneer Alam
  * @component
  */
-
-// ============================================================================
-// IMPORTS
-// ============================================================================
 
 import React from "react";
 import { FaTerminal, FaFolder, FaEdit, FaGlobe, FaMusic } from "react-icons/fa";
 
-// ============================================================================
-// DESKTOP COMPONENT
-// ============================================================================
-
-/**
- * Desktop Component
- *
- * @param {Object} props - Component props
- * @param {Function} props.onOpenWindow - Function to handle opening applications
- * @returns {JSX.Element} Desktop component with application icons
- */
 const Desktop = ({ onOpenWindow }) => {
-  // ============================================================================
-  // CONSTANTS
-  // ============================================================================
-  /**
-   * Desktop icons configuration
-   * Contains application icons with their display properties and positions
-   */
   const desktopIcons = [
     {
       id: "terminal",

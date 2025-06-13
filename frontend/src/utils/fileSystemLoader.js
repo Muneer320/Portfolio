@@ -24,24 +24,16 @@
  *
  * Attempts to fetch the directory structure from the public directory
  * and constructs a complete Linux-like file system hierarchy.
- * Integrates with localStorage to include user-saved files.
- *
- * @returns {Promise<Object>} Complete file system object
  */
 export const loadFileSystem = async () => {
   try {
-    // Fetch the user directory structure from public assets
     const res = await fetch("/home/muneer/directory_structure.json");
     const muneerDir = await res.json();
 
-    // Load user-saved files from localStorage
     const documentsFiles = JSON.parse(
       localStorage.getItem("documentsFiles") || "{}"
-    );
-
-    // Merge localStorage files with existing Documents folder
+    ); // Merge localStorage files with existing Documents folder
     if (muneerDir.Documents && muneerDir.Documents.children) {
-      // Add saved files to the Documents folder
       Object.entries(documentsFiles).forEach(([fileName, fileData]) => {
         muneerDir.Documents.children[fileName] = {
           type: "file",

@@ -2,15 +2,9 @@
  * Portfolio Data Configuration
  *
  * Central data store containing all portfolio information including:
- * - Personal bio and background
- * - Education details
- * - Technical skills and competencies
- * - Professional experience
- * - Project showcase
- * - Contact information
- *
- * This data is used throughout the portfolio application to populate
- * terminal commands, mobile installer content, and other displays.
+ * personal bio, education, skills, experience, projects, and contact details.
+ * Used throughout the portfolio application to populate terminal commands,
+ * mobile installer content, and other displays.
  *
  * @author Muneer Alam
  * @module portfolioData
