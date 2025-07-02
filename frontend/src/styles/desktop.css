@@ -77,11 +77,19 @@
  * Icon symbol styling
  */
 .desktop-icon .icon {
-  font-size: 2.5rem;
+  font-size: 2rem !important;
   margin-bottom: 8px;
   color: #ffffff;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   transition: all 0.2s ease;
+}
+
+/**
+ * Ensure desktop icons (SVGs) inherit the font-size and override mobile styles
+ */
+.desktop-icons .desktop-icon .icon svg {
+  width: 1em !important;
+  height: 1em !important;
 }
 
 /**

@@ -44,7 +44,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.1);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: white;
 }
 
@@ -340,3 +340,24 @@
 }
 
 /* System Info Indicator uses default .status-indicator styling */
+
+/* System Info Indicator specific styling for perfect centering */
+.status-indicator.system-info {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.status-indicator.system-info span {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.status-indicator.system-info span svg {
+  display: block !important;
+  margin: 0 auto !important;
+}

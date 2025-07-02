@@ -172,22 +172,104 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
       setTimeout(() => setIsLoading(false), 1000);
     }
   };
-
   // ============================================================================
   // RENDER - PDF VIEWER
   // ============================================================================
 
   // Special rendering for PDF files
-  if (fileObj && isPdfFile(filePath)) {
+  if (filePath && isPdfFile(filePath)) {
+    const filename = filePath.split("/").pop();
+
     return (
       <div className="browser">
         <div className="browser-bar">
-          <input type="text" className="url-bar" value={url} readOnly />
+          <input
+            type="text"
+            className="url-bar"
+            value={`file://${filePath}`}
+            readOnly
+          />
         </div>
         <div className="browser-content pdf-viewer">
-          <h2>📄 {filePath.split("/").pop()}</h2>
+          <h2>📄 {filename}</h2>
           <div className="pdf-content">
-            <pre>{fileObj.content}</pre>
+            <div style={{ textAlign: 'center', padding: '40px' }}>
+              <div style={{ fontSize: '4rem', marginBottom: '20px', color: '#61dafb' }}>📄</div>
+              <h3 style={{ color: 'white', marginBottom: '20px' }}>PDF Document</h3>
+              <p style={{ color: '#a0a0a0', marginBottom: '30px', lineHeight: '1.6' }}>
+                This is a PDF document that would normally be viewed with a PDF reader.
+                In this portfolio simulation, you can download the actual file using the link below.
+              </p>
+              <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = filePath;
+                    link.download = filename;
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
+                  style={{
+                    background: 'linear-gradient(45deg, #61dafb, #21e065)',
+                    border: 'none',
+                    color: 'white',
+                    padding: '12px 24px',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    transition: 'transform 0.2s'
+                  }}
+                  onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
+                  onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+                >
+                  📥 Download PDF
+                </button>
+                <button
+                  onClick={() => {
+                    window.open(filePath, '_blank');
+                  }}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    color: 'white',
+                    padding: '12px 24px',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+                    e.target.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                    e.target.style.transform = 'translateY(0)';
+                  }}
+                >
+                  🔗 Open in New Tab
+                </button>
+              </div>
+              {filename.toLowerCase() === 'cv.pdf' && (
+                <div style={{
+                  marginTop: '30px',
+                  padding: '20px',
+                  background: 'rgba(97, 218, 251, 0.1)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(97, 218, 251, 0.3)'
+                }}>
+                  <h4 style={{ color: '#61dafb', marginBottom: '10px' }}>💼 Muneer's Resume</h4>
+                  <p style={{ color: '#e0e0e0', fontSize: '0.9rem', margin: 0 }}>
+                    This PDF contains my complete resume with detailed information about my
+                    skills, experience, education, and projects. You can also use the terminal
+                    command <code style={{ background: 'rgba(0,0,0,0.3)', padding: '2px 6px', borderRadius: '3px' }}>bio</code>
+                    for a quick overview.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -307,17 +389,15 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
 
                 <div className="github-nav">
                   <button
-                    className={`github-tab ${
-                      activeTab === "repositories" ? "active" : ""
-                    }`}
+                    className={`github-tab ${activeTab === "repositories" ? "active" : ""
+                      }`}
                     onClick={() => setActiveTab("repositories")}
                   >
                     Repositories
                   </button>
                   <button
-                    className={`github-tab ${
-                      activeTab === "overview" ? "active" : ""
-                    }`}
+                    className={`github-tab ${activeTab === "overview" ? "active" : ""
+                      }`}
                     onClick={() => setActiveTab("overview")}
                   >
                     Overview
