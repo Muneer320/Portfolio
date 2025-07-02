@@ -12,7 +12,16 @@
                     "AWS-certificate.pdf": {
                         "type": "file"
                     },
+                    "GfG_PythonFull.pdf": {
+                        "type": "file"
+                    },
+                    "Hackathon Certificate.pdf": {
+                        "type": "file"
+                    },
                     "python_basic certificate.pdf": {
+                        "type": "file"
+                    },
+                    "python_basic certificate.png": {
                         "type": "file"
                     },
                     "Tata - Data Visualization Certificate.pdf": {
@@ -23,13 +32,10 @@
             "Cover_Letter.txt": {
                 "type": "file"
             },
-            "CV.pdf": {
+            "CV.md": {
                 "type": "file"
             },
             "CV.png": {
-                "type": "file"
-            },
-            "CV.txt": {
                 "type": "file"
             }
         }

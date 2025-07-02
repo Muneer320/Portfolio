@@ -15,83 +15,79 @@
 // ============================================================================
 
 export const portfolioData = {
-  bio: `Software Developer with 3+ years of experience in full-stack development.
-Passionate about creating efficient, scalable solutions using modern technologies.
-Currently specializing in React, Node.js, and cloud architecture.
-Love contributing to open-source projects and exploring new tech trends.`,
+  bio: `Self-taught Software Developer with 6+ years of experience building things people actually use.
+From Discord and Telegram bots to full-stack web apps, games, and AI-powered tools - I love crafting impactful, scalable projects.
+Comfortable across the stack - Python, JS, React, C++, and more.
+Passionate about app development, full-stack development, computer vision, and open-source contributions, with a growing focus on AI/ML.`,
 
-  education: `🎓 Bachelor of Science in Computer Science
-📍 University of Technology (2019-2023)
-📊 CGPA: 3.8/4.0
-🏆 Dean's List - Final Year
-📝 Final Project: Distributed Task Management System`,
+  education: `🏫 Completed High School (CBSE)
+📍 Delhi, India
+🎓 Pursuing B.Sc in Computer Science - IIT Madras (Batch of '29)
+💻 Enrolled at Scaler School of Technology - Industry-Focused CS Program
+🏆 Smart India Hackathon Participant (2023)
+💡 Clash of Code - Under 50 International Rank`,
 
   skills: `💻 Programming Languages:
-• JavaScript/TypeScript, Python, Java, C++
-• HTML5, CSS3, SQL
+• Python, JavaScript/TypeScript, C++, HTML5, CSS3, SQL
 
 🚀 Frameworks & Libraries:
-• React.js, Node.js, Express.js, Next.js
-• Django, Flask, Spring Boot
+• React.js, Next.js, TailwindCSS, Flask, Django, FastAPI, Pygame, OpenCV, Scikit-learn, NumPy, Pandas
 
 ☁️ Tools & Technologies:
-• Docker, Kubernetes, AWS, Git
-• MongoDB, PostgreSQL, Redis
-• Linux, Bash scripting`,
+• Git, GitHub, Docker, Linux (Arch Linux), Bash scripting, VSCode, Figma, AI/ML prototyping, Web scraping, Automation`,
 
   skillTags: [
-    "React",
-    "Node.js",
     "Python",
-    "JavaScript",
-    "TypeScript",
-    "Docker",
-    "AWS",
-    "MongoDB",
-    "PostgreSQL",
-    "Git",
+    "React",
+    "Next.js",
     "Linux",
+    "OpenCV",
+    "FastAPI",
+    "Django",
+    "Flask",
+    "Pygame",
+    "GitHub",
+    "Automation",
+    "Computer Vision",
   ],
 
-  experience: `👨‍💻 Full Stack Developer | TechCorp Solutions
-📅 Jan 2023 - Present
-• Developed 15+ responsive web applications using React and Node.js
-• Optimized database queries resulting in 40% performance improvement
-• Implemented CI/CD pipelines reducing deployment time by 60%
+  experience: `👨‍💻 Independent Developer | Self-Taught Journey
+📅 6+ Years (2017 - Present)
+• Built many projects across automation, AI, web apps, games, and data tools
+• Active contributor to open-source projects like Ffmpeg, Abstracta and more
+• Designed productivity tools, Chrome extensions, games and more
+• Comfortable with Linux, Git workflows, and full-stack development`,
 
-🔧 Software Engineer Intern | StartupHub
-📅 Jun 2022 - Dec 2022
-• Built REST APIs serving 1000+ daily active users
-• Collaborated with cross-functional teams using Agile methodology`,
+  projects: `📚 BOOP - Book Of Organized Puzzles
+• Open-source CLI tool for automated puzzle book creation
+• Tech: Python, JSON, PDF libraries, SVG manipulation, OOP
+• GitHub: [BOOP](https://github.com/muneer320/boop)
 
-  projects: `🌟 Portfolio Website (This one!)
-• Interactive Linux desktop simulation using React
-• Custom terminal emulator with portfolio commands
-• Technologies: React, CSS3, JavaScript
+🎨 Abstracta - Image Recreation with Abstract Shapes
+• CLI tool recreating images using geometric shapes via hill-climbing algorithms
+• Tech: Python, Pillow, NumPy, OpenCV
+• GitHub: [Abstracta](https://github.com/Muneer320/Abstracta2.0)
 
-🛒 E-Commerce Platform
-• Full-stack web application with payment integration
-• Technologies: React, Node.js, MongoDB, Stripe API
+🌐 BOOP-web
+• Web version of BOOP for broader accessibility
+• Tech: React, TailwindCSS, Flask, FastAPI
+• GitHub: [BOOP-web](https://github.com/muneer320/boop-web)
 
-🤖 AI Chat Assistant
-• Real-time chat application with AI integration
-• Technologies: React, Socket.io, OpenAI API, Express
+🎮 Shooter Game with Level Editor
+• 2D shooter-platformer with enemy AI, upgrades, and in-game level designer
+• Tech: Python, Pygame, CSV, Pickle
+• GitHub: [Shooter-Game](https://github.com/Muneer320/Shooter-Game)`,
 
-📊 Data Visualization Dashboard
-• Interactive dashboard for business analytics
-• Technologies: React, D3.js, PostgreSQL, Express`,
-
-  contact: `📧 Email: muneer.alam@email.com
-📱 Phone: +1 (555) 123-4567
-🌐 LinkedIn: linkedin.com/in/muneeralam
-🐙 GitHub: github.com/muneeralam
-🌍 Location: San Francisco, CA
-💼 Available for full-time opportunities`,
+  contact: `📧 Email: muneer.alam320@gmail.com
+🌐 LinkedIn: linkedin.com/in/muneer320
+🐙 GitHub: github.com/Muneer320
+🌍 Location: Delhi, India (Relocating to Bangalore)
+💼 Open to Freelance, Open-source Collaborations, and Hackathons`,
 
   quickStats: {
-    experience: "3+ Years",
-    projects: "15+ Projects",
-    technologies: "10+ Technologies",
-    uptime: new Date().getFullYear() - 2019 + " Years",
+    experience: "6+ Years",
+    projects: "20+ Projects",
+    technologies: "30+ Technologies",
+    uptime: new Date().getFullYear() - 2017 + " Years",
   },
 };

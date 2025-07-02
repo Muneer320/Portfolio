@@ -1,20 +1,23 @@
 Dear Hiring Manager,
 
-I am writing to express my interest in software development opportunities at your organization. With 3+ years of experience in full-stack development and a strong foundation in modern technologies, I am confident I can contribute meaningfully to your team.
+I am excited to express my interest in software development opportunities with your organization. As a self-taught developer with over 6 years of experience building full-stack web apps, Discord/Telegram bots, games, and AI-powered tools, I believe I can bring both technical expertise and creative energy to your team.
 
-My expertise includes React.js, Node.js, Python, and cloud technologies. I have successfully delivered 15+ web applications and optimized system performance by 40% in my current role.
+My skill set spans Python, JavaScript, React, C++, and more, with hands-on experience across the full stack. I've built and maintained projects used by real users, from puzzle book generators to AI-assisted tools and games, all driven by curiosity and passion for building things that work.
 
-Key accomplishments include:
-• Developing responsive web applications serving 1000+ users
-• Implementing CI/CD pipelines reducing deployment time by 60%
-• Contributing to open-source projects with 500+ GitHub stars
-• Leading cross-functional teams in Agile development environments
+**Highlights of my journey include:**
+• Top 50 International Rank in "Clash of Code" by Codingame
+• Open-source contributions to projects like BOOP, Abstracta, and more
+• Participation in the Smart India Hackathon (2023), enhancing my skills in teamwork, MVP development, and problem-solving
+• A growing focus on AI/ML, computer vision, and scalable applications
 
-I am particularly drawn to your company's innovative approach and would welcome the opportunity to discuss how my skills align with your needs.
+Your organization's emphasis on innovation and real-world impact aligns perfectly with my interests. I would love the opportunity to collaborate, learn, and contribute meaningfully to your projects.
+
+Thank you for considering my application. I look forward to connecting.
 
 Best regards,
-Muneer Alam
+**Muneer Alam**
 
-📧 muneer.alam@email.com
-📱 +1 (555) 123-4567
-🐙 github.com/muneeralam
+📧 muneer.alam320@gmail.com
+🐙 github.com/Muneer320
+🌐 linkedin.com/in/muneer320
+📱 +91 91623 92229
