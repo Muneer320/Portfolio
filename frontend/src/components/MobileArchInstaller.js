@@ -9,8 +9,10 @@
  * @author Muneer Alam
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { portfolioData } from "../data/portfolioData";
+import { executeSystemCommand } from "../utils/terminalCommands";
+import { loadFileSystem } from "../utils/fileSystemLoader";
 import "../styles/mobile-arch-installer.css";
 import {
   FaTerminal,
@@ -48,9 +50,35 @@ const MobileArchInstaller = () => {
   const [showDesktop, setShowDesktop] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
 
+  // Terminal-specific state
+  const [currentPath, setCurrentPath] = useState("/home/muneer");
+  const [terminalHistory, setTerminalHistory] = useState([]);
+  const [terminalInput, setTerminalInput] = useState("");
+  const [commandHistory, setCommandHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [isTerminalStarted, setIsTerminalStarted] = useState(false);
+
+  // ============================================================================
+  // REFS
+  // ============================================================================
+
+  const terminalRef = useRef(null);
+  const inputRef = useRef(null);
+
   // ============================================================================
   // HELPER FUNCTIONS
   // ============================================================================
+
+  /**
+   * Auto-resize textarea based on content (like desktop terminal)
+   * @param {HTMLTextAreaElement} textarea - The textarea element to resize
+   */
+  const autoResizeTextarea = (textarea) => {
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = Math.min(textarea.scrollHeight, 130) + "px";
+    }
+  };
 
   /**
    * Parse markdown links and convert them to React elements
@@ -239,11 +267,342 @@ const MobileArchInstaller = () => {
 
   const openApp = (app) => {
     setSelectedApp(app);
+    if (app.id === "terminal") {
+      setIsTerminalStarted(true);
+      // Auto-run neofetch when terminal opens
+      setTimeout(() => {
+        executeCommand("neofetch");
+      }, 500);
+    }
   };
 
   const closeApp = () => {
     setSelectedApp(null);
   };
+
+  // ============================================================================
+  // TERMINAL FUNCTIONALITY
+  // ============================================================================
+
+  /**
+   * Execute a single command and update terminal history
+   * @param {string} command - Command to execute
+   */
+  const executeCommand = async (command) => {
+    if (!command.trim()) return;
+
+    // Support multiple commands separated by semicolon
+    const commands = command.split(";").map(cmd => cmd.trim()).filter(cmd => cmd);
+
+    // Execute commands sequentially
+    for (let i = 0; i < commands.length; i++) {
+      await new Promise(resolve => {
+        setTimeout(async () => {
+          await executeInternalCommand(commands[i]);
+          resolve();
+        }, i * 100);
+      });
+    }
+  };
+
+  /**
+   * Execute a single internal command
+   * @param {string} command - Command to execute
+   */
+  const executeInternalCommand = async (command) => {
+    if (!command.trim()) return;
+
+    // Add to command history for arrow key navigation
+    setCommandHistory(prev => [...prev, command]);
+    setHistoryIndex(-1);
+
+    let output = "";
+
+    // Handle portfolio-specific commands
+    if (command.trim() === "bio") {
+      output = portfolioData.bio;
+    } else if (command.trim() === "skills") {
+      output = portfolioData.skills;
+    } else if (command.trim() === "experience") {
+      output = portfolioData.experience;
+    } else if (command.trim() === "projects") {
+      output = portfolioData.projects;
+    } else if (command.trim() === "education") {
+      output = portfolioData.education;
+    } else if (command.trim() === "contact") {
+      output = portfolioData.contact;
+    } else if (command.trim() === "cv") {
+      const cvData = `${portfolioData.bio}
+
+${portfolioData.education}
+
+${portfolioData.skills}
+
+${portfolioData.experience}
+
+${portfolioData.projects}
+
+${portfolioData.contact}`;
+      output = cvData + `\n\nAlso try: cv.png (image view), cv.pdf (browser view), download-cv (download PDF)`;
+    } else if (command.trim() === "cv.pdf") {
+      output = "Opening CV PDF in browser...";
+      // Open CV PDF in a new tab
+      setTimeout(() => {
+        window.open('/home/muneer/Documents/CV.pdf', '_blank');
+      }, 500);
+    } else if (command.trim() === "download-cv") {
+      try {
+        const link = document.createElement('a');
+        link.href = '/home/muneer/Documents/CV.pdf';
+        link.download = 'Muneer_Alam_Resume.pdf';
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        output = "CV download started...";
+      } catch (error) {
+        output = "Download failed. Please try opening CV.pdf in browser and download from there.";
+      }
+    } else if (command.trim().startsWith("pacman")) {
+      const args = command.trim().split(" ");
+      if (args[1] === "-S" || args[1] === "-s") {
+        const packageName = args[2] ? args[2].toLowerCase() : "";
+
+        if (packageName === "cv.img" || packageName === "cv.png") {
+          output = `:: Synchronizing package databases...
+:: Starting full system upgrade...
+resolving dependencies...
+looking for conflicting packages...
+
+Packages (1) cv.img-1.0.0-1
+
+Total Download Size:   2.45 MiB
+Total Installed Size:  2.45 MiB
+
+:: Proceed with installation? [Y/n] Y
+:: Retrieving packages...
+ cv.img-1.0.0-1-x86_64      2.45 MiB  1024 KiB/s 00:02 [##################] 100%
+(1/1) checking keys in keyring                   [##################] 100%
+(1/1) checking package integrity                 [##################] 100%
+(1/1) loading package files                      [##################] 100%
+(1/1) checking for file conflicts                [##################] 100%
+(1/1) checking available disk space              [##################] 100%
+:: Processing package changes...
+(1/1) installing cv.img                          [##################] 100%
+Opening CV image...`;
+          // Try to open CV image
+          setTimeout(() => {
+            window.open('/home/muneer/Documents/CV.png', '_blank');
+          }, 1000);
+        } else if (packageName === "cv.pdf") {
+          try {
+            const link = document.createElement('a');
+            link.href = '/home/muneer/Documents/CV.pdf';
+            link.download = 'Muneer_Alam_Resume.pdf';
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            output = `:: Synchronizing package databases...
+:: Starting full system upgrade...
+resolving dependencies...
+looking for conflicting packages...
+
+Packages (1) cv.pdf-1.0.0-1
+
+Total Download Size:   1.23 MiB
+Total Installed Size:  1.23 MiB
+
+:: Proceed with installation? [Y/n] Y
+:: Retrieving packages...
+ cv.pdf-1.0.0-1-x86_64      1.23 MiB  1024 KiB/s 00:01 [##################] 100%
+(1/1) checking keys in keyring                   [##################] 100%
+(1/1) checking package integrity                 [##################] 100%
+(1/1) loading package files                      [##################] 100%
+(1/1) checking for file conflicts                [##################] 100%
+(1/1) checking available disk space              [##################] 100%
+:: Processing package changes...
+(1/1) installing cv.pdf                          [##################] 100%
+CV download started...`;
+          } catch (error) {
+            output = `error: failed to retrieve 'cv.pdf' from server
+error: failed to commit transaction (download library error)
+Errors occurred, no packages were upgraded.`;
+          }
+        } else if (packageName) {
+          output = `error: target not found: ${packageName}
+Available packages: cv.img, cv.pdf`;
+        } else {
+          output = `error: no targets specified (use -h for help)
+
+Usage: pacman -S <package>
+Available packages:
+  cv.img  - Download CV image file
+  cv.pdf  - Download CV PDF file`;
+        }
+      } else {
+        output = `usage:  pacman <operation> [...]
+operations:
+    -S, --sync      synchronize packages
+
+Try 'pacman -S cv.img' or 'pacman -S cv.pdf' to download CV files`;
+      }
+    } else if (command.trim() === "help") {
+      output = `Available commands:
+
+System commands:
+  ls          - List directory contents
+  cd [dir]    - Change directory
+  cat [file]  - Display file contents
+  pwd         - Show current directory
+  clear       - Clear terminal screen
+  whoami      - Show current user
+  date        - Show current date
+  uptime      - Show system uptime
+
+Portfolio commands:
+  bio         - Personal background
+  skills      - Technical skills
+  experience  - Work experience
+  projects    - Portfolio projects
+  education   - Educational background
+  contact     - Contact information
+  neofetch    - Display system information
+
+CV commands:
+  cv          - Combined portfolio information
+  cv.png      - View CV image (if image viewer available)
+  cv.pdf      - View CV PDF (if browser available)
+  download-cv - Download CV PDF file
+
+Pacman (Package Manager):
+  pacman -S cv.img  - Download CV image
+  pacman -S cv.pdf  - Download CV PDF
+
+Tips:
+• Use semicolon (;) to run multiple commands
+• Use arrow keys to navigate command history
+• Use Tab for command completion (if available)`;
+    } else if (command.trim() === "neofetch") {
+      output = `                   -'                    muneer@arch-portfolio 
+                  .o+'                   --------------------- 
+                 'ooo/                   OS: Arch Linux x86_64 
+                '+oooo:                  Host: Portfolio System 
+               '+oooooo:                 Kernel: 6.1.0-portfolio 
+               -+oooooo+:                Uptime: 2 days, 14 hours, 32 mins 
+             '/:-:++oooo+:               Packages: 1247 (pacman) 
+            '/++++/+++++++:              Shell: bash 5.1.16 
+           '/++++++++++++++:             Resolution: ${window.innerWidth}x${window.innerHeight} 
+          '/+++ooooooooooooo/'           DE: Mobile Interface 
+         ./ooosssso++osssssso+'          WM: Mobile Window Manager 
+        .oossssso-''''/ossssss+'         Theme: Arch-Dark 
+       -osssssso.      :ssssssso.        Icons: Papirus 
+      :osssssss/        osssso+++.       Terminal: mobile-portfolio-term 
+     /ossssssss/        +ssssooo/-       CPU: Device CPU 
+   '/ossssso+/:-        -:/+osssso+-     GPU: Device GPU 
+  '+sso+:-'                 '.-/+oso:    Memory: Available RAM 
+ '++:.                           '-/+/
+ .'                                 '/'`;
+
+      // Special handling for neofetch like desktop - add both command and output
+      const neofetchCommandLine = {
+        content: `muneer@arch-portfolio:${currentPath}$ ${command}`,
+        type: "command",
+      };
+      const neofetchOutputLine = {
+        content: output,
+        type: "neofetch",
+      };
+      setTerminalHistory(prev => [...prev, neofetchCommandLine, neofetchOutputLine]);
+      return;
+    } else if (command.trim() === "clear") {
+      setTerminalHistory([]);
+      return;
+    } else if (command.trim() === "whoami") {
+      output = "muneer";
+    } else if (command.trim() === "date") {
+      output = new Date().toString();
+    } else if (command.trim() === "uptime") {
+      output = "System uptime: 2 days, 14:32:15";
+    } else if (command.trim() === "pwd") {
+      output = currentPath;
+    } else {
+      // Execute system command
+      const result = await executeSystemCommand(command, currentPath, setCurrentPath);
+      output = result.output;
+    }
+
+    // Add command and output to terminal history (like desktop)
+    const commandLine = {
+      content: `muneer@arch-portfolio:${currentPath}$ ${command}`,
+      type: "command",
+    };
+    const outputLine = {
+      content: output,
+      type: "output",
+    };
+
+    setTerminalHistory(prev => [...prev, commandLine, outputLine]);
+
+    // Clear input
+    setTerminalInput("");
+  };
+
+  /**
+   * Handle keyboard input in terminal
+   */
+  const handleTerminalKeyDown = (e) => {
+    if (e.key === "Enter") {
+      executeCommand(terminalInput);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (commandHistory.length > 0) {
+        const newIndex = historyIndex === -1 ? commandHistory.length - 1 : Math.max(0, historyIndex - 1);
+        setHistoryIndex(newIndex);
+        setTerminalInput(commandHistory[newIndex]);
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (historyIndex >= 0) {
+        const newIndex = historyIndex + 1;
+        if (newIndex >= commandHistory.length) {
+          setHistoryIndex(-1);
+          setTerminalInput("");
+        } else {
+          setHistoryIndex(newIndex);
+          setTerminalInput(commandHistory[newIndex]);
+        }
+      }
+    }
+  };
+
+  /**
+   * Auto-scroll terminal to bottom when new content is added
+   */
+  useEffect(() => {
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  }, [terminalHistory]);
+
+  /**
+   * Focus input when terminal opens
+   */
+  useEffect(() => {
+    if (selectedApp?.id === "terminal" && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [selectedApp]);
+
+  /**
+   * Auto-resize textarea when input value changes programmatically
+   */
+  useEffect(() => {
+    if (inputRef.current) {
+      autoResizeTextarea(inputRef.current);
+    }
+  }, [terminalInput]);
 
   // ============================================================================
   // RENDER METHODS
@@ -255,7 +614,7 @@ const MobileArchInstaller = () => {
         <div className="cv-info">
           <h4>📄 Muneer Alam - Resume/CV</h4>
           <p>Professional resume highlighting my experience, skills, and achievements in software development.</p>
-          
+
           <div className="cv-details">
             <div className="cv-detail-item">
               <strong>Format:</strong> PDF Document
@@ -268,15 +627,15 @@ const MobileArchInstaller = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="cv-actions">
-          <button 
+          <button
             className="cv-action-btn view-btn"
             onClick={() => window.open('/home/muneer/Documents/CV.pdf', '_blank')}
           >
             <FaEye /> View CV
           </button>
-          <button 
+          <button
             className="cv-action-btn download-btn"
             onClick={() => {
               const link = document.createElement('a');
@@ -290,9 +649,64 @@ const MobileArchInstaller = () => {
             <FaDownload /> Download CV
           </button>
         </div>
-        
+
         <div className="cv-note">
           <p><em>💡 You can also find my CV in markdown format in the About section, and various formats via the file explorer in the full Desktop version.</em></p>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderTerminal = () => (
+    <div className="mobile-terminal-fullscreen">
+      <div className="terminal-header">
+        <div className="terminal-title">
+          <FaTerminal /> Terminal - muneer@arch-portfolio
+        </div>
+        <button className="terminal-close" onClick={closeApp}>
+          <FaTimes />
+        </button>
+      </div>
+
+      <div className="terminal-content">
+        <div className="terminal-output" ref={terminalRef}>
+          <div className="terminal-welcome">
+            <p>Welcome to Muneer's Portfolio Terminal!</p>
+            <p>Type 'help' for available commands.</p>
+            <p></p>
+          </div>
+
+          {terminalHistory.map((item, index) => (
+            <div key={index} className={`terminal-line ${item.type === "command"
+                ? "command-line"
+                : item.type === "output"
+                  ? "output-line"
+                  : item.type === "neofetch"
+                    ? "neofetch-output"
+                    : ""
+              }`}>
+              {item.content}
+            </div>
+          ))}
+
+          <div className="terminal-line current-command">
+            <div className="terminal-input-form">
+              <span className="terminal-prompt">muneer@arch-portfolio:{currentPath}$ </span>
+              <textarea
+                ref={inputRef}
+                value={terminalInput}
+                onChange={(e) => {
+                  setTerminalInput(e.target.value);
+                  autoResizeTextarea(e.target);
+                }}
+                onKeyDown={handleTerminalKeyDown}
+                className="terminal-input"
+                autoFocus
+                rows={1}
+                style={{ minHeight: "1.3em", height: "auto" }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -546,32 +960,40 @@ const MobileArchInstaller = () => {
         </div>
       </div>
       {selectedApp && (
-        <div className="app-modal">
-          <div className="modal-content">
-            <div className="modal-header">
-              <div className="modal-title">
-                <span className="modal-icon">{selectedApp.icon}</span>
-                <h3>{selectedApp.name}</h3>
+        <>
+          {selectedApp.id === "terminal" ? (
+            // Render terminal fullscreen without modal wrapper
+            renderTerminal()
+          ) : (
+            // Render other apps in modal
+            <div className="app-modal">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <div className="modal-title">
+                    <span className="modal-icon">{selectedApp.icon}</span>
+                    <h3>{selectedApp.name}</h3>
+                  </div>
+                  <button className="close-button" onClick={closeApp}>
+                    <FaTimes />
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <div className="app-content">
+                    {selectedApp.content === "cv" ? (
+                      renderCVContent()
+                    ) : (
+                      selectedApp.content.split('\n').map((line, index) => (
+                        <div key={index} className="content-line">
+                          {parseMarkdownLinks(line)}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
               </div>
-              <button className="close-button" onClick={closeApp}>
-                <FaTimes />
-              </button>
             </div>
-            <div className="modal-body">
-              <div className="app-content">
-                {selectedApp.content === "cv" ? (
-                  renderCVContent()
-                ) : (
-                  selectedApp.content.split('\n').map((line, index) => (
-                    <div key={index} className="content-line">
-                      {parseMarkdownLinks(line)}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+          )}
+        </>
       )}
     </div>
   );

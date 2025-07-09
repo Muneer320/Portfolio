@@ -149,9 +149,9 @@
   color: #61dafb;
   font-weight: 400;
   letter-spacing: 0;
-  font-feature-settings: "liga" 0; /* Disable ligatures for ASCII art */
+  font-feature-settings: "liga" 0;
   text-rendering: optimizeLegibility;
-  font-variant-numeric: tabular-nums; /* Better number alignment */
+  font-variant-numeric: tabular-nums;
 }
 
 /* ============================================================================
