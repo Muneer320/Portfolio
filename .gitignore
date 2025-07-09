@@ -28,7 +28,6 @@ chainlit.md
 .dockerignore
 *.log
 _*
-*.py
 
 # debug
 npm-debug.log*

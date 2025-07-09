@@ -46,6 +46,51 @@ const MobileArchInstaller = () => {
   const [selectedApp, setSelectedApp] = useState(null);
 
   // ============================================================================
+  // HELPER FUNCTIONS
+  // ============================================================================
+
+  /**
+   * Parse markdown links and convert them to React elements
+   * @param {string} text - Text containing markdown links
+   * @returns {JSX.Element[]} Array of text and link elements
+   */
+  const parseMarkdownLinks = (text) => {
+    const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = markdownLinkRegex.exec(text)) !== null) {
+      // Add text before the link
+      if (match.index > lastIndex) {
+        parts.push(text.slice(lastIndex, match.index));
+      }
+
+      // Add the link
+      parts.push(
+        <a
+          key={match.index}
+          href={match[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="markdown-link"
+        >
+          {match[1]}
+        </a>
+      );
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    // Add remaining text after the last link
+    if (lastIndex < text.length) {
+      parts.push(text.slice(lastIndex));
+    }
+
+    return parts.length > 0 ? parts : [text];
+  };
+
+  // ============================================================================
   // CONFIGURATION DATA
   // ============================================================================
 
@@ -309,13 +354,13 @@ const MobileArchInstaller = () => {
                       {skill}
                     </span>
                   )) || (
-                    <>
-                      <span className="skill-tag">React</span>
-                      <span className="skill-tag">Node.js</span>
-                      <span className="skill-tag">Python</span>
-                      <span className="skill-tag">Docker</span>
-                    </>
-                  )}
+                      <>
+                        <span className="skill-tag">React</span>
+                        <span className="skill-tag">Node.js</span>
+                        <span className="skill-tag">Python</span>
+                        <span className="skill-tag">Docker</span>
+                      </>
+                    )}
                 </div>{" "}
               </div>
             )}
@@ -437,7 +482,7 @@ const MobileArchInstaller = () => {
             <FaClock /> Uptime:{" "}
             {portfolioData.quickStats?.uptime ||
               new Date().getFullYear() - 2021}{" "}
-            years experience
+            experience
           </span>
         </div>
       </div>
@@ -454,7 +499,13 @@ const MobileArchInstaller = () => {
               </button>
             </div>
             <div className="modal-body">
-              <pre className="app-content">{selectedApp.content}</pre>
+              <div className="app-content">
+                {selectedApp.content.split('\n').map((line, index) => (
+                  <div key={index} className="content-line">
+                    {parseMarkdownLinks(line)}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

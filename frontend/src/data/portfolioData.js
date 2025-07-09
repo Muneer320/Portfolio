@@ -56,7 +56,7 @@ Passionate about app development, full-stack development, computer vision, and o
 • Built many projects across automation, AI, web apps, games, and data tools
 • Active contributor to open-source projects like Ffmpeg, Abstracta and more
 • Designed productivity tools, Chrome extensions, games and more
-• Comfortable with Linux, Git workflows, and full-stack development`,
+• Comfortable with Python, Linux, Git workflows, and full-stack development`,
 
   projects: `📚 BOOP - Book Of Organized Puzzles
 • Open-source CLI tool for automated puzzle book creation
@@ -78,9 +78,11 @@ Passionate about app development, full-stack development, computer vision, and o
 • Tech: Python, Pygame, CSV, Pickle
 • GitHub: [Shooter-Game](https://github.com/Muneer320/Shooter-Game)`,
 
-  contact: `📧 Email: muneer.alam320@gmail.com
-🌐 LinkedIn: linkedin.com/in/muneer320
-🐙 GitHub: github.com/Muneer320
+  contact: `📧 Email: [muneer.alam320@gmail.com](mailto:muneer.alam320@gmail.com)
+💼 LinkedIn: [linkedin.com/in/muneer320](linkedin.com/in/muneer320)
+🐙 GitHub: [github.com/Muneer320](github.com/Muneer320)
+🌐 Website: [muneer320.tech](https://muneer320.tech)
+📞 Phone: +91 91623 92229
 🌍 Location: Delhi, India (Relocating to Bangalore)
 💼 Open to Freelance, Open-source Collaborations, and Hackathons`,
 
