@@ -57,6 +57,7 @@ const MobileArchInstaller = () => {
   const [commandHistory, setCommandHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [isTerminalStarted, setIsTerminalStarted] = useState(false);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
 
   // ============================================================================
   // REFS
@@ -277,6 +278,14 @@ const MobileArchInstaller = () => {
   };
 
   const closeApp = () => {
+    // Clear terminal history and reset state when closing terminal
+    if (selectedApp?.id === "terminal") {
+      setTerminalHistory([]);
+      setTerminalInput("");
+      setCommandHistory([]);
+      setHistoryIndex(-1);
+      setShowWelcomeMessage(true);
+    }
     setSelectedApp(null);
   };
 
@@ -289,7 +298,10 @@ const MobileArchInstaller = () => {
    * @param {string} command - Command to execute
    */
   const executeCommand = async (command) => {
-    if (!command.trim()) return;
+    if (!command.trim()) {
+      setTerminalInput("");
+      return;
+    }
 
     // Support multiple commands separated by semicolon
     const commands = command.split(";").map(cmd => cmd.trim()).filter(cmd => cmd);
@@ -303,6 +315,9 @@ const MobileArchInstaller = () => {
         }, i * 100);
       });
     }
+
+    // Clear input after all commands are executed
+    setTerminalInput("");
   };
 
   /**
@@ -310,7 +325,9 @@ const MobileArchInstaller = () => {
    * @param {string} command - Command to execute
    */
   const executeInternalCommand = async (command) => {
-    if (!command.trim()) return;
+    if (!command.trim()) {
+      return;
+    }
 
     // Add to command history for arrow key navigation
     setCommandHistory(prev => [...prev, command]);
@@ -361,7 +378,7 @@ ${portfolioData.contact}`;
         document.body.removeChild(link);
         output = "CV download started...";
       } catch (error) {
-        output = "Download failed. Please try opening CV.pdf in browser and download from there.";
+        output = "Download failed. Please try again later.";
       }
     } else if (command.trim().startsWith("pacman")) {
       const args = command.trim().split(" ");
@@ -468,12 +485,10 @@ Portfolio commands:
   projects    - Portfolio projects
   education   - Educational background
   contact     - Contact information
-  neofetch    - Display system information
+  neofetch    - Display system information (mobile-optimized)
 
 CV commands:
   cv          - Combined portfolio information
-  cv.png      - View CV image (if image viewer available)
-  cv.pdf      - View CV PDF (if browser available)
   download-cv - Download CV PDF file
 
 Pacman (Package Manager):
@@ -485,25 +500,24 @@ Tips:
 • Use arrow keys to navigate command history
 • Use Tab for command completion (if available)`;
     } else if (command.trim() === "neofetch") {
-      output = `                   -'                    muneer@arch-portfolio 
-                  .o+'                   --------------------- 
-                 'ooo/                   OS: Arch Linux x86_64 
-                '+oooo:                  Host: Portfolio System 
-               '+oooooo:                 Kernel: 6.1.0-portfolio 
-               -+oooooo+:                Uptime: 2 days, 14 hours, 32 mins 
-             '/:-:++oooo+:               Packages: 1247 (pacman) 
-            '/++++/+++++++:              Shell: bash 5.1.16 
-           '/++++++++++++++:             Resolution: ${window.innerWidth}x${window.innerHeight} 
-          '/+++ooooooooooooo/'           DE: Mobile Interface 
-         ./ooosssso++osssssso+'          WM: Mobile Window Manager 
-        .oossssso-''''/ossssss+'         Theme: Arch-Dark 
-       -osssssso.      :ssssssso.        Icons: Papirus 
-      :osssssss/        osssso+++.       Terminal: mobile-portfolio-term 
-     /ossssssss/        +ssssooo/-       CPU: Device CPU 
-   '/ossssso+/:-        -:/+osssso+-     GPU: Device GPU 
-  '+sso+:-'                 '.-/+oso:    Memory: Available RAM 
- '++:.                           '-/+/
- .'                                 '/'`;
+      // Mobile-optimized system info (compact format for small screens)
+      output = `muneer@arch-portfolio
+━━━━━━━━━━━━━━━━━━━━━
+OS: Arch Linux x86_64
+Host: Portfolio System
+Kernel: 6.1.0-portfolio
+Uptime: 2 days, 14:32 mins
+Packages: 1247 (pacman)
+Shell: bash 5.1.16
+Resolution: ${window.innerWidth}x${window.innerHeight}
+DE: Mobile Interface
+WM: Mobile Window Manager
+Theme: Arch-Dark
+Icons: Papirus
+Terminal: mobile-portfolio-term
+CPU: Device CPU
+GPU: Device GPU
+Memory: Available RAM`;
 
       // Special handling for neofetch like desktop - add both command and output
       const neofetchCommandLine = {
@@ -518,6 +532,7 @@ Tips:
       return;
     } else if (command.trim() === "clear") {
       setTerminalHistory([]);
+      setShowWelcomeMessage(false);
       return;
     } else if (command.trim() === "whoami") {
       output = "muneer";
@@ -544,9 +559,6 @@ Tips:
     };
 
     setTerminalHistory(prev => [...prev, commandLine, outputLine]);
-
-    // Clear input
-    setTerminalInput("");
   };
 
   /**
@@ -670,20 +682,22 @@ Tips:
 
       <div className="terminal-content">
         <div className="terminal-output" ref={terminalRef}>
-          <div className="terminal-welcome">
-            <p>Welcome to Muneer's Portfolio Terminal!</p>
-            <p>Type 'help' for available commands.</p>
-            <p></p>
-          </div>
+          {showWelcomeMessage && (
+            <div className="terminal-welcome">
+              <p>Welcome to Muneer's Portfolio Terminal!</p>
+              <p>Type 'help' for available commands.</p>
+              <p></p>
+            </div>
+          )}
 
           {terminalHistory.map((item, index) => (
             <div key={index} className={`terminal-line ${item.type === "command"
-                ? "command-line"
-                : item.type === "output"
-                  ? "output-line"
-                  : item.type === "neofetch"
-                    ? "neofetch-output"
-                    : ""
+              ? "command-line"
+              : item.type === "output"
+                ? "output-line"
+                : item.type === "neofetch"
+                  ? "neofetch-output"
+                  : ""
               }`}>
               {item.content}
             </div>

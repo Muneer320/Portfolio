@@ -1027,6 +1027,20 @@
   .step-icon {
     align-self: flex-start;
   }
+
+  .mobile-terminal-fullscreen .neofetch-output {
+    font-size: 0.65rem;
+    line-height: 1.3;
+    padding: 4px;
+    margin: 4px 0;
+  }
+}
+
+@media (max-height: 600px) {
+  .mobile-terminal-fullscreen .neofetch-output {
+    line-height: 1.3;
+    margin: 4px 0;
+  }
 }
 
 /* MOBILE TERMINAL STYLES */
@@ -1209,20 +1223,22 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* Neofetch output styling for mobile */
+/* Neofetch output styling for mobile - optimized for compact display */
 .mobile-terminal-fullscreen .neofetch-output {
-  font-family: "Courier New", "JetBrains Mono", "Monaco", "Menlo", "Ubuntu Mono",
-    monospace;
+  font-family: "JetBrains Mono", "Monaco", "Menlo", "Ubuntu Mono", monospace;
   white-space: pre-wrap;
   word-wrap: break-word;
-  font-size: 0.75rem;
-  line-height: 1.4;
+  font-size: 0.8rem;
+  line-height: 1.5;
   color: #61dafb;
   font-weight: 400;
-  letter-spacing: 0;
-  font-feature-settings: "liga" 0;
-  text-rendering: optimizeLegibility;
-  font-variant-numeric: tabular-nums;
+  margin: 8px 0;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border-left: 3px solid #61dafb;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 /* Responsive adjustments for mobile terminal */
@@ -1254,6 +1270,13 @@
   .mobile-terminal-fullscreen .terminal-header {
     padding: 10px 12px;
   }
+
+  .mobile-terminal-fullscreen .neofetch-output {
+    font-size: 0.65rem;
+    line-height: 1.3;
+    padding: 4px;
+    margin: 4px 0;
+  }
 }
 
 @media (max-height: 600px) {
@@ -1263,5 +1286,10 @@
 
   .mobile-terminal-fullscreen .terminal-content {
     padding: 10px;
+  }
+
+  .mobile-terminal-fullscreen .neofetch-output {
+    line-height: 1.3;
+    margin: 4px 0;
   }
 }
