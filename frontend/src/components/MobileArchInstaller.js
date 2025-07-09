@@ -30,6 +30,9 @@ import {
   FaChartBar,
   FaClock,
   FaMobile,
+  FaFileAlt,
+  FaDownload,
+  FaEye,
 } from "react-icons/fa";
 import { GrArchlinux } from "react-icons/gr";
 
@@ -179,6 +182,13 @@ const MobileArchInstaller = () => {
       description: "Get in touch",
       content: portfolioData.contact,
     },
+    {
+      id: "resume",
+      name: "Resume/CV",
+      icon: <FaFileAlt />,
+      description: "View & download CV",
+      content: "cv",
+    },
   ];
 
   // ============================================================================
@@ -238,6 +248,55 @@ const MobileArchInstaller = () => {
   // ============================================================================
   // RENDER METHODS
   // ============================================================================
+
+  const renderCVContent = () => (
+    <div className="cv-content">
+      <div className="cv-preview">
+        <div className="cv-info">
+          <h4>📄 Muneer Alam - Resume/CV</h4>
+          <p>Professional resume highlighting my experience, skills, and achievements in software development.</p>
+          
+          <div className="cv-details">
+            <div className="cv-detail-item">
+              <strong>Format:</strong> PDF Document
+            </div>
+            <div className="cv-detail-item">
+              <strong>Last Updated:</strong> December 2024
+            </div>
+            <div className="cv-detail-item">
+              <strong>File Size:</strong> ~2MB
+            </div>
+          </div>
+        </div>
+        
+        <div className="cv-actions">
+          <button 
+            className="cv-action-btn view-btn"
+            onClick={() => window.open('/home/muneer/Documents/CV.pdf', '_blank')}
+          >
+            <FaEye /> View CV
+          </button>
+          <button 
+            className="cv-action-btn download-btn"
+            onClick={() => {
+              const link = document.createElement('a');
+              link.href = '/home/muneer/Documents/CV.pdf';
+              link.download = 'Muneer_Alam_Resume.pdf';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }}
+          >
+            <FaDownload /> Download CV
+          </button>
+        </div>
+        
+        <div className="cv-note">
+          <p><em>💡 You can also find my CV in markdown format in the About section, and various formats via the file explorer in the full Desktop version.</em></p>
+        </div>
+      </div>
+    </div>
+  );
 
   const renderWelcome = () => (
     <div className="arch-welcome">
@@ -500,11 +559,15 @@ const MobileArchInstaller = () => {
             </div>
             <div className="modal-body">
               <div className="app-content">
-                {selectedApp.content.split('\n').map((line, index) => (
-                  <div key={index} className="content-line">
-                    {parseMarkdownLinks(line)}
-                  </div>
-                ))}
+                {selectedApp.content === "cv" ? (
+                  renderCVContent()
+                ) : (
+                  selectedApp.content.split('\n').map((line, index) => (
+                    <div key={index} className="content-line">
+                      {parseMarkdownLinks(line)}
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
