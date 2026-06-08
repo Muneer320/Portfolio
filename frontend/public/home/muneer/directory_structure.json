@@ -124,29 +124,98 @@
     "Projects": {
         "type": "directory",
         "children": {
-            "ai-chat-bot": {
+            "Ascent-Dashboard": {
                 "type": "directory",
                 "children": {
-                    "README.md": {
+                    "PROJECT_INFO.md": {
                         "type": "file"
                     }
                 }
             },
-            "ecommerce-app": {
+            "RhinoBox": {
                 "type": "directory",
                 "children": {
-                    "README.md": {
+                    "PROJECT_INFO.md": {
                         "type": "file"
                     }
                 }
             },
-            "portfolio-website": {
+            "Surjit-Hockey": {
                 "type": "directory",
                 "children": {
-                    "package.json": {
+                    "PROJECT_INFO.md": {
                         "type": "file"
-                    },
-                    "README.md": {
+                    }
+                }
+            },
+            "Sandhya-Foods": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "BOOP": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "Finity": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "SST-Lounge-Bot": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "CPStats-API": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "LEAP": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "RehabFlow-AI": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "Oratio": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "Vector": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
                         "type": "file"
                     }
                 }
