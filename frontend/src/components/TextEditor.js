@@ -22,8 +22,9 @@
 // IMPORTS
 // ============================================================================
 
-import React, { useState, useEffect } from "react";
-import { FaFileAlt, FaSave, FaFolderOpen, FaTrash } from "react-icons/fa";
+import React, { useState, useEffect, useMemo } from "react";
+import { FaFileAlt, FaSave, FaFolderOpen, FaTrash, FaEye, FaEdit } from "react-icons/fa";
+import { marked } from "marked";
 
 // ============================================================================
 // TEXTEDITOR COMPONENT
@@ -52,6 +53,20 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [validationErrors, setValidationErrors] = useState([]);
   const [tempFileName, setTempFileName] = useState("");
+  const [viewMode, setViewMode] = useState("edit");
+
+  const isMarkdown = useMemo(() => {
+    return fileName.toLowerCase().endsWith(".md");
+  }, [fileName]);
+
+  const renderedMarkdown = useMemo(() => {
+    if (!isMarkdown) return "";
+    try {
+      return marked(content, { breaks: true, gfm: true });
+    } catch {
+      return content;
+    }
+  }, [content, isMarkdown]);
 
   // ============================================================================
   // EFFECTS
@@ -478,6 +493,15 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
             <FaTrash /> Delete
           </button>
         )}
+        {/* Markdown view toggle */}
+        {isMarkdown && (
+          <button
+            onClick={() => setViewMode(viewMode === "edit" ? "preview" : "edit")}
+            title={viewMode === "edit" ? "Preview rendered markdown" : "Edit markdown source"}
+          >
+            {viewMode === "edit" ? <FaEye /> : <FaEdit />} {viewMode === "edit" ? "Preview" : "Edit"}
+          </button>
+        )}
         {/* File Status */}
         <span className="file-path">
           {fileName}
@@ -486,13 +510,20 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
         </span>
       </div>{" "}
       {/* Main Editor Area */}
-      <textarea
-        className="editor-content"
-        value={content}
-        onChange={handleContentChange}
-        placeholder="Start typing..."
-        readOnly={isReadOnly}
-      />{" "}
+      {isMarkdown && viewMode === "preview" ? (
+        <div
+          className="editor-content editor-markdown-preview"
+          dangerouslySetInnerHTML={{ __html: renderedMarkdown }}
+        />
+      ) : (
+        <textarea
+          className="editor-content"
+          value={content}
+          onChange={handleContentChange}
+          placeholder="Start typing..."
+          readOnly={isReadOnly}
+        />
+      )}{" "}
       {saveNotification && (
         <div className="save-notification">{saveNotification}</div>
       )}
