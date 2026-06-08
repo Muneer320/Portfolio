@@ -37,6 +37,9 @@
             },
             "CV.png": {
                 "type": "file"
+            },
+            "Muneer Resume.pdf": {
+                "type": "file"
             }
         }
     },

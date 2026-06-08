@@ -53,7 +53,7 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [validationErrors, setValidationErrors] = useState([]);
   const [tempFileName, setTempFileName] = useState("");
-  const [viewMode, setViewMode] = useState("edit");
+  const [viewMode, setViewMode] = useState("preview");
 
   const isMarkdown = useMemo(() => {
     return fileName.toLowerCase().endsWith(".md");
