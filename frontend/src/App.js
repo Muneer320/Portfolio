@@ -501,6 +501,7 @@ function App() {
       <div className="login-screen" onKeyDown={handleLoginKeyPress}>
         <div className="login-container">
           <h1 className="system-title">Arch Linux</h1>
+          <div className="system-version">Portfolio Edition · Linux 6.1.0-portfolio</div>
           <div className="user-selection">
             <div
               className="user-card"

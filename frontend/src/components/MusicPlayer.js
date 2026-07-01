@@ -431,7 +431,8 @@ const MusicPlayer = ({
                     value={volume}
                     onChange={handleVolumeChange}
                     className="vertical-volume-slider"
-                    orient="vertical"
+                    style={{ writingMode: 'vertical-lr', direction: 'rtl' }}
+                    aria-label="Volume control"
                   />
                 </div>
               </div>
