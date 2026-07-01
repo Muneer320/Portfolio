@@ -1,0 +1,31 @@
+{
+  "short_name": "Muneer Alam",
+  "name": "Muneer Alam - Software Developer & Portfolio",
+  "description": "Interactive Linux desktop simulation portfolio showcasing Muneer Alam's projects, skills, and experience as a full-stack software developer.",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "apple-touch-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1e1e2e",
+  "background_color": "#1e1e2e",
+  "orientation": "any",
+  "categories": ["portfolio", "development", "technology"],
+  "lang": "en-US"
+}
