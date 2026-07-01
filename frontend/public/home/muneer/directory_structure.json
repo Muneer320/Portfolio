@@ -29,6 +29,9 @@
                     }
                 }
             },
+            "CV.pdf": {
+                "type": "file"
+            },
             "Cover_Letter.txt": {
                 "type": "file"
             },
