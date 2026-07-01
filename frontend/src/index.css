@@ -1,15 +1,10 @@
 /**
  * Main Entry Point Styles
- * 
- * Tailwind CSS directives and base font configurations
- * for the entire portfolio application.
- * 
+ *
+ * Base font configurations for the entire portfolio application.
+ *
  * @author Muneer Alam
  */
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 body {
   margin: 0;
