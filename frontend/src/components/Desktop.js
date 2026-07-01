@@ -79,6 +79,9 @@ const Desktop = ({ onOpenWindow }) => {
             top: iconItem.position.y,
           }}
           onClick={() => handleIconClick(iconItem.id)}
+          role="button"
+          aria-label={`Open ${iconItem.name}`}
+          tabIndex={0}
         >
           <div className="icon">{iconItem.icon}</div>
           <span>{iconItem.name}</span>

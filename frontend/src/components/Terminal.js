@@ -834,6 +834,7 @@ Current color: ${textColor}`;
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               className="terminal-input"
+              aria-label="Terminal command input"
               autoFocus
               rows={1}
               style={{ minHeight: "1.3em", height: "auto" }}
