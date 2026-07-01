@@ -3,23 +3,94 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
-        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-        <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+        <meta name="theme-color" content="#1e1e2e" />
+        <meta name="application-name" content="Muneer Alam Portfolio" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-        <title>Muneer Portfolio | Arch Linux Simulation</title>
+        <!-- ========== PRIMARY SEO ========== -->
+        <title>Muneer Alam | Software Developer & Arch Linux Portfolio</title>
+        <meta name="description" content="Explore Muneer Alam's interactive Linux desktop portfolio. Full-stack software developer specializing in React, Python, Go, FastAPI, and distributed systems. 12+ projects, 6+ years experience." />
+        <meta name="keywords" content="Muneer Alam, Muneer, muneer320, software developer, portfolio, React developer, Python developer, Go developer, full-stack, BITS Pilani, Scaler School of Technology" />
+        <meta name="author" content="Muneer Alam" />
+        <meta name="robots" content="index, follow" />
+        <meta name="revisit-after" content="7 days" />
+        <link rel="canonical" href="https://muneer320.tech" />
+
+        <!-- ========== OPEN GRAPH / SOCIAL SHARING ========== -->
+        <meta property="og:title" content="Muneer Alam | Software Developer & Interactive Portfolio" />
+        <meta property="og:description" content="An interactive Linux desktop simulation portfolio showcasing Muneer Alam's projects, skills, and experience. Explore via terminal, file manager, and more." />
+        <meta property="og:url" content="https://muneer320.tech" />
+        <meta property="og:site_name" content="Muneer Alam Portfolio" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:image" content="https://muneer320.tech/og-image.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Muneer Alam - Software Developer Portfolio" />
+
+        <!-- ========== TWITTER / X CARDS ========== -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Muneer Alam | Software Developer & Interactive Portfolio" />
+        <meta name="twitter:description" content="Explore Muneer Alam's interactive Linux desktop portfolio. 12+ projects, 6+ years experience. Built with React." />
+        <meta name="twitter:image" content="https://muneer320.tech/og-image.png" />
+        <meta name="twitter:image:alt" content="Muneer Alam Portfolio" />
+
+        <!-- ========== STRUCTURED DATA (JSON-LD) ========== -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Muneer Alam",
+          "url": "https://muneer320.tech",
+          "image": "https://muneer320.tech/og-image.png",
+          "jobTitle": "Software Developer",
+          "description": "Full-stack software developer specializing in React, Python, Go, FastAPI, and distributed systems. 12+ projects with 6+ years of experience.",
+          "sameAs": [
+            "https://github.com/muneer320",
+            "https://linkedin.com/in/muneer320",
+            "https://muneer320.tech"
+          ],
+          "knowsAbout": ["React", "Python", "Go", "FastAPI", "PostgreSQL", "Docker", "TypeScript", "Linux"],
+          "alumniOf": ["BITS Pilani", "Scaler School of Technology"],
+          "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "https://muneer320.tech",
+            "name": "Muneer Alam Portfolio",
+            "description": "Interactive Linux desktop simulation portfolio showcasing projects, skills, and experience.",
+            "url": "https://muneer320.tech",
+            "inLanguage": "en-US"
+          }
+        }
+        </script>
+
+        <!-- ========== FAVICONS & WEB APP ========== -->
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+        <link rel="manifest" href="/manifest.json" />
+
+        <!-- ========== PRELOAD KEY ASSETS ========== -->
+        <link rel="preload" href="/home/muneer/Pictures/Arch-Linux-Wallpaper.jpg" as="image" type="image/jpeg" />
+
+        <!-- ========== DNS PREFETCH ========== -->
+        <link rel="dns-prefetch" href="https://api.github.com" />
+        <link rel="dns-prefetch" href="https://us.i.posthog.com" />
     </head>
     <body>
-        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <noscript>
+            <div style="background:#1e1e2e;color:white;padding:40px;text-align:center;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:sans-serif;">
+                <h1 style="color:#61dafb;margin-bottom:20px;">Muneer Alam - Portfolio</h1>
+                <p style="margin-bottom:15px;font-size:1.1rem;">This portfolio requires JavaScript to run the interactive desktop simulation.</p>
+                <p style="margin-bottom:30px;color:#8892b0;">In the meantime, check out my profiles:</p>
+                <div style="display:flex;gap:15px;flex-wrap:wrap;justify-content:center;">
+                    <a href="https://github.com/muneer320" style="color:#61dafb;text-decoration:underline;">GitHub</a>
+                    <a href="https://linkedin.com/in/muneer320" style="color:#61dafb;text-decoration:underline;">LinkedIn</a>
+                    <a href="mailto:muneer.alam320@gmail.com" style="color:#61dafb;text-decoration:underline;">Email</a>
+                </div>
+            </div>
+        </noscript>
         <div id="root"></div>
-        
+
+        <!-- PostHog Analytics -->
         <script>
             !(function (t, e) {
                 var o, n, p, r;
@@ -84,7 +155,7 @@
             })(document, window.posthog || []);
             posthog.init("phc_yJW1VjHGGwmCbbrtczfqqNxgBDbhlhOWcdzcIJEOTFE", {
                 api_host: "https://us.i.posthog.com",
-                person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
+                person_profiles: "identified_only",
             });
         </script>
     </body>
