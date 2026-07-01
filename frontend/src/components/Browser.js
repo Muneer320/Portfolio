@@ -28,6 +28,9 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
   const [gitHubRepos, setGitHubRepos] = useState([]);
   const [gitHubError, setGitHubError] = useState(null);
   const [activeTab, setActiveTab] = useState("repositories");
+  // Simulated browser history stack
+  const [historyStack, setHistoryStack] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
   // ============================================================================
   // GITHUB API FUNCTIONS
   // ============================================================================
@@ -148,16 +151,7 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
    */
   const handleUrlNavigation = (e) => {
     if (e.key === "Enter") {
-      setIsLoading(true);
-
-      // Check if it's a GitHub URL
-      if (url.includes("github.com")) {
-        const username = url.split("/").pop() || "muneer320";
-        fetchGitHubProfile(username);
-      } else {
-        // Simulate loading delay for other URLs
-        setTimeout(() => setIsLoading(false), 1000);
-      }
+      navigateTo(url);
     }
   };
 
@@ -170,6 +164,67 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
     } else {
       setIsLoading(true);
       setTimeout(() => setIsLoading(false), 1000);
+    }
+  };
+
+  /**
+   * Navigate to a URL, pushing to simulated history
+   */
+  const navigateTo = (newUrl) => {
+    // Only push if different from current
+    if (newUrl === url) {
+      handleRefresh();
+      return;
+    }
+    // Push current URL to history before navigating
+    const newStack = historyStack.slice(0, historyIndex + 1);
+    newStack.push(url);
+    setHistoryStack(newStack);
+    setHistoryIndex(newStack.length - 1);
+    setUrl(newUrl);
+    setIsLoading(true);
+    // Handle GitHub URL navigation
+    if (newUrl.includes("github.com")) {
+      const username = newUrl.split("/").pop() || "muneer320";
+      fetchGitHubProfile(username);
+    } else {
+      setTimeout(() => setIsLoading(false), 800);
+    }
+  };
+
+  /**
+   * Simulated back navigation
+   */
+  const handleGoBack = () => {
+    if (historyIndex >= 0) {
+      const prevUrl = historyStack[historyIndex];
+      setHistoryIndex(historyIndex - 1);
+      setUrl(prevUrl);
+      setIsLoading(true);
+      if (prevUrl.includes("github.com")) {
+        const username = prevUrl.split("/").pop() || "muneer320";
+        fetchGitHubProfile(username);
+      } else {
+        setTimeout(() => setIsLoading(false), 800);
+      }
+    }
+  };
+
+  /**
+   * Simulated forward navigation
+   */
+  const handleGoForward = () => {
+    if (historyIndex < historyStack.length - 1) {
+      const nextUrl = historyStack[historyIndex + 1];
+      setHistoryIndex(historyIndex + 1);
+      setUrl(nextUrl);
+      setIsLoading(true);
+      if (nextUrl.includes("github.com")) {
+        const username = nextUrl.split("/").pop() || "muneer320";
+        fetchGitHubProfile(username);
+      } else {
+        setTimeout(() => setIsLoading(false), 800);
+      }
     }
   };
   // ============================================================================
@@ -285,16 +340,16 @@ const Browser = ({ filePath, fileObj, onOpenWindow }) => {
         {" "}
         <button
           className="nav-btn"
-          onClick={() => window.history.back()}
-          disabled
+          onClick={handleGoBack}
+          disabled={historyIndex < 0}
           title="Go back"
         >
           <FaArrowLeft />
         </button>
         <button
           className="nav-btn"
-          onClick={() => window.history.forward()}
-          disabled
+          onClick={handleGoForward}
+          disabled={historyIndex >= historyStack.length - 1}
           title="Go forward"
         >
           <FaArrowRight />

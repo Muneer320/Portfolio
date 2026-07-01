@@ -28,6 +28,7 @@ import Terminal from "./components/Terminal";
 import FileManager from "./components/FileManager";
 import TextEditor from "./components/TextEditor";
 import ImageViewer from "./components/ImageViewer";
+import ContextMenu from "./components/ContextMenu";
 
 // Lazy-loaded components for code splitting
 const Browser = lazy(() => import("./components/Browser"));
@@ -45,6 +46,7 @@ function App() {
   // Window Management State
   const [dragging, setDragging] = useState(null);
   const [resizing, setResizing] = useState(null);
+  const [cascadeOffset, setCascadeOffset] = useState(0);
 
   // System Status and Audio State
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -95,13 +97,6 @@ function App() {
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
-
-  // Security - Disable Right-Click Context Menu
-  useEffect(() => {
-    const handleContextMenu = (e) => e.preventDefault();
-    document.addEventListener("contextmenu", handleContextMenu);
-    return () => document.removeEventListener("contextmenu", handleContextMenu);
   }, []);
 
   // Auto-Start Functionality
@@ -274,8 +269,8 @@ function App() {
           component: appName,
           filePath: filePath || getCurrentMusicPath(),
           fileObj: fileObj,
-          x: Math.random() * 200 + 100,
-          y: Math.random() * 100 + 100,
+          x: 60 + (cascadeOffset * 30) % 500,
+          y: 80 + (cascadeOffset * 40) % 400,
           width: Math.max(minSize.width, 450),
           height: Math.max(minSize.height, 400),
           zIndex: windowZIndex,
@@ -283,6 +278,7 @@ function App() {
           minHeight: minSize.height,
         };
         setWindowZIndex((prev) => prev + 1);
+        setCascadeOffset((prev) => prev + 1);
         setOpenWindows((prev) => [...prev, newWindow]);
         return;
       }
@@ -313,8 +309,8 @@ function App() {
       component: appName,
       filePath: filePath,
       fileObj: fileObj,
-      x: Math.random() * 200 + 100,
-      y: Math.random() * 100 + 100,
+      x: 60 + (cascadeOffset * 30) % 500,
+      y: 80 + (cascadeOffset * 40) % 400,
       width: Math.max(minSize.width, 500),
       height: Math.max(minSize.height, 400),
       zIndex: windowZIndex,
@@ -323,6 +319,7 @@ function App() {
     };
 
     setWindowZIndex((prev) => prev + 1);
+    setCascadeOffset((prev) => prev + 1);
     setOpenWindows((prev) => [...prev, newWindow]);
   };
 
@@ -535,6 +532,7 @@ function App() {
   // ============================================================================
 
   return (
+    <ContextMenu onOpenWindow={openWindow}>
     <div className="desktop">
       <Dock
         time={time}
@@ -574,8 +572,15 @@ function App() {
               <Suspense fallback={<div className="loading-spinner" style={{padding: '40px', textAlign: 'center', color: '#61dafb'}}>⟳</div>}>
               {window.component === "terminal" && (
                 <Terminal
-                  currentPath={currentPath}
-                  setCurrentPath={setCurrentPath}
+                  currentPath={window.path || currentPath}
+                  setCurrentPath={(newPath) => {
+                    // Update the specific terminal window's path
+                    setOpenWindows((prev) =>
+                      prev.map((w) =>
+                        w.id === window.id ? { ...w, path: newPath } : w
+                      )
+                    );
+                  }}
                   onClose={() => closeWindow(window.id)}
                   onOpenWindow={openWindow}
                 />
@@ -631,6 +636,7 @@ function App() {
         ))}
       </div>
     </div>
+    </ContextMenu>
   );
 }
 
