@@ -564,7 +564,7 @@ function App() {
             >
               <span className="window-title">{window.title}</span>
               <div className="window-controls">
-                <button onClick={() => closeWindow(window.id)}>×</button>
+                <button onClick={() => closeWindow(window.id)} aria-label="Close window">×</button>
               </div>{" "}
             </div>
 

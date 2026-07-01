@@ -294,7 +294,7 @@ const Dock = ({
   return (
     <div className="dock">
       <div className="dock-left">
-        <div className="dock-item logo">
+        <div className="dock-item logo" aria-label="Arch Linux logo">
           <span>
             <FaLinux />
           </span>
@@ -316,6 +316,10 @@ const Dock = ({
                 systemStatus.musicPlaying ? "active" : ""
               }`}
               onClick={toggleMusic}
+              role="button"
+              aria-label={systemStatus.musicPlaying ? "Pause music" : "Play music"}
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && toggleMusic()}
             >
               <span>
                 {systemStatus.musicPlaying ? <FaMusic /> : <FaMusic />}
@@ -458,7 +462,7 @@ const Dock = ({
         </div>
 
         {/* User Session Controls */}
-        <button className="logout-btn" onClick={onLogout} title="Logout">
+        <button className="logout-btn" onClick={onLogout} title="Logout" aria-label="Logout">
           <FaLock />
         </button>
       </div>
