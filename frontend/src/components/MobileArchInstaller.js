@@ -224,12 +224,12 @@ const MobileArchInstaller = () => {
   // EFFECTS AND HANDLERS
   // ============================================================================
 
-  // Auto-start installation after welcome screen
+  // Auto-start installation after welcome screen (faster for returning visitors)
   useEffect(() => {
     if (currentPhase === "welcome") {
       const timer = setTimeout(() => {
         setCurrentPhase("installing");
-      }, 3000);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [currentPhase]);
@@ -249,15 +249,15 @@ const MobileArchInstaller = () => {
     }
   }, [currentPhase, installStep]);
 
-  // Handle boot sequence progression
+  // Handle boot sequence progression (faster)
   useEffect(() => {
     if (showBootLog && bootStep < bootMessages.length) {
       const timer = setTimeout(() => {
         setBootStep(bootStep + 1);
         if (bootStep === bootMessages.length - 1) {
-          setTimeout(() => setShowDesktop(true), 1000);
+          setTimeout(() => setShowDesktop(true), 600);
         }
-      }, 500);
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [showBootLog, bootStep]);
@@ -883,6 +883,26 @@ Memory: Available RAM`;
           <div className="spinner"></div>
           <span>Processing...</span>
         </div>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button
+            onClick={() => { setCurrentPhase('booting'); setShowBootLog(true); }}
+            style={{
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              color: '#8892b0',
+              padding: '8px 20px',
+              borderRadius: '15px',
+              fontSize: '0.8rem',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+            }}
+          >
+            Skip to desktop →
+          </button>
+          <p style={{ color: '#555', fontSize: '0.7rem', marginTop: '8px' }}>
+            Installation happens automatically in a few seconds
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -902,6 +922,27 @@ Memory: Available RAM`;
           </div>
         ))}
         {bootStep < bootMessages.length && <div className="boot-cursor">_</div>}
+      {bootStep < bootMessages.length - 1 && (
+        <div style={{ textAlign: 'center', marginTop: '15px' }}>
+          <button
+            onClick={() => {
+              setBootStep(bootMessages.length);
+              setTimeout(() => setShowDesktop(true), 600);
+            }}
+            style={{
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: '#8892b0',
+              padding: '6px 16px',
+              borderRadius: '12px',
+              fontSize: '0.75rem',
+              cursor: 'pointer',
+            }}
+          >
+            Skip boot →
+          </button>
+        </div>
+      )}
       </div>
 
       {showDesktop && (
