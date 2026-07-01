@@ -153,10 +153,19 @@
                     }),
                     (e.__SV = 1));
             })(document, window.posthog || []);
-            posthog.init("phc_yJW1VjHGGwmCbbrtczfqqNxgBDbhlhOWcdzcIJEOTFE", {
-                api_host: "https://us.i.posthog.com",
+            posthog.init(
+              "%REACT_APP_POSTHOG_KEY%",
+              {
+                api_host: "%REACT_APP_POSTHOG_HOST%",
                 person_profiles: "identified_only",
-            });
+                loaded: function(posthog) {
+                  // Fallback if env vars not set
+                  if ("%REACT_APP_POSTHOG_KEY%" === "%REACT_APP_" + "POSTHOG_KEY%") {
+                    posthog.opt_out_capturing();
+                  }
+                }
+              }
+            );
         </script>
     </body>
 </html>

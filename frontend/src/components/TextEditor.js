@@ -25,6 +25,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { FaFileAlt, FaSave, FaFolderOpen, FaTrash, FaEye, FaEdit } from "react-icons/fa";
 import { marked } from "marked";
+import DOMPurify from "dompurify";
 
 // ============================================================================
 // TEXTEDITOR COMPONENT
@@ -62,7 +63,8 @@ const TextEditor = ({ filePath, fileObj, onClose, windowId }) => {
   const renderedMarkdown = useMemo(() => {
     if (!isMarkdown) return "";
     try {
-      return marked(content, { breaks: true, gfm: true });
+      const raw = marked.parse(content, { breaks: true, gfm: true });
+      return DOMPurify.sanitize(raw);
     } catch {
       return content;
     }
