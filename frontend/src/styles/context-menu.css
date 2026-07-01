@@ -1,0 +1,103 @@
+/**
+ * Custom Context Menu Styles
+ *
+ * Right-click context menu with Arch Linux dark theme.
+ * Inspired by KDE Plasma and XFCE context menus.
+ *
+ * @author Muneer Alam
+ */
+
+/* ============================================================================
+   CONTEXT MENU CONTAINER
+   ============================================================================ */
+.custom-context-menu {
+  background: rgba(24, 24, 37, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 6px 0;
+  min-width: 200px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  animation: contextMenuIn 0.12s ease-out;
+  overflow: hidden;
+}
+
+@keyframes contextMenuIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ============================================================================
+   HEADER
+   ============================================================================ */
+.context-menu-header {
+  padding: 8px 14px 6px;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 4px;
+}
+
+/* ============================================================================
+   MENU ITEMS
+   ============================================================================ */
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.88rem;
+  transition: all 0.1s ease;
+  position: relative;
+}
+
+.context-menu-item:hover {
+  background: rgba(97, 218, 251, 0.12);
+  color: #61dafb;
+}
+
+.context-menu-item:active {
+  background: rgba(97, 218, 251, 0.2);
+}
+
+.context-icon {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ============================================================================
+   SEPARATOR
+   ============================================================================ */
+.context-menu-separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 4px 10px;
+}
+
+/* ============================================================================
+   RESPONSIVE - smaller on mobile
+   ============================================================================ */
+@media (max-width: 768px) {
+  .custom-context-menu {
+    min-width: 160px;
+  }
+
+  .context-menu-item {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+}

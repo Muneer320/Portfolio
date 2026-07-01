@@ -9,7 +9,7 @@
  * @version 1.0.0
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import "./App.css";
 
 import { loadFileSystem } from "./utils/fileSystemLoader";
@@ -27,10 +27,13 @@ import Desktop from "./components/Desktop";
 import Terminal from "./components/Terminal";
 import FileManager from "./components/FileManager";
 import TextEditor from "./components/TextEditor";
-import Browser from "./components/Browser";
-import MusicPlayer from "./components/MusicPlayer";
 import ImageViewer from "./components/ImageViewer";
-import MobileArchInstaller from "./components/MobileArchInstaller";
+import ContextMenu from "./components/ContextMenu";
+
+// Lazy-loaded components for code splitting
+const Browser = lazy(() => import("./components/Browser"));
+const MusicPlayer = lazy(() => import("./components/MusicPlayer"));
+const MobileArchInstaller = lazy(() => import("./components/MobileArchInstaller"));
 
 function App() {
   // Core Application State
@@ -43,6 +46,7 @@ function App() {
   // Window Management State
   const [dragging, setDragging] = useState(null);
   const [resizing, setResizing] = useState(null);
+  const [cascadeOffset, setCascadeOffset] = useState(0);
 
   // System Status and Audio State
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -76,14 +80,10 @@ function App() {
   // EFFECTS - SYSTEM INITIALIZATION AND MONITORING
   // ============================================================================
 
-  // System Timer and Battery Simulation
+  // System Timer - Update Clock
   useEffect(() => {
     const timer = setInterval(() => {
       setTime(new Date());
-      setSystemStatus((prev) => ({
-        ...prev,
-        battery: Math.max(1, prev.battery - 0.001),
-      }));
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -97,13 +97,6 @@ function App() {
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
-
-  // Security - Disable Right-Click Context Menu
-  useEffect(() => {
-    const handleContextMenu = (e) => e.preventDefault();
-    document.addEventListener("contextmenu", handleContextMenu);
-    return () => document.removeEventListener("contextmenu", handleContextMenu);
   }, []);
 
   // Auto-Start Functionality
@@ -276,8 +269,8 @@ function App() {
           component: appName,
           filePath: filePath || getCurrentMusicPath(),
           fileObj: fileObj,
-          x: Math.random() * 200 + 100,
-          y: Math.random() * 100 + 100,
+          x: 60 + (cascadeOffset * 30) % 500,
+          y: 80 + (cascadeOffset * 40) % 400,
           width: Math.max(minSize.width, 450),
           height: Math.max(minSize.height, 400),
           zIndex: windowZIndex,
@@ -285,6 +278,7 @@ function App() {
           minHeight: minSize.height,
         };
         setWindowZIndex((prev) => prev + 1);
+        setCascadeOffset((prev) => prev + 1);
         setOpenWindows((prev) => [...prev, newWindow]);
         return;
       }
@@ -315,8 +309,8 @@ function App() {
       component: appName,
       filePath: filePath,
       fileObj: fileObj,
-      x: Math.random() * 200 + 100,
-      y: Math.random() * 100 + 100,
+      x: 60 + (cascadeOffset * 30) % 500,
+      y: 80 + (cascadeOffset * 40) % 400,
       width: Math.max(minSize.width, 500),
       height: Math.max(minSize.height, 400),
       zIndex: windowZIndex,
@@ -325,6 +319,7 @@ function App() {
     };
 
     setWindowZIndex((prev) => prev + 1);
+    setCascadeOffset((prev) => prev + 1);
     setOpenWindows((prev) => [...prev, newWindow]);
   };
 
@@ -479,7 +474,19 @@ function App() {
   // ============================================================================
   // Mobile/Small Screen - Arch Installer Experience
   if (isSmallScreen) {
-    return <MobileArchInstaller />;
+    return (
+      <Suspense fallback={
+        <div className="loading-screen" style={{
+          height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'linear-gradient(135deg, #0f0f23, #1a1a2e)', color: '#61dafb',
+          fontFamily: 'monospace', fontSize: '1.1rem'
+        }}>
+          Loading portable environment...
+        </div>
+      }>
+        <MobileArchInstaller />
+      </Suspense>
+    );
   }
   // Login Screen - User Authentication Interface
   if (currentScreen === "login") {
@@ -525,6 +532,7 @@ function App() {
   // ============================================================================
 
   return (
+    <ContextMenu onOpenWindow={openWindow}>
     <div className="desktop">
       <Dock
         time={time}
@@ -561,10 +569,18 @@ function App() {
             </div>
 
             <div className="window-content">
+              <Suspense fallback={<div className="loading-spinner" style={{padding: '40px', textAlign: 'center', color: '#61dafb'}}>⟳</div>}>
               {window.component === "terminal" && (
                 <Terminal
-                  currentPath={currentPath}
-                  setCurrentPath={setCurrentPath}
+                  currentPath={window.path || currentPath}
+                  setCurrentPath={(newPath) => {
+                    // Update the specific terminal window's path
+                    setOpenWindows((prev) =>
+                      prev.map((w) =>
+                        w.id === window.id ? { ...w, path: newPath } : w
+                      )
+                    );
+                  }}
                   onClose={() => closeWindow(window.id)}
                   onOpenWindow={openWindow}
                 />
@@ -607,6 +623,7 @@ function App() {
                   fileObj={window.fileObj}
                 />
               )}{" "}
+            </Suspense>
             </div>
 
             {window.component !== "musicplayer" && (
@@ -619,6 +636,7 @@ function App() {
         ))}
       </div>
     </div>
+    </ContextMenu>
   );
 }
 
