@@ -1,0 +1,546 @@
+/**
+ * Pocket Device — Core Styles
+ *
+ * Covers: DeviceShell, LockScreen, HomeScreen, StatusBar,
+ * QuickStats, AppIcon, AppShell, Toast.
+ *
+ * @author Muneer Alam
+ */
+
+/* ============================================================================
+   DEVICE CONTAINER
+   ============================================================================ */
+.pocket-device {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--pocket-bg);
+  color: var(--pocket-text);
+  font-family: var(--pocket-font-ui);
+  font-size: var(--pocket-fs-base);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ============================================================================
+   STATUS BAR
+   ============================================================================ */
+.pocket-statusbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 10;
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-text);
+  pointer-events: none;
+}
+
+.pocket-statusbar-left {
+  font-family: var(--pocket-font-mono);
+  font-size: var(--pocket-fs-xs);
+  font-weight: 600;
+  opacity: 0.6;
+  letter-spacing: 0.5px;
+}
+
+.pocket-statusbar-center {
+  font-weight: 600;
+  font-size: var(--pocket-fs-sm);
+  letter-spacing: 0.3px;
+}
+
+.pocket-statusbar-right {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.pocket-signal {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: background 0.3s ease;
+}
+
+.pocket-signal.active {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================================================
+   LOCK SCREEN
+   ============================================================================ */
+.pocket-lockscreen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  animation: pocketFadeIn var(--pocket-duration-slow) var(--pocket-ease-out);
+  outline: none;
+}
+
+.pocket-lockscreen:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--pocket-accent);
+}
+
+.pocket-lockscreen-wallpaper,
+.pocket-homescreen-wallpaper {
+  position: absolute;
+  inset: 0;
+  background: url("/home/muneer/Pictures/Arch-Linux-Wallpaper.jpg") center /
+    cover no-repeat;
+  z-index: 0;
+}
+
+.pocket-lockscreen-overlay,
+.pocket-homescreen-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 1;
+}
+
+.pocket-lockscreen-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  padding: 0 24px;
+}
+
+.pocket-lockscreen-info {
+  position: absolute;
+  top: 60px;
+  text-align: center;
+}
+
+.pocket-lockscreen-date {
+  font-size: var(--pocket-fs-sm);
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.5px;
+}
+
+.pocket-lockscreen-time {
+  font-size: var(--pocket-clock-size);
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin: 0;
+  line-height: 1;
+  color: var(--pocket-text);
+}
+
+.pocket-lockscreen-identity {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pocket-lockscreen-name {
+  font-size: var(--pocket-name-size);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.pocket-lockscreen-title {
+  font-size: var(--pocket-fs-base);
+  color: var(--pocket-accent);
+  margin: 4px 0 0;
+  font-weight: 400;
+}
+
+.pocket-lockscreen-tagline {
+  font-size: var(--pocket-fs-sm);
+  color: rgba(255, 255, 255, 0.5);
+  margin: 6px 0 0;
+  font-weight: 300;
+}
+
+.pocket-lockscreen-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--pocket-fs-xs);
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.pocket-lockscreen-hint.visible {
+  opacity: 1;
+  animation: pocketBreathe 2s ease-in-out infinite;
+}
+
+@keyframes pocketBreathe {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* ============================================================================
+   HOME SCREEN
+   ============================================================================ */
+.pocket-homescreen {
+  position: absolute;
+  inset: 0;
+  animation: pocketFadeIn var(--pocket-duration-fast) var(--pocket-ease-out);
+}
+
+.pocket-homescreen-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 50px; /* status bar height + small gap */
+  padding-bottom: 24px;
+  overflow: hidden;
+}
+
+/* Quick Stats */
+.pocket-quickstats {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 8px 20px 20px;
+  padding: 14px 18px;
+  background: var(--pocket-glass-bg);
+  backdrop-filter: var(--pocket-glass-blur);
+  -webkit-backdrop-filter: var(--pocket-glass-blur);
+  border: 1px solid var(--pocket-glass-border);
+  border-radius: var(--pocket-radius-lg);
+  box-shadow: var(--pocket-shadow-sm);
+}
+
+.pocket-quickstats-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--pocket-radius-full);
+  background: linear-gradient(135deg, var(--pocket-accent), var(--pocket-accent-green));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pocket-quickstats-initials {
+  font-family: var(--pocket-font-mono);
+  font-size: var(--pocket-fs-sm);
+  font-weight: 700;
+  color: var(--pocket-bg);
+}
+
+.pocket-quickstats-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.pocket-quickstats-name {
+  font-size: var(--pocket-fs-base);
+  font-weight: 600;
+  color: var(--pocket-text);
+}
+
+.pocket-quickstats-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pocket-quickstats-badge {
+  font-size: var(--pocket-fs-xs);
+  color: var(--pocket-accent);
+  background: rgba(97, 218, 251, 0.12);
+  padding: 2px 8px;
+  border-radius: var(--pocket-radius-full);
+  white-space: nowrap;
+}
+
+/* App Grid */
+.pocket-homescreen-grid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px;
+  overflow-y: auto;
+}
+
+.pocket-homescreen-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  justify-items: center;
+  padding: 4px 0;
+}
+
+/* ============================================================================
+   APP ICONS
+   ============================================================================ */
+.pocket-app-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: var(--pocket-radius-md);
+  transition: transform var(--pocket-duration-instant) ease,
+    background var(--pocket-duration-fast) ease;
+  width: 80px;
+  outline: none;
+}
+
+.pocket-app-icon:hover,
+.pocket-app-icon:focus-visible {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pocket-app-icon:active {
+  transform: scale(0.95);
+}
+
+.pocket-app-icon:focus-visible {
+  box-shadow: 0 0 0 2px var(--pocket-accent);
+}
+
+.pocket-app-icon-empty {
+  cursor: default;
+  opacity: 0;
+}
+
+.pocket-app-icon-image {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--pocket-radius-lg);
+  background: var(--pocket-glass-bg);
+  backdrop-filter: var(--pocket-glass-blur);
+  -webkit-backdrop-filter: var(--pocket-glass-blur);
+  border: 1px solid var(--pocket-glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: var(--pocket-shadow-sm);
+  transition: transform var(--pocket-duration-fast) ease;
+}
+
+.pocket-app-icon:hover .pocket-app-icon-image {
+  transform: scale(1.05);
+}
+
+.pocket-app-icon-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--pocket-radius-full);
+  background: var(--pocket-accent-red);
+  color: var(--pocket-text);
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.pocket-app-icon-label {
+  font-size: var(--pocket-fs-xs);
+  color: var(--pocket-text-secondary);
+  text-align: center;
+  line-height: 1.2;
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================================================
+   APP SHELL
+   ============================================================================ */
+.pocket-appshell {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  background: var(--pocket-bg);
+  transform: translateY(100%);
+  transition: transform var(--pocket-duration-normal) var(--pocket-ease-out);
+}
+
+.pocket-appshell-visible {
+  transform: translateY(0);
+}
+
+.pocket-appshell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--pocket-border);
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.pocket-appshell-back,
+.pocket-appshell-close {
+  background: none;
+  border: none;
+  color: var(--pocket-accent);
+  font-size: var(--pocket-fs-base);
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: var(--pocket-radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--pocket-font-ui);
+  transition: background var(--pocket-duration-fast) ease;
+}
+
+.pocket-appshell-back:hover,
+.pocket-appshell-close:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pocket-appshell-back:focus-visible,
+.pocket-appshell-close:focus-visible {
+  outline: 2px solid var(--pocket-accent);
+  outline-offset: 2px;
+}
+
+.pocket-appshell-title {
+  font-size: var(--pocket-fs-base);
+  font-weight: 600;
+  color: var(--pocket-text);
+  margin: 0;
+}
+
+.pocket-appshell-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================================
+   TOAST
+   ============================================================================ */
+.pocket-toast {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: var(--pocket-bg-glass);
+  backdrop-filter: var(--pocket-glass-blur);
+  -webkit-backdrop-filter: var(--pocket-glass-blur);
+  border: 1px solid var(--pocket-border);
+  border-radius: var(--pocket-radius-md);
+  padding: 10px 20px;
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-text);
+  box-shadow: var(--pocket-shadow-md);
+  animation: pocketToastIn var(--pocket-duration-fast) var(--pocket-ease-out);
+  pointer-events: none;
+}
+
+@keyframes pocketToastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ============================================================================
+   LOADING
+   ============================================================================ */
+.pocket-appshell-loading,
+.pocket-loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--pocket-text-muted);
+  font-size: var(--pocket-fs-sm);
+}
+
+.pocket-loading-spinner::after {
+  content: "";
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--pocket-border);
+  border-top-color: var(--pocket-accent);
+  border-radius: 50%;
+  animation: pocketSpin 0.8s linear infinite;
+}
+
+@keyframes pocketSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================================
+   SHARED
+   ============================================================================ */
+@keyframes pocketFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+@media (min-width: 768px) {
+  /* Tablet and up — use desktop version instead */
+  .pocket-device {
+    display: none;
+  }
+}
+
+@media (max-width: 374px) {
+  .pocket-app-icon {
+    width: 72px;
+    padding: 6px 8px;
+  }
+  .pocket-app-icon-image {
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+  }
+  .pocket-lockscreen-time {
+    font-size: clamp(2rem, 10vw, 2.5rem);
+  }
+}

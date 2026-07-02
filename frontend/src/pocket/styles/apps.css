@@ -1,0 +1,636 @@
+/**
+ * Pocket Device — App Styles
+ *
+ * Covers: Terminal, Projects, Skills, Experience, Contact, CV, About.
+ *
+ * @author Muneer Alam
+ */
+
+/* ============================================================================
+   SCROLL CONTAINER (shared by content apps)
+   ============================================================================ */
+.pocket-app-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pocket-app-section-intro {
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+/* ============================================================================
+   TERMINAL
+   ============================================================================ */
+.pocket-terminal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  font-family: var(--pocket-font-mono);
+  font-size: var(--pocket-fs-sm);
+}
+
+.pocket-terminal-output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pocket-terminal-welcome {
+  color: var(--pocket-text-muted);
+  font-size: var(--pocket-fs-xs);
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--pocket-radius-sm);
+  border-left: 2px solid var(--pocket-accent);
+}
+
+.pocket-terminal-entry {
+  margin-bottom: 4px;
+}
+
+.pocket-terminal-prompt-line {
+  color: var(--pocket-accent);
+  font-weight: 500;
+  font-size: var(--pocket-fs-xs);
+  word-break: break-all;
+}
+
+.pocket-terminal-output-text {
+  color: var(--pocket-text-secondary);
+  font-size: var(--pocket-fs-xs);
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+.pocket-terminal-styled-output {
+  padding: 8px 0;
+}
+
+.pocket-terminal-styled-line {
+  font-size: var(--pocket-fs-xs);
+  color: var(--pocket-text-secondary);
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.pocket-terminal-spacer {
+  height: 8px;
+}
+
+.pocket-terminal-project-title {
+  font-size: var(--pocket-fs-sm);
+  font-weight: 600;
+  color: var(--pocket-accent);
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.pocket-terminal-project-text,
+.pocket-terminal-project-detail {
+  font-size: var(--pocket-fs-xs);
+  color: var(--pocket-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 2px;
+}
+
+.pocket-terminal-project-link a {
+  color: var(--pocket-accent);
+  font-size: var(--pocket-fs-xs);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pocket-terminal-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.pocket-terminal-tag {
+  font-size: var(--pocket-fs-xs);
+  padding: 3px 10px;
+  border-radius: var(--pocket-radius-full);
+  background: rgba(97, 218, 251, 0.1);
+  color: var(--pocket-accent);
+  border: 1px solid rgba(97, 218, 251, 0.2);
+  font-family: var(--pocket-font-ui);
+}
+
+.pocket-terminal-contact-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pocket-terminal-contact-btn {
+  flex: 1;
+  min-width: 80px;
+  padding: 10px 16px;
+  border: 1px solid var(--pocket-border);
+  border-radius: var(--pocket-radius-md);
+  background: var(--pocket-glass-bg);
+  color: var(--pocket-text);
+  font-size: var(--pocket-fs-sm);
+  cursor: pointer;
+  text-align: center;
+  transition: background var(--pocket-duration-fast) ease,
+    border-color var(--pocket-duration-fast) ease;
+  font-family: var(--pocket-font-ui);
+}
+
+.pocket-terminal-contact-btn:active {
+  background: rgba(97, 218, 251, 0.15);
+  border-color: var(--pocket-accent);
+}
+
+.pocket-terminal-chips {
+  display: flex;
+  gap: 6px;
+  padding: 6px 12px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.pocket-terminal-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.pocket-terminal-chip {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: var(--pocket-radius-full);
+  border: 1px solid var(--pocket-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--pocket-text-secondary);
+  font-size: var(--pocket-fs-xs);
+  font-family: var(--pocket-font-mono);
+  cursor: pointer;
+  transition: all var(--pocket-duration-fast) ease;
+  white-space: nowrap;
+}
+
+.pocket-terminal-chip:active {
+  background: var(--pocket-accent);
+  color: var(--pocket-bg);
+  border-color: var(--pocket-accent);
+}
+
+.pocket-terminal-input-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border-top: 1px solid var(--pocket-border);
+  flex-shrink: 0;
+}
+
+.pocket-terminal-prompt {
+  color: var(--pocket-accent);
+  font-weight: 700;
+  font-size: var(--pocket-fs-base);
+}
+
+.pocket-terminal-input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--pocket-text);
+  font-family: var(--pocket-font-mono);
+  font-size: var(--pocket-fs-sm);
+  outline: none;
+  min-width: 0;
+}
+
+.pocket-terminal-input::placeholder {
+  color: var(--pocket-text-muted);
+  opacity: 0.5;
+}
+
+.pocket-terminal-submit {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--pocket-radius-sm);
+  border: 1px solid var(--pocket-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--pocket-text-secondary);
+  font-size: var(--pocket-fs-base);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--pocket-duration-fast) ease;
+}
+
+.pocket-terminal-submit:active {
+  background: var(--pocket-accent);
+  color: var(--pocket-bg);
+}
+
+/* ============================================================================
+   PROJECTS
+   ============================================================================ */
+.pocket-project-card {
+  background: var(--pocket-bg-card);
+  border: 1px solid var(--pocket-border);
+  border-radius: var(--pocket-radius-md);
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: border-color var(--pocket-duration-fast) ease;
+}
+
+.pocket-project-card:active {
+  border-color: var(--pocket-border-hover);
+}
+
+.pocket-project-title {
+  font-size: var(--pocket-fs-base);
+  font-weight: 600;
+  color: var(--pocket-text);
+  margin: 0 0 8px;
+}
+
+.pocket-project-desc {
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-text-secondary);
+  line-height: 1.5;
+  margin: 0 0 10px;
+}
+
+.pocket-project-techs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.pocket-project-tag {
+  font-size: var(--pocket-fs-xs);
+  padding: 2px 8px;
+  border-radius: var(--pocket-radius-sm);
+  background: rgba(97, 218, 251, 0.08);
+  color: var(--pocket-accent);
+  font-family: var(--pocket-font-mono);
+}
+
+.pocket-project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-accent);
+  text-decoration: none;
+  padding: 4px 0;
+}
+
+.pocket-project-link:active {
+  text-decoration: underline;
+}
+
+/* ============================================================================
+   SKILLS
+   ============================================================================ */
+.pocket-skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pocket-skill-tag {
+  padding: 8px 16px;
+  border-radius: var(--pocket-radius-md);
+  background: var(--pocket-glass-bg);
+  backdrop-filter: var(--pocket-glass-blur);
+  -webkit-backdrop-filter: var(--pocket-glass-blur);
+  border: 1px solid var(--pocket-border);
+  color: var(--pocket-text);
+  font-size: var(--pocket-fs-sm);
+  font-weight: 500;
+  transition: all var(--pocket-duration-fast) ease;
+}
+
+.pocket-skill-tag:active {
+  border-color: var(--pocket-accent);
+  background: rgba(97, 218, 251, 0.08);
+}
+
+/* ============================================================================
+   EXPERIENCE
+   ============================================================================ */
+.pocket-experience-content {
+  padding: 4px 0;
+}
+
+.pocket-experience-heading {
+  font-size: var(--pocket-fs-base);
+  font-weight: 600;
+  color: var(--pocket-accent);
+  margin: 16px 0 8px;
+  line-height: 1.4;
+}
+
+.pocket-experience-text {
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-text);
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+.pocket-experience-bullet {
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-text-secondary);
+  line-height: 1.5;
+  margin: 6px 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--pocket-accent);
+  opacity: 0.9;
+}
+
+.pocket-experience-gap {
+  height: 8px;
+}
+
+/* ============================================================================
+   CONTACT
+   ============================================================================ */
+.pocket-contact-card {
+  margin-bottom: 20px;
+}
+
+.pocket-contact-location {
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-text-muted);
+  margin: 0 0 6px;
+}
+
+.pocket-contact-subtitle {
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.pocket-contact-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pocket-contact-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--pocket-border);
+  border-radius: var(--pocket-radius-md);
+  background: var(--pocket-bg-card);
+  color: var(--pocket-text);
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--pocket-duration-fast) ease;
+  font-family: var(--pocket-font-ui);
+  font-size: var(--pocket-fs-base);
+}
+
+.pocket-contact-btn:active {
+  background: rgba(97, 218, 251, 0.08);
+  border-color: var(--pocket-border-hover);
+}
+
+.pocket-contact-btn-icon {
+  font-size: 1.3rem;
+  width: 32px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.pocket-contact-btn-label {
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.pocket-contact-btn-detail {
+  font-size: var(--pocket-fs-xs);
+  color: var(--pocket-text-muted);
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 140px;
+}
+
+.pocket-contact-btn-email:active { border-color: #ea4335; }
+.pocket-contact-btn-gh:active { border-color: #6e5494; }
+.pocket-contact-btn-li:active { border-color: #0077b5; }
+.pocket-contact-btn-web:active { border-color: var(--pocket-accent); }
+.pocket-contact-btn-phone:active { border-color: var(--pocket-accent-green); }
+
+/* ============================================================================
+   CV
+   ============================================================================ */
+.pocket-cv-card {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.pocket-cv-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--pocket-radius-full);
+  background: linear-gradient(135deg, var(--pocket-accent), var(--pocket-accent-green));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--pocket-font-mono);
+  font-size: var(--pocket-fs-xl);
+  font-weight: 700;
+  color: var(--pocket-bg);
+  margin: 0 auto 12px;
+}
+
+.pocket-cv-name {
+  font-size: var(--pocket-fs-xl);
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: var(--pocket-text);
+}
+
+.pocket-cv-title {
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-accent);
+  margin: 0 0 20px;
+}
+
+.pocket-cv-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+.pocket-cv-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.pocket-cv-stat-value {
+  font-size: var(--pocket-fs-lg);
+  font-weight: 700;
+  color: var(--pocket-text);
+}
+
+.pocket-cv-stat-label {
+  font-size: var(--pocket-fs-xs);
+  color: var(--pocket-text-muted);
+}
+
+.pocket-cv-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pocket-cv-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: var(--pocket-radius-md);
+  border: 1px solid var(--pocket-border);
+  font-size: var(--pocket-fs-base);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--pocket-duration-fast) ease;
+  font-family: var(--pocket-font-ui);
+  text-align: center;
+}
+
+.pocket-cv-btn-download {
+  background: linear-gradient(135deg, var(--pocket-accent), var(--pocket-accent-green));
+  color: var(--pocket-bg);
+  border: none;
+  font-weight: 600;
+}
+
+.pocket-cv-btn-download:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+.pocket-cv-btn-view {
+  background: var(--pocket-bg-card);
+  color: var(--pocket-text);
+}
+
+.pocket-cv-btn-view:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pocket-cv-note {
+  font-size: var(--pocket-fs-xs);
+  color: var(--pocket-text-muted);
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ============================================================================
+   ABOUT
+   ============================================================================ */
+.pocket-about-card {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.pocket-about-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--pocket-radius-full);
+  background: linear-gradient(135deg, var(--pocket-accent), var(--pocket-accent-green));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+}
+
+.pocket-about-initials {
+  font-family: var(--pocket-font-mono);
+  font-size: var(--pocket-fs-xl);
+  font-weight: 700;
+  color: var(--pocket-bg);
+}
+
+.pocket-about-name {
+  font-size: var(--pocket-fs-xl);
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.pocket-about-role {
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-accent);
+  margin: 0;
+}
+
+.pocket-about-section {
+  margin-bottom: 20px;
+}
+
+.pocket-about-section-title {
+  font-size: var(--pocket-fs-sm);
+  font-weight: 600;
+  color: var(--pocket-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 10px;
+}
+
+.pocket-about-bio {
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.pocket-about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pocket-about-tag {
+  padding: 4px 12px;
+  border-radius: var(--pocket-radius-full);
+  background: rgba(97, 218, 251, 0.08);
+  color: var(--pocket-accent);
+  font-size: var(--pocket-fs-xs);
+  border: 1px solid rgba(97, 218, 251, 0.15);
+}
+
+.pocket-about-facts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pocket-about-facts li {
+  font-size: var(--pocket-fs-sm);
+  color: var(--pocket-text-secondary);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--pocket-border);
+  line-height: 1.5;
+}
+
+.pocket-about-facts li:last-child {
+  border-bottom: none;
+}
