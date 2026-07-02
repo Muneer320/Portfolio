@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import { portfolioData } from "../../data/portfolioData";
+import { portfolioData } from "data/portfolioData";
 
 export default function AboutApp() {
   const bio = portfolioData.bio || "";

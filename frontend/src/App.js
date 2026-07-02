@@ -33,7 +33,7 @@ import ContextMenu from "./components/ContextMenu";
 // Lazy-loaded components for code splitting
 const Browser = lazy(() => import("./components/Browser"));
 const MusicPlayer = lazy(() => import("./components/MusicPlayer"));
-const MobileArchInstaller = lazy(() => import("./components/MobileArchInstaller"));
+const DeviceShell = lazy(() => import("./pocket/DeviceShell"));
 
 function App() {
   // Core Application State
@@ -481,10 +481,10 @@ function App() {
           background: 'linear-gradient(135deg, #0f0f23, #1a1a2e)', color: '#61dafb',
           fontFamily: 'monospace', fontSize: '1.1rem'
         }}>
-          Loading portable environment...
+          Loading Pocket Device...
         </div>
       }>
-        <MobileArchInstaller />
+        <DeviceShell />
       </Suspense>
     );
   }

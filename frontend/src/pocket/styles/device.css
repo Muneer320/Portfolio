@@ -97,7 +97,7 @@
 .pocket-homescreen-wallpaper {
   position: absolute;
   inset: 0;
-  background: url("/home/muneer/Pictures/Arch-Linux-Wallpaper.jpg") center /
+  background: url("../../../public/home/muneer/Pictures/Arch-Linux-Wallpaper.jpg") center /
     cover no-repeat;
   z-index: 0;
 }
