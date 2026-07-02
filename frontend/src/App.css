@@ -14,5 +14,9 @@
 @import "./styles/browser.css";
 @import "./styles/music-player.css";
 @import "./styles/image-viewer.css";
-@import "./styles/mobile-arch-installer.css";
 @import "./styles/context-menu.css";
+
+/* Pocket Device — mobile experience */
+@import "./pocket/styles/tokens.css";
+@import "./pocket/styles/device.css";
+@import "./pocket/styles/apps.css";

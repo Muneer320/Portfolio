@@ -8,7 +8,7 @@
  */
 
 import React from "react";
-import { portfolioData } from "../../data/portfolioData";
+import { portfolioData } from "data/portfolioData";
 
 const PDF_PATH = "/home/muneer/Documents/CV.pdf";
 

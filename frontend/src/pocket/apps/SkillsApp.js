@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import { portfolioData } from "../../data/portfolioData";
+import { portfolioData } from "data/portfolioData";
 
 export default function SkillsApp() {
   const tags = portfolioData.skillTags || [];
