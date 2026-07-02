@@ -18,6 +18,7 @@ import LockScreen from "./LockScreen";
 import HomeScreen from "./HomeScreen";
 import AppShell from "./AppShell";
 import Toast from "./Toast";
+import SkipLink, { SkipTarget } from "./SkipLink";
 
 function AppFallback() {
   return (
@@ -35,6 +36,8 @@ export default function DeviceShell() {
   if (isLocked) {
     return (
       <div className="pocket-device">
+        <SkipLink />
+        <SkipTarget />
         <LockScreen onUnlock={unlock} />
       </div>
     );
@@ -44,6 +47,8 @@ export default function DeviceShell() {
   if (!currentApp) {
     return (
       <div className="pocket-device">
+        <SkipLink />
+        <SkipTarget />
         <HomeScreen onOpenApp={openApp} />
         <Toast message={toast} />
       </div>
@@ -53,7 +58,6 @@ export default function DeviceShell() {
   // App view — find the app in the registry and render it
   const appConfig = APPS.find((a) => a.id === currentApp);
   if (!appConfig) {
-    // Unknown app — return to home
     closeApp();
     return null;
   }
@@ -62,6 +66,8 @@ export default function DeviceShell() {
 
   return (
     <div className="pocket-device">
+      <SkipLink />
+      <SkipTarget />
       <AppShell appId={currentApp} onClose={closeApp}>
         <Suspense fallback={<AppFallback />}>
           <AppComponent showToast={showToast} />

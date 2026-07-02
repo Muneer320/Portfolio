@@ -8,8 +8,8 @@
  */
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { executeSystemCommand } from "../../utils/terminalCommands";
-import { portfolioData } from "../../data/portfolioData";
+import { executeSystemCommand } from "utils/terminalCommands";
+import { portfolioData } from "data/portfolioData";
 
 // Portfolio commands that have chips
 const PORTFOLIO_COMMANDS = [

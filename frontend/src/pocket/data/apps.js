@@ -12,7 +12,7 @@
  */
 
 import { lazy } from "react";
-import { portfolioData } from "../../data/portfolioData";
+import { portfolioData } from "data/portfolioData";
 
 // Helper: count projects from portfolio data
 const projectCount =
