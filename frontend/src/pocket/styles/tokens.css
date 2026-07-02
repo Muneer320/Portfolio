@@ -1,0 +1,98 @@
+/**
+ * Pocket Device — Design System Tokens
+ *
+ * CSS custom properties shared across all Pocket Device components.
+ * Follows a 4px spacing scale and uses the Arch Linux color palette
+ * consistent with the desktop experience.
+ *
+ * @author Muneer Alam
+ */
+
+:root {
+  /* === COLORS === */
+  --pocket-bg: #1e1e2e;
+  --pocket-bg-secondary: #2d3748;
+  --pocket-bg-card: rgba(255, 255, 255, 0.05);
+  --pocket-bg-glass: rgba(30, 30, 46, 0.75);
+  --pocket-bg-overlay: rgba(0, 0, 0, 0.6);
+
+  --pocket-text: #ffffff;
+  --pocket-text-secondary: #a0aec0;
+  --pocket-text-muted: #718096;
+
+  --pocket-accent: #61dafb;
+  --pocket-accent-green: #21e065;
+  --pocket-accent-red: #ff6b6b;
+  --pocket-accent-yellow: #f6e05e;
+
+  --pocket-border: rgba(255, 255, 255, 0.08);
+  --pocket-border-hover: rgba(97, 218, 251, 0.3);
+  --pocket-border-active: rgba(97, 218, 251, 0.5);
+
+  /* === TYPOGRAPHY === */
+  --pocket-font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --pocket-font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+
+  --pocket-fs-xs: 0.65rem;
+  --pocket-fs-sm: 0.75rem;
+  --pocket-fs-base: 0.875rem;
+  --pocket-fs-lg: 1rem;
+  --pocket-fs-xl: 1.25rem;
+  --pocket-fs-2xl: 1.75rem;
+  --pocket-fs-3xl: 2.5rem;
+  --pocket-fs-4xl: 3.5rem;
+
+  /* === SPACING (4px base) === */
+  --pocket-space-1: 4px;
+  --pocket-space-2: 8px;
+  --pocket-space-3: 12px;
+  --pocket-space-4: 16px;
+  --pocket-space-5: 20px;
+  --pocket-space-6: 24px;
+  --pocket-space-8: 32px;
+  --pocket-space-10: 40px;
+  --pocket-space-12: 48px;
+  --pocket-space-16: 64px;
+
+  /* === BORDER RADIUS === */
+  --pocket-radius-sm: 6px;
+  --pocket-radius-md: 10px;
+  --pocket-radius-lg: 16px;
+  --pocket-radius-xl: 24px;
+  --pocket-radius-full: 9999px;
+
+  /* === ELEVATION === */
+  --pocket-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.2);
+  --pocket-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --pocket-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* === GLASS === */
+  --pocket-glass-bg: rgba(30, 30, 46, 0.75);
+  --pocket-glass-border: rgba(255, 255, 255, 0.08);
+  --pocket-glass-blur: blur(12px);
+  --pocket-glass-blur-heavy: blur(24px);
+
+  /* === ANIMATION === */
+  --pocket-duration-instant: 100ms;
+  --pocket-duration-fast: 200ms;
+  --pocket-duration-normal: 300ms;
+  --pocket-duration-slow: 400ms;
+  --pocket-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --pocket-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* === LOCK SCREEN === */
+  --pocket-clock-size: clamp(2.5rem, 12vw, 3.5rem);
+  --pocket-name-size: clamp(1.3rem, 6vw, 1.8rem);
+}
+
+/* Reduced motion — disable all animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
