@@ -42,7 +42,7 @@ export default function AboutApp() {
       <div className="pocket-about-section">
         <h3 className="pocket-about-section-title">Quick Facts</h3>
         <ul className="pocket-about-facts">
-          <li>🎓 Scaler School of Technology · Class of '29 · GPA 9.29</li>
+          <li>🎓 BITS Pilani &amp; Scaler School of Technology · Class of '29 · GPA 9.29</li>
           <li>🏆 Smart Delhi Hackathon Winner · Blocktrain 3rd Place</li>
           <li>🐧 Arch Linux + Hyprland daily driver</li>
           <li>🚀 Co-founder @ ParaPixel DigiServices</li>

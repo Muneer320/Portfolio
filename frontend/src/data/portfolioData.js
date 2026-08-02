@@ -22,7 +22,7 @@ Comfortable across the stack — Python, Go, TypeScript, React, FastAPI, and mor
 
 Co-founder at ParaPixel DigiServices · Arch Linux + Hyprland daily driver · ranked top 50 globally in Codingame Clash of Code.`,
 
-  education: `🎓 B.Sc. Computer Science — Scaler School of Technology (Class of '29)
+  education: `🎓 Dual Degree — B.Sc. Computer Science: BITS Pilani & Scaler School of Technology (Class of '29)
 📊 GPA: 9.29
 💻 Completed first year, entering second year
 🏫 Completed High School (CBSE) — Delhi, India
@@ -43,7 +43,6 @@ Co-founder at ParaPixel DigiServices · Arch Linux + Hyprland daily driver · ra
 • PyTorch, LangChain, Gemini API, Claude API, OpenAI, computer vision, multi-agent systems, LLM tooling
 
 🌐 Web3 & Security:
-• GitGuild (decentralized prediction markets), XeroDay-APISniffer (API security), steganography
 
 ☁️ Tools & Technologies:
 • Git, GitHub, Docker, Docker Compose, Linux (Arch Linux), Bash scripting, CI/CD, JWT, OAuth, REST APIs, WebSockets`,
@@ -120,11 +119,6 @@ Co-founder at ParaPixel DigiServices · Arch Linux + Hyprland daily driver · ra
 • Tech: Python, concurrent processing, CLI
 • GitHub: [codelines](https://github.com/Muneer320/codelines)
 
-🛡️ XeroDay-APISniffer
-• Modular toolkit for scanning publicly available GitHub APIs for security insights
-• Tech: Python, GitHub API
-• GitHub: [XeroDay-APISniffer](https://github.com/Muneer320/XeroDay-APISniffer)
-
 🏑 Surjit Hockey Tournament
 • Full-stack tournament management for IndianOil Servo Surjit Hockey Tournament (Grade-I)
 • Tech: FastAPI, React 19, MySQL, Tailwind CSS 4, Framer Motion
@@ -148,30 +142,10 @@ Co-founder at ParaPixel DigiServices · Arch Linux + Hyprland daily driver · ra
 • Tech: Python, multi-agent AI orchestration
 • GitHub: [exHacker](https://github.com/Muneer320/exHacker)
 
-🧪 teams-clone
-• Realistic Microsoft Teams clone built as a reinforcement learning environment
-• Tech: JavaScript, RL environment design
-• GitHub: [teams-clone](https://github.com/Muneer320/teams-clone)
-
 ⛓️ GitGuild
 • Decentralized prediction markets for GitHub pull requests — trade tokens on PR outcomes
 • Tech: TypeScript, Web3 concepts
 • GitHub: [GitGuild](https://github.com/Muneer320/GitGuild)
-
-💀 LNX
-• The Worst Programming Language Ever — a deliberately terrible language, built for fun
-• Tech: Python, language design
-• GitHub: [LNX](https://github.com/Muneer320/LNX)
-
-🖼️ Abstracta2.0
-• Reimagines images as abstract artwork using evolving shapes and smart rendering
-• Tech: Python, computer vision, generative art
-• GitHub: [Abstracta2.0](https://github.com/Muneer320/Abstracta2.0)
-
-🔍 MessageInPicture
-• Steganography — hide and extract messages via image binary manipulation
-• Tech: Python, image processing
-• GitHub: [MessageInPicture](https://github.com/Muneer320/MessageInPicture)
 
 🧪 ChemPath
 • Student-friendly molecular pathway finder — like Google Maps for chemistry
@@ -226,10 +200,10 @@ Co-founder at ParaPixel DigiServices · Arch Linux + Hyprland daily driver · ra
 • Tech: JavaScript, responsive design
 • GitHub: [Class-Timetable](https://github.com/Muneer320/Class-Timetable)
 
-♟️ Chess
-• Chess game implementation in Python
-• Tech: Python
-• GitHub: [Chess](https://github.com/Muneer320/Chess)`,
+📱 Telegram Expense Tracker
+• Telegram bot for tracking personal expenses — log spending, categorize, analyze
+• Tech: Python, Telegram Bot API, SQLite
+• GitHub: [Telegram-Expence-Tracker](https://github.com/Muneer320/Telegram-Expence-Tracker)`,
 
   achievements: `🏆 Smart Delhi Hackathon — Winner
 🥉 Blocktrain Hackathon — 3rd Place

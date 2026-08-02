@@ -8,8 +8,8 @@ My skill set spans Python, Go, TypeScript, JavaScript, and React, with hands-on 
 • Winner, Smart Delhi Hackathon · 3rd Place, Blocktrain Hackathon · Top 7 of 350+ teams, ProdX (NAVERA '26)
 • Co-founder and Lead Developer at ParaPixel DigiServices — shipping client production systems (tournament management, e-commerce with Razorpay)
 • Top 50 International Rank in "Clash of Code" by Codingame
-• 30+ open-source repositories spanning Web3 (GitGuild), security tooling (XeroDay-APISniffer), developer tools (codelines, exHacker), and creative systems
-• B.Sc. Computer Science at Scaler School of Technology (Class of '29), GPA 9.29
+• 30+ open-source repositories spanning Web3 (GitGuild), developer tools (codelines, exHacker), AI systems, and creative tools
+• Dual Degree — B.Sc. Computer Science at BITS Pilani & Scaler School of Technology (Class of '29), GPA 9.29
 • Technical Lead for Ascent TechFest; admin for an 800+ member student community
 
 Your organization's emphasis on innovation and real-world impact aligns perfectly with my interests. I would love the opportunity to collaborate, learn, and contribute meaningfully to your projects.

@@ -12,7 +12,8 @@ describe("portfolioData", () => {
     expect(portfolioData.bio.length).toBeGreaterThan(50);
   });
 
-  test("education contains institutions", () => {
+  test("education contains dual degree", () => {
+    expect(portfolioData.education).toContain("BITS Pilani");
     expect(portfolioData.education).toContain("Scaler School of Technology");
     expect(portfolioData.education).toContain("9.29");
     expect(portfolioData.education.length).toBeGreaterThan(20);
@@ -46,7 +47,9 @@ describe("portfolioData", () => {
     expect(portfolioData.projects).toContain("BOOP");
     expect(portfolioData.projects).toContain("codelines");
     expect(portfolioData.projects).toContain("GitGuild");
-    expect(portfolioData.projects).toContain("LNX");
+    expect(portfolioData.projects).toContain("exHacker");
+    expect(portfolioData.projects).not.toContain("LNX");
+    expect(portfolioData.projects).not.toContain("teams-clone");
     expect(portfolioData.projects.length).toBeGreaterThan(100);
   });
 
