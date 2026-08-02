@@ -123,6 +123,8 @@ const Terminal = ({ currentPath, setCurrentPath, onClose, onOpenWindow }) => {
       "skills",
       "experience",
       "projects",
+      "achievements",
+      "certifications",
       "contact",
     ];
     const otherCommands = portfolioCommands.filter(
@@ -209,6 +211,8 @@ const Terminal = ({ currentPath, setCurrentPath, onClose, onOpenWindow }) => {
         "skills",
         "experience",
         "projects",
+        "achievements",
+        "certifications",
         "contact",
         "cv",
         "cv.png",
@@ -318,7 +322,7 @@ const Terminal = ({ currentPath, setCurrentPath, onClose, onOpenWindow }) => {
       case "help":
         output = `Available commands:
 • Standard: ls, pwd, cd, cat, clear, neofetch
-• Portfolio: bio, education, skills, experience, projects, contact
+• Portfolio: bio, education, skills, experience, projects, achievements, certifications, contact
 • CV: CV (combined portfolio info), CV.png (image), CV.pdf (browser), download-cv (download PDF)
 • Pacman: pacman -S cv.img, pacman -S cv.pdf
 • System: whoami, date, uptime
@@ -373,6 +377,18 @@ Keyboard shortcuts:
         break;
       case "projects":
         output = addPortfolioSuggestions(portfolioData.projects, "projects");
+        break;
+      case "achievements":
+        output = addPortfolioSuggestions(
+          portfolioData.achievements,
+          "achievements"
+        );
+        break;
+      case "certifications":
+        output = addPortfolioSuggestions(
+          portfolioData.certifications,
+          "certifications"
+        );
         break;
       case "contact":
         output = addPortfolioSuggestions(portfolioData.contact, "contact");

@@ -42,11 +42,12 @@ export default function AboutApp() {
       <div className="pocket-about-section">
         <h3 className="pocket-about-section-title">Quick Facts</h3>
         <ul className="pocket-about-facts">
-          <li>🏫 BITS Pilani &amp; Scaler School of Technology</li>
-          <li>🏆 Smart India Hackathon 2023 Participant</li>
-          <li>🐧 Arch Linux daily driver</li>
-          <li>📚 Self-taught, constantly learning</li>
-          <li>🎵 Music keeps me in flow</li>
+          <li>🎓 Scaler School of Technology · Class of '29 · GPA 9.29</li>
+          <li>🏆 Smart Delhi Hackathon Winner · Blocktrain 3rd Place</li>
+          <li>🐧 Arch Linux + Hyprland daily driver</li>
+          <li>🚀 Co-founder @ ParaPixel DigiServices</li>
+          <li>👥 Admin for 800+ member SST student community</li>
+          <li>🎮 Top 50 globally in Codingame Clash of Code</li>
         </ul>
       </div>
     </div>
