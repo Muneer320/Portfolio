@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Disallow internal file-system simulation routes
+Disallow: /home/
+
+Sitemap: https://muneer320.tech/sitemap.xml
