@@ -225,6 +225,118 @@
                         "type": "file"
                     }
                 }
+            },
+            "codelines": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "XeroDay-APISniffer": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "teams-clone": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "GitGuild": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "exHacker": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "LNX": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "MessageInPicture": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "Abstracta2.0": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "ChemPath": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "receipt-reader": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "Rinse": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "Class-Timetable": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "Chess": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
+            },
+            "Telegram-Expence-Tracker": {
+                "type": "directory",
+                "children": {
+                    "PROJECT_INFO.md": {
+                        "type": "file"
+                    }
+                }
             }
         }
     }
