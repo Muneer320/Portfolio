@@ -91,7 +91,7 @@ function App() {
   // Responsive Design - Screen Size Detection
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth < 1024 || window.innerHeight < 768);
+      setIsSmallScreen(window.innerWidth < 1024);
     };
 
     checkScreenSize();
