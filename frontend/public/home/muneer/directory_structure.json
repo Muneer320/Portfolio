@@ -234,22 +234,6 @@
                     }
                 }
             },
-            "XeroDay-APISniffer": {
-                "type": "directory",
-                "children": {
-                    "PROJECT_INFO.md": {
-                        "type": "file"
-                    }
-                }
-            },
-            "teams-clone": {
-                "type": "directory",
-                "children": {
-                    "PROJECT_INFO.md": {
-                        "type": "file"
-                    }
-                }
-            },
             "GitGuild": {
                 "type": "directory",
                 "children": {
@@ -259,30 +243,6 @@
                 }
             },
             "exHacker": {
-                "type": "directory",
-                "children": {
-                    "PROJECT_INFO.md": {
-                        "type": "file"
-                    }
-                }
-            },
-            "LNX": {
-                "type": "directory",
-                "children": {
-                    "PROJECT_INFO.md": {
-                        "type": "file"
-                    }
-                }
-            },
-            "MessageInPicture": {
-                "type": "directory",
-                "children": {
-                    "PROJECT_INFO.md": {
-                        "type": "file"
-                    }
-                }
-            },
-            "Abstracta2.0": {
                 "type": "directory",
                 "children": {
                     "PROJECT_INFO.md": {
@@ -315,14 +275,6 @@
                 }
             },
             "Class-Timetable": {
-                "type": "directory",
-                "children": {
-                    "PROJECT_INFO.md": {
-                        "type": "file"
-                    }
-                }
-            },
-            "Chess": {
                 "type": "directory",
                 "children": {
                     "PROJECT_INFO.md": {
