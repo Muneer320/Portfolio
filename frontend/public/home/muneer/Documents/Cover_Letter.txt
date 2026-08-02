@@ -1,14 +1,16 @@
 Dear Hiring Manager,
 
-I am excited to express my interest in software development opportunities with your organization. As a self-taught developer with over 6 years of experience building full-stack web apps, Discord/Telegram bots, games, and AI-powered tools, I believe I can bring both technical expertise and creative energy to your team.
+I am excited to express my interest in software development opportunities with your organization. As a creative systems engineer with deep experience building backend infrastructure, AI tooling, developer tools, and full-stack applications, I believe I can bring both technical expertise and product thinking to your team.
 
-My skill set spans Python, JavaScript, React, C++, and more, with hands-on experience across the full stack. I've built and maintained projects used by real users, from puzzle book generators to AI-assisted tools and games, all driven by curiosity and passion for building things that work.
+My skill set spans Python, Go, TypeScript, JavaScript, and React, with hands-on experience across the full stack. I have built and deployed production systems used by real users — from an event platform powering 2000+ hackathon participants to a multi-modal storage engine in Go handling 3.6M ops/sec, and AI systems spanning multi-agent orchestration, computer vision, and LLM tooling.
 
 **Highlights of my journey include:**
+• Winner, Smart Delhi Hackathon · 3rd Place, Blocktrain Hackathon · Top 7 of 350+ teams, ProdX (NAVERA '26)
+• Co-founder and Lead Developer at ParaPixel DigiServices — shipping client production systems (tournament management, e-commerce with Razorpay)
 • Top 50 International Rank in "Clash of Code" by Codingame
-• Open-source contributions to projects like BOOP, Abstracta, and more
-• Participation in the Smart India Hackathon (2023), enhancing my skills in teamwork, MVP development, and problem-solving
-• A growing focus on AI/ML, computer vision, and scalable applications
+• 30+ open-source repositories spanning Web3 (GitGuild), security tooling (XeroDay-APISniffer), developer tools (codelines, exHacker), and creative systems
+• B.Sc. Computer Science at Scaler School of Technology (Class of '29), GPA 9.29
+• Technical Lead for Ascent TechFest; admin for an 800+ member student community
 
 Your organization's emphasis on innovation and real-world impact aligns perfectly with my interests. I would love the opportunity to collaborate, learn, and contribute meaningfully to your projects.
 
@@ -16,7 +18,6 @@ Thank you for considering my application. I look forward to connecting.
 
 Best regards,
 **Muneer Alam**
-
 📧 muneer.alam320@gmail.com
 🐙 github.com/Muneer320
 🌐 linkedin.com/in/muneer320

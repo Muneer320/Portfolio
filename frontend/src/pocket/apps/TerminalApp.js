@@ -17,6 +17,8 @@ const PORTFOLIO_COMMANDS = [
   { cmd: "skills", label: "Skills" },
   { cmd: "projects", label: "Projects" },
   { cmd: "experience", label: "Experience" },
+  { cmd: "achievements", label: "Achievements" },
+  { cmd: "certifications", label: "Certs" },
   { cmd: "contact", label: "Contact" },
   { cmd: "cv", label: "CV" },
   { cmd: "neofetch", label: "Neofetch" },
@@ -24,7 +26,7 @@ const PORTFOLIO_COMMANDS = [
 ];
 
 // Commands that display styled output (cards, not raw text)
-const STYLED_COMMANDS = ["bio", "skills", "projects", "experience", "contact"];
+const STYLED_COMMANDS = ["bio", "skills", "projects", "experience", "contact", "achievements", "certifications"];
 
 // Portable portfolio command handler (doesn't need filesystem)
 function executePortfolioCommand(command) {
@@ -42,6 +44,10 @@ function executePortfolioCommand(command) {
       return { output: data.experience, styled: true };
     case "projects":
       return { output: data.projects, styled: true, type: "projects" };
+    case "achievements":
+      return { output: data.achievements, styled: true };
+    case "certifications":
+      return { output: data.certifications, styled: true };
     case "contact":
       return { output: data.contact, styled: true, type: "contact" };
     case "cv":
@@ -72,6 +78,8 @@ bio         Personal background
 skills      Technical skills
 experience  Work experience
 projects    Portfolio projects
+achievements  Hackathon wins & honors
+certifications  Courses & certifications
 education   Educational background
 contact     Contact information
 cv          Combined portfolio info + download
